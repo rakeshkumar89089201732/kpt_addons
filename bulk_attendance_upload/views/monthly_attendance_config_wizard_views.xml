@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Single Wizard Form -->
+    <record id="view_monthly_attendance_config_wizard_form" model="ir.ui.view">
+        <field name="name">monthly.attendance.config.wizard.form</field>
+        <field name="model">monthly.attendance.config.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Monthly Attendance">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <span>Create Monthly Attendance</span>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Period Selection">
+                            <field name="year" placeholder="e.g. 2026"/>
+                            <field name="month"/>
+                        </group>
+                        <group string="Working Schedule">
+                            <field name="resource_calendar_id" options="{'no_create': True}" 
+                                   widget="many2one" 
+                                   placeholder="Auto-selected from company default"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Schedule Information" invisible="not resource_calendar_id">
+                        <group string="Default Working Hours">
+                            <field name="default_check_in" widget="float_time" readonly="1"/>
+                            <field name="default_check_out" widget="float_time" readonly="1"/>
+                            <field name="default_hours_per_day" readonly="1"/>
+                        </group>
+                        <group string="Month Statistics">
+                            <field name="total_working_days" readonly="1"/>
+                            <field name="total_sundays" readonly="1"/>
+                            <field name="total_holidays" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <div class="alert alert-info" role="alert" invisible="not resource_calendar_id">
+                        <p>
+                            <strong>Working Days:</strong> <field name="total_working_days" readonly="1"/> days
+                            (excluding <field name="total_sundays" readonly="1"/> Sundays and 
+                            <field name="total_holidays" readonly="1"/> public holidays)
+                        </p>
+                    </div>
+                    
+                    <notebook>
+                        <page string="Employees">
+                            <div class="d-flex justify-content-between mb-3" style="padding: 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 15px;">
+                                <button string="Export Template" name="action_export_template" type="object" class="btn btn-secondary" icon="fa-download"/>
+                                <div class="d-flex align-items-center gap-2">
+                                    <field name="excel_file" filename="excel_filename" widget="binary" string="Upload Excel" 
+                                           options="{'filename': 'excel_filename'}"/>
+                                    <button string="Import Excel" name="action_import_excel" type="object" class="btn btn-primary" icon="fa-upload"/>
+                                </div>
+                            </div>
+                            <field name="excel_filename" invisible="1"/>
+                            <field name="employee_line_ids" nolabel="1" context="{'default_wizard_id': id}">
+                                <tree editable="bottom" create="1" delete="1" edit="1" class="o_wider_employee_tree">
+                                    <field name="employee_id" options="{'no_create': True}" string="Employee"/>
+                                    <field name="total_present_days" string="Total Present Days"/>
+                                    <field name="total_overtime_hours" string="Total Overtime (Hours)"/>
+                                    <field name="check_in_hours" widget="float_time" string="Check In (Hours)"/>
+                                    <field name="check_out_hours" widget="float_time" string="Check Out (Hours)"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    
+                    <div class="alert alert-warning" role="alert" invisible="employee_line_ids">
+                        <p>Please add at least one employee to create attendance records.</p>
+                    </div>
+                    
+                    <footer>
+                        <button string="Create Attendance" name="action_create_attendance" type="object" class="btn-primary"/>
+                        <!-- Custom cancel: go back to previous page (dashboard or config menu) -->
+                        <button string="Cancel" name="action_cancel_and_back" type="object" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_monthly_attendance_config_wizard" model="ir.actions.act_window">
+        <field name="name">Create Monthly Attendance</field>
+        <field name="res_model">monthly.attendance.config.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Action used specifically from the Attendance Dashboard, so cancel can return there -->
+    <record id="action_monthly_attendance_config_wizard_from_dashboard" model="ir.actions.act_window">
+        <field name="name">Create Monthly Attendance</field>
+        <field name="res_model">monthly.attendance.config.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'from_attendance_dashboard': True}</field>
+    </record>
+
+    <!-- Menu under Attendances > Configuration -->
+    <menuitem id="menu_monthly_attendance_set"
+              name="Create Monthly Attendance"
+              parent="hr_attendance.menu_hr_attendance_settings"
+              action="action_monthly_attendance_config_wizard"
+              sequence="10"
+              groups="bulk_attendance_upload.group_create_monthly_attendance"/>
+
+    <!-- Menu item removed as parent menu_bulk_attendance_root was removed -->
+    <!-- <menuitem id="menu_create_monthly_attendance_hr"
+              name="Create Monthly Attendance"
+              parent="bulk_attendance_upload.menu_bulk_attendance_root"
+              action="action_monthly_attendance_config_wizard"
+              sequence="10"
+              groups="bulk_attendance_upload.group_create_monthly_attendance"/> -->
+</odoo>

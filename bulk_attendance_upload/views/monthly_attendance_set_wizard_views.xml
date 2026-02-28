@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_monthly_attendance_set_wizard_search" model="ir.ui.view">
+        <field name="name">monthly.attendance.set.wizard.search</field>
+        <field name="model">monthly.attendance.set.wizard</field>
+        <field name="arch" type="xml">
+            <search string="Create Monthly Attendance">
+                <field name="employee_id"/>
+                <field name="month"/>
+                <field name="year"/>
+                <group expand="1" string="Group By">
+                    <filter string="Year" name="group_by_year" context="{'group_by': 'year'}"/>
+                    <filter string="Month" name="group_by_month" context="{'group_by': 'month'}"/>
+                    <filter string="Employee" name="group_by_employee" context="{'group_by': 'employee_id'}"/>
+                    <separator/>
+                    <filter string="Year then Month" name="group_by_year_month" context="{'group_by': 'year:month'}"/>
+                    <filter string="Year, Month &amp; Employee" name="group_by_all" context="{'group_by': 'year:month:employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_monthly_attendance_set_wizard_list" model="ir.ui.view">
+        <field name="name">monthly.attendance.set.wizard.list</field>
+        <field name="model">monthly.attendance.set.wizard</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="1" delete="0" edit="1" class="o_monthly_attendance_tree">
+                <field name="employee_id"/>
+                <field name="month" invisible="1"/>
+                <field name="month_display" column_invisible="1"/>
+                <field name="year"/>
+                <field name="total_present_days"/>
+                <field name="total_overtime_hours"/>
+                <field name="default_check_in" widget="float_time"/>
+                <field name="default_check_out" widget="float_time"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-muted="state == 'draft'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_monthly_attendance_set_wizard_form" model="ir.ui.view">
+        <field name="name">monthly.attendance.set.wizard.form</field>
+        <field name="model">monthly.attendance.set.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Monthly Attendance">
+                <sheet>
+                    <group>
+                        <group string="Employee &amp; Period">
+                            <field name="employee_id" options="{'no_create': True}"/>
+                            <field name="month"/>
+                            <field name="year"/>
+                        </group>
+                        <group string="Attendance Summary">
+                            <field name="total_present_days" placeholder="e.g. 22"/>
+                            <field name="total_overtime_hours" widget="float_time" placeholder="e.g. 10"/>
+                        </group>
+                    </group>
+                    <group string="Default Times">
+                        <group>
+                            <field name="default_check_in" widget="float_time"/>
+                            <field name="default_check_out" widget="float_time"/>
+                        </group>
+                        <group>
+                            <p class="text-muted">
+                                Working days are computed from the employee's calendar (Sundays and holidays excluded).
+                                Overtime is distributed evenly across the present days.
+                            </p>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Create Month Attendance" name="action_create_attendance" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Legacy action kept for compatibility but now redirects to the new single-step wizard -->
+    <record id="action_monthly_attendance_set_wizard" model="ir.actions.act_window">
+        <field name="name">Create Monthly Attendance</field>
+        <field name="res_model">monthly.attendance.config.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Server Action for Batch Creation -->
+    <record id="action_create_attendance_batch" model="ir.actions.server">
+        <field name="name">Create Attendance</field>
+        <field name="model_id" ref="bulk_attendance_upload.model_monthly_attendance_set_wizard"/>
+        <field name="binding_model_id" ref="bulk_attendance_upload.model_monthly_attendance_set_wizard"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+records.action_create_attendance_batch()
+        </field>
+    </record>
+
+    <!-- Old menu removed - replaced by new two-step wizard -->
+
+    <!-- Attendance Dashboard: act_url for direct links; client action keeps sidebar/menus visible -->
+    <record id="action_attendance_dashboard" model="ir.actions.act_url">
+        <field name="name">Attendance Dashboard</field>
+        <field name="url">/attendance/dashboard</field>
+        <field name="target">self</field>
+    </record>
+    <record id="action_attendance_dashboard_client" model="ir.actions.client">
+        <field name="name">Attendance Dashboard</field>
+        <field name="tag">attendance_dashboard_iframe</field>
+    </record>
+
+    <!-- Dashboard menu under Attendances removed as per request; Overview (list-first) is used instead -->
+    <!-- <menuitem id="menu_attendance_dashboard"
+              name="Dashboard"
+              parent="hr_attendance.menu_hr_attendance_root"
+              action="action_attendance_dashboard_client"
+              sequence="1"
+              groups="hr_attendance.group_hr_attendance_officer"/> -->
+
+    <!-- Override root Attendances menu to open Overview by default instead of Kiosk Mode -->
+    <record id="hr_attendance.menu_hr_attendance_root" model="ir.ui.menu">
+        <field name="action" ref="hr_attendance.hr_attendance_action"/>
+    </record>
+
+    <!-- Override hr_attendance_action to ensure list view shows first, then gantt -->
+    <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,gantt,form</field>
+    </record>
+
+    <!-- Attendance Dashboard menu removed from Employees app as per request -->
+    <!-- <menuitem id="menu_bulk_attendance_root"
+              name="Attendance Dashboard"
+              parent="hr.menu_hr_root"
+              sequence="202"
+              groups="base.group_user"/>
+    <menuitem id="menu_attendance_dashboard_hr"
+              name="Dashboard"
+              parent="menu_bulk_attendance_root"
+              action="action_attendance_dashboard_client"
+              sequence="1"
+              groups="base.group_user"/> -->
+</odoo>

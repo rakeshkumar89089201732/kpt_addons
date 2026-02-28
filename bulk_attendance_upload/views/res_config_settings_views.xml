@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_kiosk_menu" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.kiosk.menu</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_attendance.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[.//button[@name='regenerate_kiosk_key']]" position="after">
+                <setting string="Kiosk Mode menu" help="Show or hide the Kiosk Mode menu in the Attendances app.">
+                    <field name="attendance_kiosk_menu_visible" invisible="1"/>
+                    <button name="action_disable_kiosk_menu" type="object" string="Hide Kiosk Mode Menu"
+                        class="btn-secondary" invisible="not attendance_kiosk_menu_visible"/>
+                    <button name="action_enable_kiosk_menu" type="object" string="Show Kiosk Mode Menu"
+                        class="btn-secondary" invisible="attendance_kiosk_menu_visible"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

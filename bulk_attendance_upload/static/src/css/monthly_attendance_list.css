@@ -1,0 +1,199 @@
+/* Enhanced styling for Monthly Attendance List View */
+
+.o_monthly_attendance_tree {
+    /* Year group header styling - Level 0 */
+    .o_group_header_row_level_0 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 1.1em !important;
+        padding: 14px 18px !important;
+        border-radius: 8px 8px 0 0 !important;
+        margin-bottom: 6px !important;
+        margin-top: 8px !important;
+        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.35) !important;
+        border-left: 5px solid #764ba2 !important;
+    }
+    
+    .o_group_header_row_level_0:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.45) !important;
+        transform: translateY(-1px) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    /* Month group header styling - Level 1 */
+    .o_group_header_row_level_1 {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        font-size: 1em !important;
+        padding: 11px 24px !important;
+        margin-left: 24px !important;
+        margin-bottom: 4px !important;
+        margin-top: 4px !important;
+        border-radius: 6px !important;
+        box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3) !important;
+        border-left: 4px solid #f5576c !important;
+    }
+    
+    .o_group_header_row_level_1:hover {
+        background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%) !important;
+        box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4) !important;
+        transform: translateX(2px) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    /* Employee row styling - Level 2 */
+    .o_data_row {
+        background: #ffffff !important;
+        border-left: 4px solid #667eea !important;
+        margin-left: 48px !important;
+        margin-bottom: 3px !important;
+        padding: 12px 14px !important;
+        border-radius: 5px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    .o_data_row:hover {
+        background: linear-gradient(90deg, #f8f9ff 0%, #ffffff 100%) !important;
+        border-left-color: #764ba2 !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1) !important;
+        transform: translateX(3px) !important;
+    }
+    
+    /* Group summary cells */
+    .o_group_header_row_level_0 .o_group_name,
+    .o_group_header_row_level_1 .o_group_name {
+        font-weight: inherit !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+    }
+    
+    /* Year group name styling */
+    .o_group_header_row_level_0 .o_group_name {
+        font-size: 1.15em !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    /* Month group name styling */
+    .o_group_header_row_level_1 .o_group_name {
+        font-size: 1.05em !important;
+    }
+    
+    /* Group count badges */
+    .o_group_header_row_level_0 .o_group_name span:last-child,
+    .o_group_header_row_level_1 .o_group_name span:last-child {
+        background: rgba(255, 255, 255, 0.25) !important;
+        padding: 2px 8px !important;
+        border-radius: 12px !important;
+        font-size: 0.85em !important;
+        font-weight: 500 !important;
+        margin-left: 4px !important;
+    }
+    
+    /* Employee name styling */
+    .o_data_row .o_field_many2one[name="employee_id"] {
+        font-weight: 500 !important;
+        color: #2c3e50 !important;
+    }
+    
+    /* Status badge styling */
+    .o_data_row .badge {
+        padding: 4px 10px !important;
+        border-radius: 12px !important;
+        font-size: 0.85em !important;
+        font-weight: 500 !important;
+    }
+    
+    /* "Add a line" styling */
+    .o_list_table tbody tr:last-child td {
+        background: #f8f9fa !important;
+        border: 2px dashed #dee2e6 !important;
+        border-radius: 6px !important;
+        padding: 16px !important;
+        text-align: center !important;
+        color: #6c757d !important;
+        font-style: italic !important;
+        margin-top: 8px !important;
+    }
+    
+    .o_list_table tbody tr:last-child td:hover {
+        background: #e9ecef !important;
+        border-color: #667eea !important;
+        color: #667eea !important;
+    }
+    
+    /* Improve spacing between groups */
+    .o_group_header_row {
+        margin-bottom: 4px !important;
+    }
+    
+    /* Column header styling */
+    .o_list_table thead th {
+        background: #f8f9fa !important;
+        font-weight: 600 !important;
+        color: #495057 !important;
+        padding: 12px !important;
+        border-bottom: 2px solid #dee2e6 !important;
+    }
+    
+    /* Number fields alignment */
+    .o_data_row td[data-name="total_present_days"],
+    .o_data_row td[data-name="total_overtime_hours"] {
+        text-align: right !important;
+        font-weight: 500 !important;
+    }
+    
+    /* Time fields styling */
+    .o_data_row td[data-name="default_check_in"],
+    .o_data_row td[data-name="default_check_out"] {
+        font-family: 'Courier New', monospace !important;
+        font-weight: 500 !important;
+        color: #495057 !important;
+    }
+}
+
+    /* Toggle button styling */
+    .o_group_header_row .o_toggle_button {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-size: 1.1em !important;
+        margin-right: 8px !important;
+        transition: transform 0.2s ease !important;
+    }
+    
+    .o_group_header_row .o_toggle_button:hover {
+        color: white !important;
+        transform: scale(1.1) !important;
+    }
+    
+    /* Collapsed group styling */
+    .o_group_header_row.o_group_header_row_collapsed {
+        opacity: 0.85 !important;
+    }
+    
+    /* Improve visual hierarchy with indentation */
+    .o_list_table tbody tr[data-level="1"] {
+        padding-left: 24px !important;
+    }
+    
+    .o_list_table tbody tr[data-level="2"] {
+        padding-left: 48px !important;
+    }
+    
+    /* Responsive adjustments */
+@media (max-width: 1200px) {
+    .o_monthly_attendance_tree .o_data_row {
+        margin-left: 40px !important;
+    }
+    
+    .o_monthly_attendance_tree .o_group_header_row_level_1 {
+        margin-left: 20px !important;
+    }
+    
+    .o_monthly_attendance_tree .o_group_header_row_level_0 {
+        padding: 12px 14px !important;
+    }
+}

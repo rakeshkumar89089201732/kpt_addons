@@ -1,0 +1,169 @@
+/* Wider wizard for Monthly Attendance Configuration */
+
+/* Make ALL modal dialogs wider - more aggressive approach */
+.modal.o_technical_modal .modal-dialog {
+    max-width: 95% !important;
+    width: 95% !important;
+}
+
+.modal.o_technical_modal .modal-dialog.modal-lg {
+    max-width: 95% !important;
+    width: 95% !important;
+}
+
+.modal.o_technical_modal .modal-dialog.modal-xl {
+    max-width: 98% !important;
+    width: 98% !important;
+}
+
+/* Specific targeting for our wizard */
+.modal.o_technical_modal:has(.o_wider_employee_tree) .modal-dialog,
+body:has(.o_wider_employee_tree) .modal.o_technical_modal .modal-dialog {
+    max-width: 98% !important;
+    width: 98% !important;
+}
+
+/* Ensure the form view uses full width */
+.modal .o_form_view .o_form_sheet {
+    max-width: 100% !important;
+}
+
+/* Wider employee tree table */
+.o_wider_employee_tree {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+.o_wider_employee_tree .o_list_table {
+    width: 100% !important;
+    min-width: 1300px !important;
+    table-layout: fixed !important;
+}
+
+/* Ensure the table wrapper doesn't constrain width */
+.o_wider_employee_tree .o_list_renderer {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+.o_wider_employee_tree .o_list_view {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+/* Column width adjustments for employee tree - using fixed widths with more space */
+.o_wider_employee_tree th[data-name="employee_id"],
+.o_wider_employee_tree td[data-name="employee_id"] {
+    min-width: 250px !important;
+    width: 250px !important;
+    max-width: 250px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.o_wider_employee_tree th[data-name="total_present_days"],
+.o_wider_employee_tree td[data-name="total_present_days"] {
+    min-width: 180px !important;
+    width: 180px !important;
+    max-width: 180px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.o_wider_employee_tree th[data-name="total_overtime_hours"],
+.o_wider_employee_tree td[data-name="total_overtime_hours"] {
+    min-width: 220px !important;
+    width: 220px !important;
+    max-width: 220px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.o_wider_employee_tree th[data-name="check_in_hours"],
+.o_wider_employee_tree td[data-name="check_in_hours"] {
+    min-width: 180px !important;
+    width: 180px !important;
+    max-width: 180px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+.o_wider_employee_tree th[data-name="check_out_hours"],
+.o_wider_employee_tree td[data-name="check_out_hours"] {
+    min-width: 180px !important;
+    width: 180px !important;
+    max-width: 180px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+/* Prevent text truncation in headers */
+.o_wider_employee_tree th {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-wrap: break-word !important;
+    padding: 10px 12px !important;
+    text-align: left !important;
+}
+
+/* Ensure header text is fully visible */
+.o_wider_employee_tree th .o_column_title,
+.o_wider_employee_tree th span {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-wrap: break-word !important;
+    display: inline-block !important;
+    width: 100% !important;
+}
+
+/* Fix for truncated column names */
+.o_wider_employee_tree thead th {
+    min-width: fit-content !important;
+    width: auto !important;
+}
+
+/* Ensure Employee column header is fully visible */
+.o_wider_employee_tree th[data-name="employee_id"] {
+    min-width: 250px !important;
+    width: 250px !important;
+}
+
+.o_wider_employee_tree th[data-name="employee_id"] .o_column_title {
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Fix for employee column cropping - ensure full width */
+.o_wider_employee_tree thead th:first-child,
+.o_wider_employee_tree tbody td:first-child {
+    min-width: 250px !important;
+    width: 250px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+
+/* Ensure employee name field doesn't get cropped */
+.o_wider_employee_tree .o_field_many2one[name="employee_id"] {
+    min-width: 200px !important;
+    width: 100% !important;
+}
+
+/* Make notebook use full width */
+.modal .o_notebook {
+    width: 100% !important;
+}
+
+.modal .o_notebook .tab-content {
+    width: 100% !important;
+    padding: 16px !important;
+}
+
+/* Ensure the list renderer container is wide enough */
+.o_wider_employee_tree .o_list_renderer {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
