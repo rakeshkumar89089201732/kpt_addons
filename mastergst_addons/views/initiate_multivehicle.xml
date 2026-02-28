@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="model_initiate_multivehicle_form_view" model="ir.ui.view">
+        <field name="name">model.initiate.multivehicle.form.view</field>
+        <field name="model">initiate.multivehicle</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,post,cancel"/>
+                    </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                          <group string="Created Info">
+                            <field name="company_id" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="created_date" readonly="1"/>
+                        </group>
+                        <group string="Initiate Info">
+                            <field name="invoice_no" readonly="1"/>
+                            <field name="create_date" readonly="1"/>
+                            <field name="veh_ewb_no" readonly="1"/>
+                            <field name="veh_from_place" readonly="1"/>
+                             <field name="veh_from_state" readonly="1"/>
+                            <field name="veh_to_place" readonly="1"/>
+                        </group>
+                        <group string="Vehicle Info">
+                            <field name="veh_to_state" readonly="1"/>
+                            <field name="veh_reason" readonly="1"/>
+                            <field name="veh_reason_remarks" readonly="1"/>
+                            <field name="veh_total_quantity" readonly="1"/>
+                            <field name="veh_unit_code" readonly="1"/>
+                            <field name="veh_mode_of_transport" readonly="1"/>
+                        </group>
+                        <group string="Group Info">
+                            <field name="initiate_group_no" readonly="1"/>
+                            <field name="initiate_created_date" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="model_initiate_multivehicle_tree_view" model="ir.ui.view">
+        <field name="name">model.initiate.multivehicle.tree.view</field>
+        <field name="model">initiate.multivehicle</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="created_date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="company_id"/>
+                <field name="veh_ewb_no"/>
+                <field name="initiate_group_no"/>
+                <field name="initiate_created_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_initiate_multivehicle" model="ir.actions.act_window">
+        <field name="name">Initiate Multivehicle</field>
+        <field name="res_model">initiate.multivehicle</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+
+    <menuitem id="initiate_multi_vehicle"
+              parent="multi_vehicle_root"
+              name="Initiate Multi Vehicle"
+              action="action_initiate_multivehicle"
+              sequence="10"/>
+
+
+
+</odoo>

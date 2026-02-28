@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="inherit_ewaybill_form_view" model="ir.ui.view">
+        <field name="name">inherit.ewaybill.form.view</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="eway_addons.ewaybill_addons_inherit_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//page[@name='eway_bill_details']" position="after">
+                <page name="partb_gen" string="Part-B Generation">
+                    <group>
+                        <group string="Part B" name="part_b">
+                            <field name="part_b"/>
+                            <field name="vehicle_no"  invisible="part_b == False"/>
+                            <field name="from_place" invisible="part_b == False"/>
+                            <field name="fromState" invisible="part_b == False" options='{"no_open": True, "no_create": True}'/>
+                            <field name="reason_codes" invisible="part_b == False"/>
+                            <field name="reason_remarks" invisible="part_b == False"/>
+                            <field name="trans_doc_no" invisible="part_b == False"/>
+                            <field name="trans_doc_date" invisible="part_b == False"/>
+                            <field name="transportation_mode" invisible="part_b == False"/>
+                            <button name="create_partb" string="Send" type="object" class="btn-primary" invisible="part_b == False"/>
+                        </group>
+                        <group string="Part-B Details" name="part_b_details">
+                            <field name="part_b_eway_bill_no"/>
+                            <field name="part_b_generated_date"/>
+                            <field name="part_b_generated_by"/>
+                            <field name="part_b_valid_date"/>
+                            <field name="part_b_qr_code" widget='image' options="{'size': [100, 100]}" readonly="1"/>
+                            <field name="part_b_barcode" widget='image' options="{'size': [100, 100]}" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="partb_id" string="Part-B Details" context="{'default_order': 'veupddate desc'}">
+                        <tree>
+                            <field name="eway_no"/>
+                            <field name="veupddate"/>
+                            <field name="vehileno"/>
+                            <field name="fromplace"/>
+                            <field name="fromstate"/>
+                            <field name="transdocno"/>
+                            <field name="transdocdate"/>
+                            <field name="transmode"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <group>
+                        <group string="Download PDF">
+                            <button name="print_part_b_pdf" string="Download PDF" class="btn-primary" type="object" invisible="part_b == False or state in ['cancel']"/>
+                            <button name="cancelled_partb_pdf" string="Cancelled PDF" class="btn-primary" type="object" invisible="part_b == False or state not in ['cancel']"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//page[@name='l10n_in_edi_ewaybill_page']" position="after">
+                <page name="vehicle_update" string="E-Way Bill Vehicle Updation">
+                    <group>
+                        <group string="Type Of Multi Vehicle Updation">
+                            <field name="initiate_multi_vehicle"/>
+                            <field name="add_multivehicle"/>
+                            <field name="update_multivehicle"/>
+                        </group>
+                        <notebook>
+                            <page name="initiate_multivehicle" invisible="initiate_multi_vehicle == False">
+                                <group string="Initiate Multi Vehicle">
+                                    <group>
+                                        <field name="initiate_ewb_no"/>
+                                        <field name="initiate_from_place"/>
+                                        <field name="initiate_from_state" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="initiate_to_place"/>
+                                        <field name="initiate_to_state" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="initiate_reason"/>
+                                        <field name="initiate_reason_remarks"/>
+                                        <field name="initiate_total_quantity"/>
+                                        <field name="initiate_unit_code"/>
+                                        <field name="initiate_mode_of_transport"/>
+                                    </group>
+                                    <group>
+                                        <button name="initiate_multivehicle" string="Send" class="btn-primary" type="object"/>
+                                        <button name="clear_initiate_multivehicle_fields" string="Clear" class="btn-primary" type="object"/>
+                                    </group>
+                                </group>
+                                <field name="initiate_vehicle_id">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="veh_ewb_no"/>
+                                        <field name="initiate_group_no"/>
+                                        <field name="initiate_created_date"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="add_multivehicle" invisible="add_multivehicle != True">
+                                <group>
+                                    <group string="Add Multivehicle">
+                                        <field name="add_multi_eway_no"/>
+                                        <field name="add_multi_vehicle_no"/>
+                                        <field name="initiate_group_id" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="add_multi_group_no"/>
+                                        <field name="add_multi_trans_doc_no"/>
+                                        <field name="add_multi_trans_doc_date"/>
+                                        <field name="add_multi_quantity"/>
+                                    </group>
+                                    <group>
+                                        <button name="add_multivehicle_creation" string="Send" class="btn-primary"
+                                                type="object"/>
+                                        <button name="clear_add_multivehicle_fields" string="Clear" class="btn-primary"
+                                                type="object"/>
+                                    </group>
+                                </group>
+                                <field name="add_multivehicle_id" context="{'default_order': 'vehAddedDate desc'}">
+                                    <tree>
+                                        <field name="vehicle_mode"/>
+                                        <field name="vehicleNo"/>
+                                        <field name="transDocNo"/>
+                                        <field name="transDocDate"/>
+                                        <field name="from_place"/>
+                                         <field name="vehAddedDate"/>
+                                        <field name="initiate_id"/>
+<!--                                        <field name="ewbNo"/>-->
+<!--                                        <field name="groupNo"/>-->
+<!--                                        <field name="quantity"/>-->
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <button name="print_multivehicle_pdf" string="Download Multivehicle PDF" type="object" class="btn-primary" invisible="state in ['cancel']"/>
+                                    <button name="download_cancel_multivehicle_pdf" string="Canclled PDF" type="object" class="btn-primary" invisible="state not in ['cancel']"/>
+                                </group>
+                            </page>
+                            <page name="change_multivehicle" invisible="update_multivehicle != True">
+                                <group>
+                                    <group string="Change Multivehicle">
+                                        <field name="update_eway_no"/>
+                                        <field name="update_group_name" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="update_group_no"/>
+                                        <field name="update_old_veh_no" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="update_new_vehicle_no"/>
+                                        <field name="update_old_trans_doc_no"/>
+                                        <field name="update_new_trans_doc_no"/>
+                                        <field name="update_from_place"/>
+                                        <field name="update_from_state" options='{"no_open": True, "no_create": True}'/>
+                                        <field name="update_reason_code"/>
+                                        <field name="update_reason_remarks"/>
+                                    </group>
+                                    <group>
+                                        <button name="change_multivehicle" string="Send" type="object" class="btn-primary"/>
+                                        <button name="clear_change_multivehicle" string="Clear" type="object" class="btn-primary"/>
+                                    </group>
+                                </group>
+                                <field name="change_vehicle_id">
+                                    <tree>
+                                        <field name="change_group_name"/>
+                                        <field name="change_vehUpdDate"/>
+                                        <field name="change_old_vehno"/>
+                                        <field name="change_new_vehno"/>
+                                        <field name="change_from_place"/>
+                                        <field name="change_reason"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </page>
+            </xpath>
+
+<!--            <xpath expr="//page[@name='l10n_in_edi_ewaybill_page']//page[@name='eway_bill_details']//field[@name='barcode']" position="after">-->
+<!--                &lt;!&ndash;  With transporter and Without transporter Eway bill PDF download&ndash;&gt;-->
+<!--                <button name="download_the_with_transporter_pdf" string="Download PDF" type="object" class="btn-primary" attrs="{'invisible': ['|', ('enable_parta_slip', '=', True), ('state', '=', 'cancel')]}"/>-->
+<!--                <button name="download_the_cancel_ewaybill_pdf" string="Cancelled PDF" type="object" class="btn-primary" attrs="{'invisible': ['|', ('enable_parta_slip', '=', True), ('state', '!=', 'cancel')]}"/>-->
+<!--                &lt;!&ndash; With transporter and Without transporter Eway bill PDF download&ndash;&gt;-->
+<!--                <button name="download_the_parta_pdf" string="Download PDF" type="object" class="btn-primary" attrs="{'invisible': ['|', ('enable_parta_slip', '=', False), ('state', '=', 'cancel')]}"/>-->
+<!--                <button name="download_the_cancel_parta_pdf" string="Cancelled PDF" type="object" class="btn-primary" attrs="{'invisible': ['|', ('enable_parta_slip', '=', False), ('state', '!=', 'cancel')]}"/>-->
+<!--            </xpath>-->
+        </field>
+    </record>
+
+</odoo>

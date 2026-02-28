@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mastergst_edi,mastergst.edi,model_mastergst_edi,base.group_user,1,1,1,0
+access_initiate_multivehicle,initiate.multivehicle,model_initiate_multivehicle,base.group_user,1,1,1,0
+access_partb,partb,model_partb,base.group_user,1,1,1,0
+access_add_multivehicle,add.multivehicle,model_add_multivehicle,base.group_user,1,1,1,0
+access_change_multivehicle,change.multivehicle,model_change_multivehicle,base.group_user,1,1,1,0
