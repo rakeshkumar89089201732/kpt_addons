@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_employee_extention_view_employee_form_v2" model="ir.ui.view">
+            <field name="name">hr.employee.form.inherit.employee.extention.v2</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='personal_information']//field[@name='children']" position="after">
+                    <field name="guardian_relation"/>
+                    <field name="guardian_name"/>
+                </xpath>
+
+                <xpath expr="//page[@name='personal_information']//field[@name='bank_account_id']" position="after">
+                    <field name="uan_number"/>
+                    <field name="esic_number"/>
+                    <field name="ifsc_code"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
