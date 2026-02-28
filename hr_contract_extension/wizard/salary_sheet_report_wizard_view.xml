@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_salary_sheet_report_wizard_form" model="ir.ui.view">
+        <field name="name">salary.sheet.report.wizard.form</field>
+        <field name="model">salary.sheet.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Salary Sheet Report">
+                <sheet>
+                    <group>
+                        <group string="Salary Period">
+                            <field name="salary_month"/>
+                            <field name="salary_year"/>
+                            <field name="company_id" options="{'no_create': True}"/>
+                            <field name="group_by_manager"/>
+                        </group>
+
+                        <group string="Filter Criteria (Optional)">
+                            <field name="employee_ids" widget="many2many_tags" placeholder="Leave empty for all employees"/>
+                            <field name="department_ids" widget="many2many_tags" placeholder="Filter by departments"/>
+                            <field name="date_from" placeholder="Joining date from"/>
+                            <field name="date_to" placeholder="Joining date to"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Last Generated Excel (Full Format)">
+                            <field name="output_file" filename="output_file_name" readonly="1"/>
+                            <field name="output_file_name" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <field name="state" invisible="1"/>
+                </sheet>
+
+                <footer>
+                    <button string="Preview List" name="action_generate_preview" type="object" class="btn-secondary"/>
+                    <button string="Generate Excel" name="action_generate_salary_sheet" type="object" class="btn-primary"/>
+                    <button string="Download Last Excel" name="action_download" type="object" class="btn-primary"/>
+                    <button string="Generate Another" name="action_new" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_salary_sheet_report_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Salary Sheet</field>
+        <field name="res_model">salary.sheet.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_salary_sheet_report_wizard_group_manager" model="ir.actions.act_window">
+        <field name="name">Generate Salary Sheet (By Manager)</field>
+        <field name="res_model">salary.sheet.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_group_by_manager': True}</field>
+    </record>
+
+    <!-- TODO: Odoo 17 migration: parent adjusted to hr.menu_hr_root to avoid missing xmlid errors when hr_payroll root is unavailable. If payroll root exists in this DB, switch parent back to hr_payroll.menu_hr_payroll_root. -->
+    <menuitem id="menu_salary_sheet_report"
+              name="Generate Salary Sheet"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_salary_sheet_report_wizard"
+              sequence="99"/>
+
+    <menuitem id="menu_salary_sheet_report_by_manager"
+              name="Generate Salary Sheet (By Manager)"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_salary_sheet_report_wizard_group_manager"
+              sequence="101"/>
+
+    <!-- Tree view for preview lines (used when clicking 'Preview List') -->
+    <record id="view_salary_sheet_report_line_tree" model="ir.ui.view">
+        <field name="name">salary.sheet.report.line.tree</field>
+        <field name="model">salary.sheet.report.line</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Sheet Preview">
+                <field name="employee_id"/>
+                <field name="manager_id"/>
+                <field name="emp_code"/>
+                <field name="department_id"/>
+                <field name="category"/>
+                <field name="worked_days"/>
+                <field name="basic"/>
+                <field name="hra"/>
+                <field name="conveyance"/>
+                <field name="gross"/>
+                <field name="net"/>
+                <field name="pf_employee"/>
+                <field name="esic_employee"/>
+                <field name="tds"/>
+                <field name="bank_account"/>
+                <field name="ifsc"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

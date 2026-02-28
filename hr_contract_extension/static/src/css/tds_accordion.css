@@ -1,0 +1,213 @@
+/* TDS Accordion Vertical Layout */
+.tds_accordion_container {
+    max-width: 1800px;
+    /* Increased from 1200px for better screen space utilization */
+    margin: 0 auto;
+    padding: 20px;
+    scrollbar-width: none;
+    /* hide Firefox scrollbar */
+}
+
+.tds_accordion_container::-webkit-scrollbar {
+    display: none;
+    /* hide WebKit scrollbar */
+}
+
+.tds_accordion_section {
+    background: #ffffff;
+    border: 1px solid #dbeafe;
+    /* light blue border */
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.25s ease;
+}
+
+.tds_accordion_section:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+    border-color: #93c5fd;
+    /* hover blue */
+    transform: translateY(-1px);
+}
+
+.tds_accordion_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: #e9eefb;
+    /* soft bluish */
+    color: #2f3542;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.tds_accordion_header:hover {
+    background: #e0e7f8;
+}
+
+.tds_accordion_header_content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.tds_accordion_icon {
+    font-size: 24px;
+    min-width: 32px;
+    text-align: center;
+}
+
+.tds_accordion_title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.tds_accordion_subtitle {
+    font-size: 12px;
+    opacity: 0.7;
+    margin: 4px 0 0 0;
+}
+
+.tds_accordion_toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid #cbd5e1;
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    color: #1f2937;
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.35s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tds_accordion_section.collapsed .tds_accordion_toggle {
+    transform: rotate(-90deg);
+}
+
+.tds_accordion_header:hover .tds_accordion_toggle {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.25);
+    background: linear-gradient(180deg, #eef3fb 0%, #dbeafe 100%);
+}
+
+.tds_accordion_body {
+    max-height: 4000px;
+    /* Allow Odoo many2one dropdown/search popups to render outside the accordion body */
+    overflow: visible;
+    transition: max-height 0.45s ease, padding 0.45s ease, background 0.25s ease;
+    padding: 18px;
+    background: #e8eef9;
+    /* Darker bluish background for better contrast */
+    position: relative;
+    z-index: 1;
+}
+
+.tds_accordion_section.collapsed .tds_accordion_body {
+    max-height: 0;
+    padding: 0 18px;
+    overflow: hidden;
+}
+
+/* Ensure autocomplete dropdown (many2one) isn't hidden behind accordion sections */
+.tds_accordion_container .o-autocomplete--dropdown-menu,
+.tds_accordion_container .ui-autocomplete {
+    z-index: 2000;
+}
+
+/* Section Color Variants (formal, subtle) */
+.tds_accordion_section .tds_accordion_header {
+    background: #e9eefb;
+    /* keep bluish header */
+    color: #1f2937;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tds_accordion_container {
+        padding: 10px;
+    }
+
+    .tds_accordion_header {
+        padding: 12px 14px;
+    }
+
+    .tds_accordion_title {
+        font-size: 15px;
+    }
+
+    .tds_accordion_body {
+        padding: 14px;
+    }
+}
+
+/* Form Field Styling within Accordion */
+.tds_accordion_body .o_group {
+    margin-bottom: 0;
+}
+
+.tds_accordion_body .o_form_label {
+    font-weight: 500;
+    color: #555;
+}
+
+.tds_accordion_body .separator {
+    margin: 20px 0 16px 0;
+    border-top: 1px solid #e0e0e0;
+    font-weight: 600;
+    color: #404040;
+}
+
+/* Alert Styling */
+.tds_accordion_body .alert {
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+/* Table Styling */
+.tds_accordion_body .o_list_table {
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Prevent long deduction labels from overflowing into adjacent columns */
+.tds_accordion_body .o_tdss_deduction_summary {
+    max-width: 100%;
+}
+
+.tds_accordion_body .o_tdss_deduction_summary table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tds_accordion_body .o_tdss_deduction_summary td {
+    word-break: break-word;
+}
+
+/* Badge for Status */
+.tds_status_badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.tds_status_badge.active {
+    background: #d4edda;
+    color: #155724;
+}
+
+.tds_status_badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+}

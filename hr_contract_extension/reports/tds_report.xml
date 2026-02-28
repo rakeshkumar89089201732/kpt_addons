@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!--
+        <report
+            id="action_report_tds_details"
+            model="hr.tds"
+            string="TDS Details"
+            report_type="qweb-pdf"
+            name="hr_contract_extension.report_tds_details"
+            file="hr_contract_extension.report_tds_details"
+        />
+        -->
+
+        <record id="paperformat_report_tds_details" model="report.paperformat">
+            <field name="name">TDS Details</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">8</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_tds_details" model="ir.actions.report">
+            <field name="name">TDS Details</field>
+            <field name="model">hr.tds</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_contract_extension.report_tds_details</field>
+            <field name="report_file">hr_contract_extension.report_tds_details</field>
+            <field name="paperformat_id" ref="hr_contract_extension.paperformat_report_tds_details"/>
+        </record>
+
+        <template id="report_tds_details">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <style>
+                        /* Paper margins controlled by report.paperformat (paperformat_report_tds_details). */
+                        /* @page { margin-top: 8mm; margin-bottom: 10mm; margin-left: 10mm; margin-right: 10mm; } */
+                        div.page{padding-top:0 !important;margin-top:0 !important;}
+                        .kpt-tds{font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:11px;color:#111;line-height:1.35;}
+                        .kpt-tds .title{font-size:16px;font-weight:bold;margin:0;padding:0;}
+                        .kpt-tds .sub{margin-top:4px;color:#444;}
+                        .kpt-tds .box{border:1px solid #cfcfcf;padding:12px;margin-bottom:12px;}
+                        .kpt-tds .label{color:#555;}
+                        .kpt-tds .section-title{font-size:12px;font-weight:bold;margin:10px 0 8px 0;}
+                        .kpt-tds table{width:100%;border-collapse:collapse;}
+                        .kpt-tds th{background:#f2f2f2;border:1px solid #d9d9d9;padding:8px 8px;font-weight:bold;text-align:left;}
+                        .kpt-tds td{border:1px solid #e3e3e3;padding:7px 8px;}
+                        .kpt-tds .right{text-align:right;}
+                        .kpt-tds .strong{font-weight:bold;}
+                        .kpt-tds .two-col{width:100%;border-collapse:collapse;}
+                        .kpt-tds .two-col td{border:none;vertical-align:top;padding:0;}
+                        .kpt-tds .col-pad{padding-right:14px;}
+                        .kpt-tds .mb-12{margin-bottom:12px;}
+                        .kpt-tds .box table{width:100%;border-collapse:collapse;}
+                        .kpt-tds .box th{background:#f7f7f7;border:1px solid #d9d9d9;padding:8px 8px;font-weight:bold;}
+                        .kpt-tds .box td{border:1px solid #e3e3e3;padding:7px 8px;}
+                        .kpt-tds .kv td{border:none;padding:2px 4px;}
+                        .kpt-tds .kv .k{width:110px;color:#333;}
+                        .kpt-tds .kv .v{color:#111;}
+                        .kpt-tds .kpt-line td{border-left:none;border-right:none;}
+                        .kpt-tds .kpt-line td:first-child{border-left:1px solid #e3e3e3;}
+                        .kpt-tds .kpt-line td:last-child{border-right:1px solid #e3e3e3;}
+                        .kpt-tds .regime{font-weight:bold;font-size:13px;}
+                        .kpt-tds .logo{max-height:90px;max-width:280px;}
+                        .kpt-tds .note{font-size:10px;color:#444;margin-top:6px;}
+                    </style>
+
+                    <div class="kpt-tds">
+                        <div style="text-align:center;margin:0 0 12px 0;" t-if="(o.hr_contract_id and o.hr_contract_id.company_id and o.hr_contract_id.company_id.logo) or (o.hr_employee_id and o.hr_employee_id.company_id and o.hr_employee_id.company_id.logo)">
+                            <t t-set="_company" t-value="(o.hr_contract_id.company_id if o.hr_contract_id and o.hr_contract_id.company_id else o.hr_employee_id.company_id)"/>
+                            <img class="logo" t-att-src="image_data_uri(_company.logo)" alt="Company Logo"/>
+                        </div>
+
+                        <div class="box">
+                            <table class="kv" style="width:100%;">
+                                <tr>
+                                    <td style="width:50%;vertical-align:top;">
+                                        <div class="title">TDS Details</div>
+                                        <table class="kv" style="margin-top:6px;">
+                                            <tr>
+                                                <td class="k"><strong>Name</strong></td>
+                                                <td class="v">: <t t-esc="o.hr_employee_id.name"/></td>
+                                            </tr>
+                                            <tr t-if="o.hr_employee_id and o.hr_employee_id.job_id">
+                                                <td class="k"><strong>Designation</strong></td>
+                                                <td class="v">: <t t-esc="o.hr_employee_id.job_id.name"/></td>
+                                            </tr>
+                                            <tr t-if="o.hr_employee_id and o.hr_employee_id.pan_number">
+                                                <td class="k"><strong>PAN</strong></td>
+                                                <td class="v">: <t t-esc="o.hr_employee_id.pan_number"/></td>
+                                            </tr>
+                                            <tr t-if="o.tds_from_date and o.tds_to_date">
+                                                <td class="k"><strong>Period</strong></td>
+                                                <td class="v">: <t t-esc="o.tds_from_date.strftime('%d-%m-%Y')"/> to <t t-esc="o.tds_to_date.strftime('%d-%m-%Y')"/></td>
+                                            </tr>
+                                            <tr t-if="o.tds_from_date and o.tds_to_date">
+                                                <td class="k"><strong>Salary Period</strong></td>
+                                                <td class="v">: <t t-set="salary_from" t-value="(o.hr_contract_id.date_start if (o.hr_contract_id and o.hr_contract_id.date_start and o.hr_contract_id.date_start &gt; o.tds_from_date) else o.tds_from_date)"/><t t-esc="salary_from.strftime('%d-%m-%Y')"/> to <t t-esc="o.tds_to_date.strftime('%d-%m-%Y')"/></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="width:50%;vertical-align:top;">
+                                        <table class="kv" style="width:100%;">
+                                            <tr>
+                                                <td class="k"><strong>Tax Regime</strong></td>
+                                                <td class="v">: <span class="regime"><t t-esc="o.tax_regime_slab.display_name or ''"/></span></td>
+                                            </tr>
+                                            <tr t-if="o.previous_employer_company_name">
+                                                <td class="k"><strong>Prev. Employer</strong></td>
+                                                <td class="v">: <t t-esc="o.previous_employer_company_name"/></td>
+                                            </tr>
+                                            <tr t-if="o.previous_employer_from_date and o.previous_employer_to_date">
+                                                <td class="k"><strong>Prev. Period</strong></td>
+                                                <td class="v">: <t t-esc="o.previous_employer_from_date.strftime('%d-%m-%Y')"/> to <t t-esc="o.previous_employer_to_date.strftime('%d-%m-%Y')"/></td>
+                                            </tr>
+                                        </table>
+                                        <!--
+                                        TODO: Logo moved to top header area as per user request.
+                                        <div style="text-align:right;margin-top:6px;" t-if="(o.hr_contract_id and o.hr_contract_id.company_id and o.hr_contract_id.company_id.logo) or (o.hr_employee_id and o.hr_employee_id.company_id and o.hr_employee_id.company_id.logo)">
+                                            <t t-set="_company" t-value="(o.hr_contract_id.company_id if o.hr_contract_id and o.hr_contract_id.company_id else o.hr_employee_id.company_id)"/>
+                                            <img class="logo" t-att-src="image_data_uri(_company.logo)" alt="Company Logo"/>
+                                        </div>
+                                        -->
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="section-title" style="text-align:center;">Computation Of Income</div>
+                        <table>
+                            <thead>
+                                <tr><th>Description</th><th class="right">Amount</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="kpt-line">
+                                    <td>
+                                        Income from Salary (Current Employer)
+                                        <span class="label">(
+                                            <t t-set="salary_from_inline" t-value="(o.hr_contract_id.date_start if (o.hr_contract_id and o.hr_contract_id.date_start and o.hr_contract_id.date_start &gt; o.tds_from_date) else o.tds_from_date)"/>
+                                            <t t-esc="salary_from_inline.strftime('%d-%m-%Y')"/> to <t t-esc="o.tds_to_date.strftime('%d-%m-%Y')"/>
+                                        )</span>
+                                    </td>
+                                    <td class="right"><t t-esc="formatLang(salary_base_amount(o) or 0.0, digits=2)"/></td>
+                                </tr>
+
+                                <t t-set="_incentive_rows" t-value="one_time_incentive_rows(o)"/>
+                                <t t-foreach="_incentive_rows" t-as="inc">
+                                    <tr class="kpt-line">
+                                        <td>
+                                            Incentive paid
+                                            <span class="label" t-if="inc.get('date')">
+                                                (Period: <t t-esc="inc.get('date').strftime('%d-%m-%Y')"/>)
+                                            </span>
+                                            <span class="label" t-if="inc.get('reason')"> - <t t-esc="inc.get('reason')"/></span>
+                                        </td>
+                                        <td class="right"><t t-esc="formatLang(inc.get('amount') or 0.0, digits=2)"/></td>
+                                    </tr>
+                                </t>
+                                <tr class="kpt-line" t-if="(o.previous_employer_taxable or 0.0) != 0.0">
+                                    <td>
+                                        Previous Employer Income
+                                        <span class="label" t-if="o.previous_employer_from_date and o.previous_employer_to_date">
+                                            (<t t-esc="o.previous_employer_from_date.strftime('%d-%m-%Y')"/> to <t t-esc="o.previous_employer_to_date.strftime('%d-%m-%Y')"/>)
+                                        </span>
+                                    </td>
+                                    <td class="right"><t t-esc="formatLang(o.previous_employer_taxable or 0.0, digits=2)"/></td>
+                                </tr>
+                                <tr class="kpt-line" t-if="(o.perquisites_17_2 or 0.0) != 0.0"><td>Perquisites u/s 17(2)</td><td class="right"><t t-esc="formatLang(o.perquisites_17_2 or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.profits_17_3 or 0.0) != 0.0"><td>Profits in lieu u/s 17(3)</td><td class="right"><t t-esc="formatLang(o.profits_17_3 or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.total_other_income or 0.0) != 0.0"><td>Other Income</td><td class="right"><t t-esc="formatLang(o.total_other_income or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line"><td class="strong">Gross Total Income</td><td class="right strong"><t t-esc="formatLang(o.gross_total_income or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.total_exemptions_10 or 0.0) != 0.0"><td>Less: Exemptions u/s 10</td><td class="right"><t t-esc="formatLang(o.total_exemptions_10 or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.total_hra_exemption or 0.0) != 0.0"><td>Less: HRA Exemption</td><td class="right"><t t-esc="formatLang(o.total_hra_exemption or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.total_deductions or 0.0) != 0.0"><td>Less: Deductions</td><td class="right"><t t-esc="formatLang(o.total_deductions or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.standard_deduction_16_ii or 0.0) != 0.0"><td>Less: Standard Deduction u/s 16(ii)</td><td class="right"><t t-esc="formatLang(o.standard_deduction_16_ii or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line"><td class="strong">Net Taxable Income</td><td class="right strong"><t t-esc="formatLang(o.taxable_amount or 0.0, digits=2)"/></td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="note" t-if="(o.standard_deduction_16_ii or 0.0) != 0.0 or (o.total_exemptions_10 or 0.0) != 0.0 or (o.total_hra_exemption or 0.0) != 0.0 or (o.total_deductions or 0.0) != 0.0">
+                            <strong>Deductions / Allowances Applied:</strong>
+                            <span t-if="(o.standard_deduction_16_ii or 0.0) != 0.0">Standard Deduction u/s 16(ii)</span>
+                            <span t-if="(o.standard_deduction_16_ii or 0.0) != 0.0 and ((o.total_exemptions_10 or 0.0) != 0.0 or (o.total_hra_exemption or 0.0) != 0.0 or (o.total_deductions or 0.0) != 0.0)">, </span>
+                            <span t-if="(o.total_exemptions_10 or 0.0) != 0.0">Exemptions u/s 10</span>
+                            <span t-if="(o.total_exemptions_10 or 0.0) != 0.0 and ((o.total_hra_exemption or 0.0) != 0.0 or (o.total_deductions or 0.0) != 0.0)">, </span>
+                            <span t-if="(o.total_hra_exemption or 0.0) != 0.0">HRA Exemption</span>
+                            <span t-if="(o.total_hra_exemption or 0.0) != 0.0 and (o.total_deductions or 0.0) != 0.0">, </span>
+                            <span t-if="(o.total_deductions or 0.0) != 0.0">Chapter VI-A Deductions</span>
+                        </div>
+
+                        <div class="note" t-if="o.grouped_deductions_html">
+                            <strong>Deduction Details:</strong>
+                            <t t-raw="o.grouped_deductions_html"/>
+                        </div>
+
+                        <div class="section-title" style="text-align:center;">Computation Of Tax</div>
+                        <table>
+                            <thead>
+                                <tr><th>Description</th><th class="right">Amount</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr class="kpt-line"><td>Calculated Tax</td><td class="right"><t t-esc="formatLang(((o.tax_payable or 0.0) + (o.rebate_87a or 0.0) - (o.surcharge or 0.0)), digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.surcharge or 0.0) != 0.0"><td>Add: Surcharge</td><td class="right"><t t-esc="formatLang(o.surcharge or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.rebate_87a or 0.0) != 0.0"><td>Less: Rebate u/s 87A</td><td class="right"><t t-esc="formatLang(o.rebate_87a or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line"><td>Add: Education Cess @ 4%</td><td class="right"><t t-esc="formatLang((o.health_education_cess or ((o.tax_payable_cess or 0.0) - (o.tax_payable or 0.0))), digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.tax_round_off_amount or 0.0) != 0.0"><td>Add/Less: Round Off</td><td class="right"><t t-esc="formatLang(o.tax_round_off_amount or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line"><td class="strong">Tax Payable</td><td class="right strong"><t t-esc="formatLang(((o.tax_payable_cess or 0.0) + (o.tax_round_off_amount or 0.0)), digits=2)"/></td></tr>
+                                <tr class="kpt-line" t-if="(o.prepaid_tds or 0.0) != 0.0"><td>Less: Prepaid TDS on Previous Employer Salary</td><td class="right"><t t-esc="formatLang(o.prepaid_tds or 0.0, digits=2)"/></td></tr>
+                                <tr class="kpt-line"><td class="strong">Tax Payable / Refundable</td><td class="right strong"><t t-esc="formatLang(o.tax_pay_ref or 0.0, digits=2)"/></td></tr>
+                            </tbody>
+                        </table>
+
+                        <!--
+                        TODO: Temporarily hidden to avoid duplicate data.
+                        Month-wise TDS exists as a stored one2many (month_ids), but user requested only the Monthly Breakdown table.
+
+                        <div class="mb-12"></div>
+                        <div class="section-title">Month-wise TDS</div>
+                        <table t-if="o.month_ids">
+                            <thead>
+                                <tr>
+                                    <th style="width:55%;">Month</th>
+                                    <th style="width:25%;">Employer</th>
+                                    <th class="right" style="width:20%;">TDS Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.month_ids" t-as="m">
+                                    <tr>
+                                        <td><t t-esc="m.tds_month_year or ''"/></td>
+                                        <td><t t-esc="'Previous' if m.is_previous_employer else 'Current'"/></td>
+                                        <td class="right"><t t-esc="formatLang(m.tds_month_amt or 0.0, digits=2)"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        -->
+
+                        <div class="mb-12"></div>
+                        <div class="section-title">Monthly Breakdown</div>
+                        <div class="box">
+                            <t t-raw="o.monthly_breakdown_html or ''"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payslip_form_tds_engine" model="ir.ui.view">
+        <field name="name">hr.payslip.form.tds.engine</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="TDS Engine" name="tds_engine" invisible="not tds_engine_tds_id">
+                    <group col="4">
+                        <field name="tds_engine_tds_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="tds_engine_projected_income" readonly="1"/>
+                        <field name="tds_engine_annual_tax" readonly="1"/>
+                        <field name="tds_engine_tds_deducted_till_date" readonly="1"/>
+                        <field name="tds_engine_remaining_tax" readonly="1"/>
+                        <field name="tds_engine_remaining_months" readonly="1"/>
+                        <field name="tds_engine_monthly_tds" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

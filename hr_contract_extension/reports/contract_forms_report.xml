@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_contract_forms" model="report.paperformat">
+            <field name="name">Contract Forms</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">8</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">8</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_contract_form14" model="ir.actions.report">
+            <field name="name">Form 14</field>
+            <field name="model">hr.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_contract_extension.report_contract_form14</field>
+            <field name="report_file">hr_contract_extension.report_contract_form14</field>
+            <field name="paperformat_id" ref="hr_contract_extension.paperformat_contract_forms"/>
+            <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_contract_form15" model="ir.actions.report">
+            <field name="name">Form 15</field>
+            <field name="model">hr.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_contract_extension.report_contract_form15</field>
+            <field name="report_file">hr_contract_extension.report_contract_form15</field>
+            <field name="paperformat_id" ref="hr_contract_extension.paperformat_contract_forms"/>
+            <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_report_contract_form23" model="ir.actions.report">
+            <field name="name">Form 23</field>
+            <field name="model">hr.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_contract_extension.report_contract_form23</field>
+            <field name="report_file">hr_contract_extension.report_contract_form23</field>
+            <field name="paperformat_id" ref="hr_contract_extension.paperformat_contract_forms"/>
+            <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="_contract_form_common_css">
+            <style>
+                .kpt-form{font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:11px;color:#111;line-height:1.35;}
+                .kpt-form .title{font-size:16px;font-weight:700;text-align:center;margin:0 0 8px 0;}
+                .kpt-form .subtitle{font-size:12px;font-weight:700;text-align:center;margin:0 0 10px 0;}
+                .kpt-form .box{border:1px solid #cfcfcf;padding:10px;margin-bottom:10px;}
+                .kpt-form table{width:100%;border-collapse:collapse;}
+                .kpt-form td,.kpt-form th{border:1px solid #d9d9d9;padding:6px;vertical-align:top;}
+                .kpt-form .no-border td{border:none;padding:2px 0;}
+                .kpt-form .label{width:28%;font-weight:700;}
+                .kpt-form .value{width:72%;}
+                .kpt-form .muted{color:#666;}
+                .kpt-form .sign td{height:28px;}
+            </style>
+        </template>
+
+        <template id="report_contract_form14">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <t t-call="hr_contract_extension._contract_form_common_css"/>
+                        <div class="kpt-form">
+                            <div class="title">FORM 14</div>
+                            <div class="subtitle muted">(Generated from Contract)</div>
+
+                            <div class="box">
+                                <table class="no-border">
+                                    <tr>
+                                        <td class="label">Company</td>
+                                        <td class="value">: <t t-esc="o.company_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Employee</td>
+                                        <td class="value">: <t t-esc="o.employee_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Department</td>
+                                        <td class="value">: <t t-esc="o.employee_id.department_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Job Position</td>
+                                        <td class="value">: <t t-esc="o.employee_id.job_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Contract</td>
+                                        <td class="value">: <t t-esc="o.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Contract Period</td>
+                                        <td class="value">: <t t-esc="o.date_start or ''"/> <t t-if="o.date_end">to <t t-esc="o.date_end"/></t></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="box">
+                                <div class="muted" style="margin-bottom:6px;">Nominee / Family details (fill as required)</div>
+                                <table>
+                                    <tr>
+                                        <th style="width:30%;">Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Nominee Name</td>
+                                        <td><t t-esc="o.form_nominee_name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relation</td>
+                                        <td><t t-esc="o.form_nominee_relation or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth</td>
+                                        <td><t t-esc="o.form_nominee_dob or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td><t t-esc="o.form_nominee_address or ''"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <table class="sign">
+                                <tr>
+                                    <td style="width:50%;">Place: <t t-esc="o.form14_place or ''"/></td>
+                                    <td style="width:50%;">Signature (Employee)</td>
+                                </tr>
+                                <tr>
+                                    <td>Date: <t t-esc="o.form14_date or ''"/></td>
+                                    <td>Signature (Employer)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_contract_form15">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <t t-call="hr_contract_extension._contract_form_common_css"/>
+                        <div class="kpt-form">
+                            <div class="title">FORM 15</div>
+                            <div class="subtitle muted">(Generated from Contract)</div>
+
+                            <div class="box">
+                                <table class="no-border">
+                                    <tr>
+                                        <td class="label">Company</td>
+                                        <td class="value">: <t t-esc="o.company_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Employee</td>
+                                        <td class="value">: <t t-esc="o.employee_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Employee Code</td>
+                                        <td class="value">: <t t-esc="o.employee_id.barcode or o.employee_id.identification_id or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Wage (Basic)</td>
+                                        <td class="value">: <t t-esc="o.wage or 0.0"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Gross</td>
+                                        <td class="value">: <t t-esc="o.gross or 0.0"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="box">
+                                <div class="muted" style="margin-bottom:6px;">Nominee / Family details (fill as required)</div>
+                                <table>
+                                    <tr>
+                                        <th style="width:30%;">Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Nominee Name</td>
+                                        <td><t t-esc="o.form_nominee_name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relation</td>
+                                        <td><t t-esc="o.form_nominee_relation or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth</td>
+                                        <td><t t-esc="o.form_nominee_dob or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td><t t-esc="o.form_nominee_address or ''"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <table class="sign">
+                                <tr>
+                                    <td style="width:50%;">Place: <t t-esc="o.form15_place or ''"/></td>
+                                    <td style="width:50%;">Signature (Employee)</td>
+                                </tr>
+                                <tr>
+                                    <td>Date: <t t-esc="o.form15_date or ''"/></td>
+                                    <td>Signature (Employer)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_contract_form23">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <t t-call="hr_contract_extension._contract_form_common_css"/>
+                        <div class="kpt-form">
+                            <div class="title">FORM 23</div>
+                            <div class="subtitle muted">(Generated from Contract)</div>
+
+                            <div class="box">
+                                <table class="no-border">
+                                    <tr>
+                                        <td class="label">Company</td>
+                                        <td class="value">: <t t-esc="o.company_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Employee</td>
+                                        <td class="value">: <t t-esc="o.employee_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Department</td>
+                                        <td class="value">: <t t-esc="o.employee_id.department_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Joining Date</td>
+                                        <td class="value">: <t t-esc="o.date_start or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Exit Date</td>
+                                        <td class="value">: <t t-esc="o.date_end or ''"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="box">
+                                <div class="muted" style="margin-bottom:6px;">Nominee / Family details (fill as required)</div>
+                                <table>
+                                    <tr>
+                                        <th style="width:30%;">Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Nominee Name</td>
+                                        <td><t t-esc="o.form_nominee_name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Relation</td>
+                                        <td><t t-esc="o.form_nominee_relation or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth</td>
+                                        <td><t t-esc="o.form_nominee_dob or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address</td>
+                                        <td><t t-esc="o.form_nominee_address or ''"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <table class="sign">
+                                <tr>
+                                    <td style="width:50%;">Place: <t t-esc="o.form23_place or ''"/></td>
+                                    <td style="width:50%;">Signature (Employee)</td>
+                                </tr>
+                                <tr>
+                                    <td>Date: <t t-esc="o.form23_date or ''"/></td>
+                                    <td>Signature (Employer)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

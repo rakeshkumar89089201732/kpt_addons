@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Employer contribution category (excluded from Net Salary formula) -->
+        <record id="salary_rule_category_employer_contrib" model="hr.salary.rule.category">
+            <field name="name">Employer Contribution</field>
+            <field name="code">EMPC</field>
+        </record>
+
+        <record id="salary_rule_hra_from_contract" model="hr.salary.rule">
+            <field name="name">House Rent Allowance</field>
+            <field name="code">HRA</field>
+            <field name="sequence">5</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.house_rent_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.house_rent_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_conveyance_from_contract" model="hr.salary.rule">
+            <field name="name">Conveyance Allowance</field>
+            <field name="code">CA</field>
+            <field name="sequence">6</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.conveyance_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.conveyance_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_medical_from_contract" model="hr.salary.rule">
+            <field name="name">Medical Allowance</field>
+            <field name="code">MED</field>
+            <field name="sequence">7</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.medical_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.medical_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_vehicle_from_contract" model="hr.salary.rule">
+            <field name="name">Vehicle Allowance</field>
+            <field name="code">VEH</field>
+            <field name="sequence">8</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.vehicle_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.vehicle_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_washing_from_contract" model="hr.salary.rule">
+            <field name="name">Washing Allowance</field>
+            <field name="code">WASH</field>
+            <field name="sequence">9</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.washing_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.washing_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_other_allowance_from_contract" model="hr.salary.rule">
+            <field name="name">Other Allowance</field>
+            <field name="code">OALW</field>
+            <field name="sequence">10</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.other_allowance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.other_allowance or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_tour_expenses_from_contract" model="hr.salary.rule">
+            <field name="name">Tour Expenses</field>
+            <field name="code">TOUR</field>
+            <field name="sequence">11</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.tour_expenses or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.tour_expenses or 0.0</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_pf_employee_from_contract" model="hr.salary.rule">
+            <field name="name">EPF Employee contribution</field>
+            <field name="code">PF</field>
+            <field name="sequence">170</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and contract.apply_pf and contract.deduct_employee_pf_in_net_pay and (contract.employee_provident_fund or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.employee_provident_fund or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_pf_employer_ded_from_contract" model="hr.salary.rule">
+            <field name="name">EPF Employer contribution</field>
+            <field name="code">PFEMP</field>
+            <field name="sequence">171</field>
+            <!-- When deduct_employer_pf_in_net_pay is checked, use DED category so it reduces Net Salary -->
+            <!-- Otherwise use EMPC category so it shows but doesn't reduce net -->
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and contract.apply_pf and contract.deduct_employer_pf_in_net_pay and (contract.employer_pf_share or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.employer_pf_share or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_esic_employee_from_contract" model="hr.salary.rule">
+            <field name="name">ESI</field>
+            <field name="code">ESI</field>
+            <field name="sequence">173</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and contract.apply_esic and contract.employee_esic and contract.employee_esic > 0.0)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.employee_esic or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_professional_tax_from_contract" model="hr.salary.rule">
+            <field name="name">Professional Tax</field>
+            <field name="code">PT</field>
+            <field name="sequence">174</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.professional_tax or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.professional_tax or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_lic_from_contract" model="hr.salary.rule">
+            <field name="name">Life Insurance Corporation</field>
+            <field name="code">LIC</field>
+            <field name="sequence">175</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.life_insurance_corporation or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.life_insurance_corporation or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_pli_from_contract" model="hr.salary.rule">
+            <field name="name">Postal Life Insurance</field>
+            <field name="code">PLI</field>
+            <field name="sequence">176</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.postal_life_insurance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.postal_life_insurance or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_group_insurance_from_contract" model="hr.salary.rule">
+            <field name="name">Group Insurance</field>
+            <field name="code">GIN</field>
+            <field name="sequence">177</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.group_insurance or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.group_insurance or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_credit_society_from_contract" model="hr.salary.rule">
+            <field name="name">Credit Society</field>
+            <field name="code">CS</field>
+            <field name="sequence">178</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(contract and (contract.credit_society or 0.0))</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(contract.credit_society or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="salary_rule_tds_annualized" model="hr.salary.rule">
+            <field name="name">Income tax (TDS)</field>
+            <field name="code">TDS</field>
+            <field name="sequence">172</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="struct_id" ref="hr_payroll.structure_002"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = bool(payslip.tds_engine_tds_id)</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -(payslip.tds_engine_monthly_tds or 0.0)</field>
+            <field name="appears_on_payslip">True</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Override default payslip report: simplified layout (no marital status, address, hours/days, validation warning) -->
+    <template id="report_payslip_simplified" inherit_id="hr_payroll.report_payslip">
+        <xpath expr="//div[contains(@class,'page')]" position="replace">
+            <div class="page">
+                <style>
+                    .kpt-slip{font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:12px;color:#111;}
+                    .kpt-slip .title{font-size:24px;font-weight:bold;text-align:center;margin:0;}
+                    .kpt-slip .box{border:1px solid #000;border-collapse:collapse;width:100%;border-spacing:0;}
+                    .kpt-slip .box th{border-top:1px solid #000;border-bottom:1px solid #000;border-left:none !important;border-right:none !important;padding:6px;background:#f2f2f2;text-align:left;}
+                    .kpt-slip .box th:nth-child(3){border-left:1px solid #000 !important;}
+                    .kpt-slip .box td{border-left:none !important;border-right:none !important;border-top:none !important;border-bottom:none !important;padding:6px;}
+                    .kpt-slip .box td:nth-child(3){border-left:1px solid #000 !important;}
+                    .kpt-slip .box tbody tr:last-child td{border-bottom:1px solid #000 !important;}
+                    .kpt-slip .box tbody tr td{border-top:none !important;border-bottom:none !important;}
+                    .kpt-slip .right{text-align:right;}
+                    .kpt-slip .logo{max-height:70px;max-width:200px;}
+                </style>
+                <t t-set="_money" t-value="{'widget': 'monetary', 'display_currency': o.company_id.currency_id}"/>
+                <t t-set="_earn" t-value="o.line_ids.filtered(lambda l: l.category_id and l.category_id.code in ['BASIC', 'ALW'])"/>
+                <t t-set="_ded" t-value="o.line_ids.filtered(lambda l: l.category_id and l.category_id.code == 'DED')"/>
+                <t t-set="gross" t-value="sum(_earn.mapped('total'))"/>
+                <t t-set="total_ded" t-value="abs(sum(_ded.mapped('total')))"/>
+                <div class="kpt-slip">
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width:25%;vertical-align:middle;">
+                                <img t-if="o.company_id.logo" class="logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo"/>
+                            </td>
+                            <td style="width:50%;text-align:center;vertical-align:middle;"><div class="title">Salary Slip</div></td>
+                            <td style="width:25%;vertical-align:middle;text-align:right;">
+                                <div><strong>Month :</strong> <t t-esc="o.date_from.strftime('%B')"/></div>
+                                <div><strong>Year :</strong> <t t-esc="o.date_from.strftime('%Y')"/></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%;margin-top:10px;">
+                        <tr><td><strong>Employee Name:</strong> <t t-esc="o.employee_id.name or ''"/></td></tr>
+                        <tr><td><strong>Designation :</strong> <t t-esc="(o.employee_id.job_id.name if o.employee_id.job_id else '') or (o.employee_id.job_title or '')"/></td></tr>
+                    </table>
+                    <table class="box" style="margin-top:10px;">
+                        <thead>
+                            <tr>
+                                <th style="width:35%;">EMOLUMENTS</th>
+                                <th style="width:15%;" class="right">AMOUNT Rs.</th>
+                                <th style="width:35%;">DEDUCTIONS</th>
+                                <th style="width:15%;" class="right">AMOUNT Rs.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="row_indices" t-value="list(range(max(len(_earn), len(_ded))))"/>
+                            <t t-foreach="row_indices" t-as="i">
+                                <tr>
+                                    <td><t t-esc="(_earn[i].name if i &lt; len(_earn) else '')"/></td>
+                                    <td class="right"><t t-esc="(_earn[i].total if i &lt; len(_earn) else 0)" t-options="_money"/></td>
+                                    <td><t t-esc="(_ded[i].name if i &lt; len(_ded) else '')"/></td>
+                                    <td class="right"><t t-esc="(abs(_ded[i].total) if i &lt; len(_ded) and _ded[i].total else 0)" t-options="_money"/></td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td><strong>Gross Pay</strong></td>
+                                <td class="right"><strong><t t-esc="gross" t-options="_money"/></strong></td>
+                                <td><strong>Total Deductions</strong></td>
+                                <td class="right"><strong><t t-esc="total_ded" t-options="_money"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td></td><td class="right"></td>
+                                <td><strong>Net Pay</strong></td>
+                                <td class="right"><strong><t t-esc="o.net_wage" t-options="_money"/></strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:24px;">
+                        <p style="margin:0;"><strong>For <t t-esc="o.company_id.name"/></strong></p>
+                        <p style="margin-top:12px;">Authorised Signatory</p>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Report definition -->
+    <record id="report_salary_slip" model="ir.actions.report">
+        <field name="name">Salary Slip</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract_extension.salary_slip_template</field>
+        <field name="report_file">hr_contract_extension.salary_slip_template</field>
+        <field name="binding_model_id" ref="model_hr_payslip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_salary_slip_kpt_format" model="ir.actions.report">
+        <field name="name">Salary Slip (KPT Format)</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_contract_extension.salary_slip_kpt_format_template</field>
+        <field name="report_file">hr_contract_extension.salary_slip_kpt_format_template</field>
+        <field name="binding_model_id" ref="model_hr_payslip"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Salary Slip - %s' % (object.number or object.name)</field>
+    </record>
+
+    <!-- QWeb template for the report -->
+    <template id="salary_slip_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="payslip">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h3>Salary Slip</h3>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td>Employee Name:</td>
+                                        <td><t t-esc="payslip.employee_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Designation:</td>
+                                        <td><t t-esc="payslip.employee_id.job_id.name"/></td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td>Pan No</td>-->
+<!--                                        <td><t t-esc="payslip.employee_id.pan_number"/></td>-->
+<!--                                    </tr>-->
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td>Month:</td>
+                                        <td><t t-esc="payslip.date_from.strftime('%B')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>FY</td>
+                                        <td><t t-esc="payslip.date_from.strftime('%Y')+'-'+payslip.date_to.strftime('%y')"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>AY</td>
+                                        <td><t t-esc="str(int(payslip.date_from.strftime('%Y'))+1)+'-'+str(int(payslip.date_to.strftime('%y'))+1)"/></td>
+                                    </tr>
+<!--                                    <tr>-->
+<!--                                        <td>DOJ</td>-->
+<!--                                        <td><t t-esc="payslip.employee_id.date_of_joining"/></td>-->
+<!--                                    </tr>-->
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>EMOLUMENTS</th>
+                                            <th>AMOUNT Rs.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="payslip.line_ids.filtered(lambda l: l.category_id.code in ['BASIC', 'ALW'])" t-as="line">
+                                            <tr>
+                                                <td><t t-esc="line.name"/></td>
+                                                <td><t t-esc="line.total" t-options="{'widget': 'monetary'}"/></td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td><strong>Gross Pay</strong></td>
+                                            <td><strong><t t-esc="sum(payslip.line_ids.filtered(lambda l: l.category_id.code in ['BASIC', 'ALW']).mapped('total'))" t-options="{'widget': 'monetary'}"/></strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>DEDUCTIONS</th>
+                                            <th>AMOUNT Rs.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="payslip.line_ids.filtered(lambda l: l.category_id.code in ['DED'])" t-as="line">
+                                            <tr>
+                                                <td><t t-esc="line.name"/></td>
+                                                <td><t t-esc="line.total" t-options="{'widget': 'monetary'}"/></td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td><strong>Total Deductions</strong></td>
+                                            <td><strong><t t-esc="sum(payslip.line_ids.filtered(lambda l: l.category_id.code in ['DED']).mapped('total'))" t-options="{'widget': 'monetary'}"/></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Net Pay</strong></td>
+                                            <td><strong><t t-esc="payslip.net_wage" t-options="{'widget': 'monetary'}"/></strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <p>For <t t-esc="payslip.company_id.name"/></p>
+                            <div class="mt-5">
+                                <p>Director</p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="salary_slip_kpt_format_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="payslip">
+                <t t-call="web.external_layout">
+                    <div class="page" style="padding:40px 30px 20px 30px;">
+                        <style>
+                            .kpt-slip{font-family:'Segoe UI',Tahoma,Geneva,Verdana,'Helvetica Neue',Arial,sans-serif;font-size:16px;color:#111;line-height:1.7;}
+                            .kpt-slip .title{font-size:28px;font-weight:600;text-align:center;margin:0;letter-spacing:0.5px;}
+                            .kpt-slip .subrow{width:100%;margin-top:10px;border-collapse:collapse;}
+                            .kpt-slip .subrow td{padding:6px 12px;vertical-align:top;width:50%;font-size:16px;}
+                            .kpt-slip .subrow div{font-size:16px;}
+                            .kpt-slip .box{border:1px solid #000;border-collapse:collapse;width:100%;border-spacing:0;}
+                            .kpt-slip .box th{border-top:1px solid #000 !important;border-bottom:1px solid #000 !important;border-left:none !important;border-right:none !important;border-top-width:1px !important;border-bottom-width:1px !important;padding:10px;background:#f2f2f2;text-align:left;font-weight:600;font-size:16px;}
+                            .kpt-slip .box th:nth-child(3){border-left:1px solid #000 !important;}
+                            .kpt-slip .box td{border-left:none !important;border-right:none !important;border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;padding:7px 10px;font-size:16px;}
+                            .kpt-slip .box td:nth-child(3){border-left:1px solid #000 !important;}
+                            .kpt-slip .box tbody tr:last-child td{border-bottom:1px solid #000 !important;border-bottom-width:1px !important;}
+                            .kpt-slip .box tbody tr td{border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;}
+                            .kpt-slip .box tbody tr:not(:last-child) td{border-bottom:none !important;border-bottom-width:0 !important;}
+                            .kpt-slip .box tbody tr:not(:first-child) td{border-top:none !important;border-top-width:0 !important;}
+                            .kpt-slip .box tbody tr:not(:last-child):not(:first-child) td{border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;}
+                            .kpt-slip .box tbody tr td, .kpt-slip .box tbody tr td * {border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;}
+                            .kpt-slip .box tbody tr {border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;}
+                            .kpt-slip .box tbody tr.kpt-netpay-row td{border-top:1px solid #000 !important;border-top-width:1px !important;border-top-style:solid !important;}
+                            @media print, screen {
+                                .kpt-slip .box{border:1px solid #000 !important;border-collapse:collapse !important;border-spacing:0 !important;}
+                                .kpt-slip .box th{border-top:1px solid #000 !important;border-bottom:1px solid #000 !important;border-left:none !important;border-right:none !important;border-top-width:1px !important;border-bottom-width:1px !important;border-top-style:solid !important;border-bottom-style:solid !important;border-left-style:none !important;border-right-style:none !important;}
+                                .kpt-slip .box th:nth-child(3){border-left:1px solid #000 !important;border-left-style:solid !important;}
+                                .kpt-slip .box td{border-top:none !important;border-bottom:none !important;border-left:none !important;border-right:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;border-left-style:none !important;border-right-style:none !important;}
+                                .kpt-slip .box td:nth-child(3){border-left:1px solid #000 !important;border-left-style:solid !important;}
+                                .kpt-slip .box tbody tr td{border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;}
+                                .kpt-slip .box tbody tr:not(:last-child) td{border-bottom:none !important;border-bottom-width:0 !important;border-bottom-style:none !important;}
+                                .kpt-slip .box tbody tr:not(:first-child) td{border-top:none !important;border-top-width:0 !important;border-top-style:none !important;}
+                                .kpt-slip .box tbody tr:not(:last-child):not(:first-child) td{border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;}
+                                .kpt-slip .box tbody tr:last-child td{border-bottom:1px solid #000 !important;border-bottom-width:1px !important;border-bottom-style:solid !important;}
+                                .kpt-slip .box tbody tr td, .kpt-slip .box tbody tr td * {border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;}
+                                .kpt-slip .box tbody tr {border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;border-top-style:none !important;border-bottom-style:none !important;}
+                                table.kpt-slip .box tbody tr td{border-top:0 !important;border-bottom:0 !important;}
+                                table.kpt-slip .box tbody tr{border-top:0 !important;border-bottom:0 !important;}
+                                .kpt-slip .box tbody tr.kpt-netpay-row td{border-top:1px solid #000 !important;border-top-width:1px !important;border-top-style:solid !important;}
+                            }
+                            .kpt-slip .right{text-align:right;}
+                            .kpt-slip .logo{display:none !important;}
+                            .kpt-slip .note{margin-top:18px;text-align:center;font-size:13px;}
+                            .header, .footer, .o_report_header, .o_report_footer{display:none !important;}
+                            .kpt-slip .subrow strong{font-weight:600;font-size:16px;}
+                            .kpt-slip .subrow div{font-size:16px;}
+                            img[alt*="logo"], img[alt*="Logo"], .o_report_header img, .header img{display:none !important;}
+                            .o_report_header, .header{display:none !important;}
+                        </style>
+
+                        <div class="kpt-slip">
+                            <t t-set="_lines" t-value="payslip.line_ids.filtered(lambda l: l.appears_on_payslip)"/>
+
+                            <t t-set="_money" t-value="{'widget': 'monetary', 'display_currency': payslip.company_id.currency_id}"/>
+
+                            <t t-set="basic_amt" t-value="sum(_lines.filtered(lambda l: l.code == 'BASIC').mapped('total'))"/>
+                            <t t-set="hra_amt" t-value="sum(_lines.filtered(lambda l: l.code == 'HRA').mapped('total'))"/>
+                            <t t-set="conv_lines" t-value="_lines.filtered(lambda l: l.code in ('CA', 'CAGG', 'TRAVELALW') or 'travelling' in (l.name or '').lower() or 'conveyance' in (l.name or '').lower())"/>
+                            <t t-set="conv_amt" t-value="sum(conv_lines.mapped('total'))"/>
+                            <t t-set="conv_line_ca" t-value="conv_lines.filtered(lambda l: l.code == 'CA')"/>
+                            <t t-set="conv_label" t-value="'Conveyance Allowance' if len(conv_line_ca) &gt; 0 else (conv_lines[0].name if len(conv_lines) &gt; 0 and conv_lines[0].name else 'Travelling Allowance')"/>
+                            <t t-set="tour_amt" t-value="sum(_lines.filtered(lambda l: l.code == 'TOUR' or 'tour' in (l.name or '').lower()).mapped('total'))"/>
+
+                            <t t-set="bonus_amt" t-value="sum(_lines.filtered(lambda l: l.code in ('BONUS', 'BNS') or 'bonus' in (l.name or '').lower() or 'bouns' in (l.name or '').lower()).mapped('total'))"/>
+                            <t t-set="salary_advance_amt" t-value="abs(sum(_lines.filtered(lambda l: (l.code in ('SALADV', 'ADVANCE', 'ADVDED', 'ADVANCEDED') or 'salary advance' in (l.name or '').lower() or 'advance' in (l.name or '').lower()) and (l.total or 0.0) &lt; 0.0).mapped('total')))"/>
+                            <t t-set="incentive_amt" t-value="sum(_lines.filtered(lambda l: l.code in ('INC', 'INCENTIVE') or 'incent' in (l.name or '').lower()).mapped('total'))"/>
+                            <t t-set="food_amt" t-value="sum(_lines.filtered(lambda l: l.code == 'MA' or 'food' in (l.name or '').lower()).mapped('total'))"/>
+
+                            <t t-set="other_allow_amt" t-value="sum(_lines.filtered(lambda l: l.code in ('OALW',) or (l.code == 'ALW' and 'other allowance' in (l.name or '').lower())).mapped('total'))"/>
+                            <t t-set="advance_paid_amt" t-value="sum(_lines.filtered(lambda l: (l.code in ('ADVPAID', 'ADVANCEPAID') or 'advance paid' in (l.name or '').lower()) and (l.total or 0.0) &gt; 0.0).mapped('total'))"/>
+
+                            <t t-set="esi_amt" t-value="abs(sum(_lines.filtered(lambda l: l.code == 'ESI' or 'esi' in (l.name or '').lower()).mapped('total')))"/>
+                            <t t-set="epf_amt" t-value="abs(sum(_lines.filtered(lambda l: l.code in ('PF', 'EPF') or 'provident' in (l.name or '').lower()).mapped('total')))"/>
+                            <t t-set="epf_employer_amt" t-value="abs(sum(_lines.filtered(lambda l: l.code == 'PFEMP').mapped('total')))"/>
+                            <t t-set="tds_amt" t-value="abs(sum(_lines.filtered(lambda l: l.code == 'TDS').mapped('total')))"/>
+
+                            <t t-set="advance_ded_amt" t-value="abs(sum(_lines.filtered(lambda l: (l.code in ('ADVDED', 'ADVANCEDED') or ('advance' in (l.name or '').lower() and 'salary advance' not in (l.name or '').lower())) and (l.total or 0.0) &lt; 0.0).mapped('total')))"/>
+
+                            <t t-set="gross_pay" t-value="(basic_amt + hra_amt + other_allow_amt + tour_amt + bonus_amt + incentive_amt + conv_amt + food_amt + advance_paid_amt)"/>
+                            <!-- Only employee-side deductions affect Net Pay -->
+                            <t t-set="total_ded" t-value="(esi_amt + epf_amt + tds_amt + advance_ded_amt)"/>
+                            <t t-set="net_pay_display" t-value="gross_pay - total_ded"/>
+
+                            <table style="width:100%;">
+                                <tr>
+                                    <td style="width:100%;text-align:center;vertical-align:middle;">
+                                        <div class="title">Salary Slip</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width:100%;text-align:right;vertical-align:middle;padding-top:5px;font-size:16px;">
+                                        <div><strong>Month :</strong> <t t-esc="payslip.date_from.strftime('%B')"/></div>
+                                        <div><strong>Year :</strong> <t t-esc="payslip.date_from.strftime('%Y')"/></div>
+                                        <t t-set="fy_year" t-value="payslip.date_from.year if payslip.date_from.month &gt;= 4 else payslip.date_from.year - 1"/>
+                                        <div><strong>Fiscal Year :</strong> <t t-esc="str(fy_year) + '-' + str(fy_year + 1)"/></div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table class="subrow">
+                                <tr>
+                                    <td>
+                                        <div><strong>Employee Name:</strong>
+                                            <t t-esc="payslip.employee_id.name or ''"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div><strong>Designation :</strong>
+                                            <t t-esc="(payslip.employee_id.job_id.name if payslip.employee_id.job_id else '') or (payslip.employee_id.job_title or '')"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><strong>PAN No.</strong>
+                                            <t t-esc="payslip.employee_id.pan_number or ''"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div><strong>PF UAN No.</strong>
+                                            <t t-esc="payslip.employee_id.uan_number or ''"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><strong>Aadhaar No.</strong>
+                                            <t t-esc="payslip.employee_id.aadhar_number or ''"/>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div><strong>ESI No.</strong>
+                                            <t t-esc="payslip.employee_id.esic_number or ''"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><strong>Bank Name</strong>
+                                            <t t-esc="(payslip.employee_id.bank_account_id.bank_id.name if payslip.employee_id.bank_account_id and payslip.employee_id.bank_account_id.bank_id else '')"/>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><strong>Bank Account No.</strong>
+                                            <t t-esc="payslip.employee_id.report_bank_acc_number or ''"/>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div><strong>IFSC Code</strong>
+                                            <t t-esc="payslip.employee_id.report_ifsc_code or ''"/>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+
+                            <table class="box" style="margin-top:10px;border-collapse:collapse;border-spacing:0;">
+                                <thead>
+                                    <tr>
+                                        <th style="width:35%;">EMOLUMENTS</th>
+                                        <th style="width:15%;" class="right">AMOUNT Rs.</th>
+                                        <th style="width:35%;">DEDUCTIONS</th>
+                                        <th style="width:15%;" class="right">AMOUNT Rs.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-if="basic_amt &gt; 0 or esi_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td t-if="basic_amt &gt; 0">Basic Salary</td>
+                                        <td t-if="basic_amt &gt; 0" class="right">
+                                            <t t-esc="basic_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="basic_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                        <td t-if="esi_amt &gt; 0">ESI</td>
+                                        <td t-if="esi_amt &gt; 0" class="right">
+                                            <t t-esc="esi_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="esi_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                    </tr>
+                                    <tr t-if="hra_amt &gt; 0 or epf_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td t-if="hra_amt &gt; 0">House Rent Allowance</td>
+                                        <td t-if="hra_amt &gt; 0" class="right">
+                                            <t t-esc="hra_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="hra_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                        <td t-if="epf_amt &gt; 0">EPF (Employee Contribution)</td>
+                                        <td t-if="epf_amt &gt; 0" class="right">
+                                            <t t-esc="epf_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="epf_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                    </tr>
+                                    <tr t-if="conv_amt &gt; 0 or epf_employer_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td t-if="conv_amt &gt; 0"><t t-esc="conv_label"/></td>
+                                        <td t-if="conv_amt &gt; 0" class="right">
+                                            <t t-esc="conv_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="conv_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                        <td t-if="epf_employer_amt &gt; 0">EPF (Employer Contribution)</td>
+                                        <td t-if="epf_employer_amt &gt; 0" class="right">
+                                            <t t-esc="epf_employer_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="epf_employer_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                    </tr>
+                                    <tr t-if="other_allow_amt &gt; 0 or tds_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td t-if="other_allow_amt &gt; 0">Other Allowance</td>
+                                        <td t-if="other_allow_amt &gt; 0" class="right">
+                                            <t t-esc="other_allow_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="other_allow_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                        <td t-if="tds_amt &gt; 0">Income Tax (TDS)</td>
+                                        <td t-if="tds_amt &gt; 0" class="right">
+                                            <t t-esc="tds_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="tds_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                    </tr>
+                                    <tr t-if="tour_amt &gt; 0 or salary_advance_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td t-if="tour_amt &gt; 0">Tour Expenses</td>
+                                        <td t-if="tour_amt &gt; 0" class="right">
+                                            <t t-esc="tour_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="tour_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                        <td t-if="salary_advance_amt &gt; 0">Salary Advance</td>
+                                        <td t-if="salary_advance_amt &gt; 0" class="right">
+                                            <t t-esc="salary_advance_amt" t-options="_money"/>
+                                        </td>
+                                        <t t-if="salary_advance_amt &lt;= 0">
+                                            <td></td>
+                                            <td class="right"></td>
+                                        </t>
+                                    </tr>
+                                    <tr t-if="bonus_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td>Employee Bonus</td>
+                                        <td class="right">
+                                            <t t-esc="bonus_amt" t-options="_money"/>
+                                        </td>
+                                        <td></td>
+                                        <td class="right"></td>
+                                    </tr>
+                                    <tr t-if="incentive_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td>Incentive</td>
+                                        <td class="right">
+                                            <t t-esc="incentive_amt" t-options="_money"/>
+                                        </td>
+                                        <td></td>
+                                        <td class="right"></td>
+                                    </tr>
+                                    <tr t-if="food_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td>Food allowance</td>
+                                        <td class="right">
+                                            <t t-esc="food_amt" t-options="_money"/>
+                                        </td>
+                                        <td></td>
+                                        <td class="right"></td>
+                                    </tr>
+                                    <tr t-if="advance_paid_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td>Advance Paid</td>
+                                        <td class="right">
+                                            <t t-esc="advance_paid_amt" t-options="_money"/>
+                                        </td>
+                                        <td></td>
+                                        <td class="right"></td>
+                                    </tr>
+                                    <tr t-if="advance_ded_amt &gt; 0" style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td></td>
+                                        <td class="right"></td>
+                                        <td>Advance Deduction</td>
+                                        <td class="right">
+                                            <t t-esc="advance_ded_amt" t-options="_money"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top:none !important;border-bottom:none !important;border-top-width:0 !important;border-bottom-width:0 !important;">
+                                        <td><strong>Gross Pay</strong></td>
+                                        <td class="right"><strong><t t-esc="gross_pay" t-options="_money"/></strong></td>
+                                        <td><strong>Total Deductions</strong></td>
+                                        <td class="right"><strong><t t-esc="total_ded" t-options="_money"/></strong></td>
+                                    </tr>
+                                    <tr class="kpt-netpay-row">
+                                        <td colspan="2"><strong>Net Pay in Words:</strong> <t t-esc="payslip._number_to_words_indian(net_pay_display)"/></td>
+                                        <td><strong>Net Pay</strong></td>
+                                        <td class="right"><strong><t t-esc="net_pay_display" t-options="_money"/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="note" style="margin-top:24px;">This is a Computer Generated Document and does not require Signature</div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

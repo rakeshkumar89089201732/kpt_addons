@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Update existing deduction types to have category = deduction -->
+        <record id="hr_payroll.hr_salary_attachment_type_attachment" model="hr.salary.attachment.type">
+            <field name="category">deduction</field>
+        </record>
+
+        <record id="hr_payroll.hr_salary_attachment_type_assignment" model="hr.salary.attachment.type">
+            <field name="category">deduction</field>
+        </record>
+
+        <record id="hr_payroll.hr_salary_attachment_type_child_support" model="hr.salary.attachment.type">
+            <field name="category">deduction</field>
+        </record>
+    </data>
+</odoo>

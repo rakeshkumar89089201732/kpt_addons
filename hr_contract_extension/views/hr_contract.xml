@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="hr_contract_extension_view_form" model="ir.ui.view">
+        <field name="name">hr.contract.form</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <!-- Start Contract: only visible on draft state -->
+                <button name="action_start_contract" type="object" string="Start Contract" class="btn-primary" invisible="state != 'draft'"/>
+                <!-- New Contract: only visible on open (running) state, hidden on draft -->
+                <button name="action_new_contract_from_current" type="object" string="New Contract" class="btn-secondary" icon="fa-plus" invisible="state != 'open'"/>
+                <!-- Cancel Contract: visible on draft and open states -->
+                <button name="action_cancel_contract" type="object" string="Cancel Contract" class="btn-secondary" invisible="state in ('cancel','close')"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_tds" type="object" class="oe_stat_button" icon="fa-calculator">
+                    <field name="tds_count" widget="statinfo" string="TDS Records"/>
+                </button>
+                <button name="%(action_tds_challan)d" type="action" class="oe_stat_button" icon="fa-file-text-o">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">TDS Challans</span>
+                    </div>
+                </button>
+
+                <button name="action_print_form14" type="object" class="oe_stat_button" icon="fa-file-pdf-o">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Form 14</span>
+                    </div>
+                </button>
+                <button name="action_print_form15" type="object" class="oe_stat_button" icon="fa-file-pdf-o">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Form 15</span>
+                    </div>
+                </button>
+                <button name="action_print_form23" type="object" class="oe_stat_button" icon="fa-file-pdf-o">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Form 23</span>
+                    </div>
+                </button>
+
+                <!-- Disabled: action_open_form14 button calls a non-existent method on hr.contract -->
+                <!--
+                <button name="action_open_form14" type="object" class="oe_stat_button" icon="fa-list-alt">
+                    <field name="form14_count" widget="statinfo" string="Form 14"/>
+                </button>
+                -->
+            </xpath>
+
+            <xpath expr="//header/field[@name='state']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="options">{'clickable': '0'}</attribute>
+            </xpath>
+
+            <xpath expr="//widget[@name='web_ribbon'][1]" position="after">
+                <widget name="web_ribbon" title="Running" bg_color="text-bg-success" invisible="state != 'open'"/>
+                <widget name="web_ribbon" title="Expired" bg_color="text-bg-warning" invisible="state != 'close'"/>
+                <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger" invisible="state != 'cancel'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="tax_regime_slab"/>
+            </xpath>
+
+            <xpath expr="//field[@name='wage_type']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='schedule_pay']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='salary']" position="attributes">
+                <attribute name="string">EMOLUMENTS</attribute>
+            </xpath>
+            <xpath expr="//label[@for='wage']" position="attributes">
+                <attribute name="string">Basic Salary</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='wage']" position="after">
+                <label for="house_rent_allowance"/>
+                <div class="o_row mw-50" name="house_rent_allowance">
+                    <field name="house_rent_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="conveyance_allowance"/>
+                <div class="o_row mw-50" name="conveyance_allowance">
+                    <field name="conveyance_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="medical_allowance"/>
+                <div class="o_row mw-50" name="medical_allowance">
+                    <field name="medical_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="vehicle_allowance"/>
+                <div class="o_row mw-50" name="vehicle_allowance">
+                    <field name="vehicle_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="washing_allowance"/>
+                <div class="o_row mw-50" name="washing_allowance">
+                    <field name="washing_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="other_allowance"/>
+                <div class="o_row mw-50" name="other_allowance">
+                    <field name="other_allowance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="tour_expenses"/>
+                <div class="o_row mw-50" name="tour_expenses">
+                    <field name="tour_expenses" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="gross"/>
+                <div class="o_row mw-50" name="gross">
+                    <field name="gross" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                    <div class="mb-3">/ month</div>
+                </div>
+                <label for="current_ctc"/>
+                <div class="o_row mw-50" name="current_ctc">
+                    <field name="current_ctc" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                    <div class="mb-3">/ year</div>
+                </div>
+                <label for="effective_fy_salary"/>
+                <div class="o_row mw-50" name="effective_fy_salary">
+                    <field name="effective_fy_salary" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                    <div class="mb-3">/ year</div>
+                </div>
+            </xpath>
+
+            <xpath expr="//group[@name='salary']" position="after">
+                <group name="deductions" string="DEDUCTIONS">
+                    <label for="apply_pf"/>
+                    <div class="o_row mw-50" name="apply_pf">
+                        <field name="apply_pf" widget="boolean_toggle" class="oe_inline" force_save="1"/>
+                    </div>
+                    <label for="deduct_employee_pf_in_net_pay" invisible="not apply_pf"/>
+                    <div class="o_row mw-50" name="deduct_employee_pf_in_net_pay" invisible="not apply_pf">
+                        <field name="deduct_employee_pf_in_net_pay" widget="boolean_toggle" class="oe_inline" force_save="1"/>
+                    </div>
+                    <label for="deduct_employer_pf_in_net_pay" invisible="not apply_pf" string="Deduct Employer Share"/>
+                    <div class="o_row mw-50" name="deduct_employer_pf_in_net_pay" invisible="not apply_pf">
+                        <field name="deduct_employer_pf_in_net_pay" widget="boolean_toggle" string="Deduct Employer Share" class="oe_inline" force_save="1"/>
+                    </div>
+                    <label for="apply_esic"/>
+                    <div class="o_row mw-50" name="apply_esic">
+                        <field name="apply_esic" widget="boolean_toggle" class="oe_inline" force_save="1"/>
+                    </div>
+                    <label for="professional_tax"/>
+                    <div class="o_row mw-50" name="professional_tax">
+                        <field name="professional_tax" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="employee_provident_fund" invisible="not apply_pf"/>
+                    <div class="o_row mw-50" name="employee_provident_fund" invisible="not apply_pf">
+                        <field name="employee_provident_fund" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="employer_pf_share" invisible="not apply_pf"/>
+                    <div class="o_row mw-50" name="employer_pf_share" invisible="not apply_pf">
+                        <field name="employer_pf_share" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="pf_admin_percent" invisible="not apply_pf"/>
+                    <div class="o_row mw-50" name="pf_admin_percent" invisible="not apply_pf">
+                        <field name="pf_admin_percent" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">%</div>
+                        <field name="pf_admin_expense" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="employee_esic" invisible="not apply_esic"/>
+                    <div class="o_row mw-50" name="employee_esic" invisible="not apply_esic">
+                        <field name="employee_esic" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="employer_esic" invisible="not apply_esic"/>
+                    <div class="o_row mw-50" name="employer_esic" invisible="not apply_esic">
+                        <field name="employer_esic" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="life_insurance_corporation"/>
+                    <div class="o_row mw-50" name="life_insurance_corporation">
+                        <field name="life_insurance_corporation" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="postal_life_insurance"/>
+                    <div class="o_row mw-50" name="postal_life_insurance">
+                        <field name="postal_life_insurance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="group_insurance"/>
+                    <div class="o_row mw-50" name="group_insurance">
+                        <field name="group_insurance" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="credit_society"/>
+                    <div class="o_row mw-50" name="credit_society">
+                        <field name="credit_society" class="oe_inline o_hr_narrow_field" nolabel="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                    <label for="net_pay"/>
+                    <div class="o_row mw-50" name="net_pay">
+                        <field name="net_pay" class="oe_inline o_hr_narrow_field" nolabel="1" readonly="1" force_save="1"/>
+                        <div class="mb-3">/ month</div>
+                    </div>
+                </group>
+            </xpath>
+
+            
+            <xpath expr="//page[@name='other']" position="after">
+                <page string="TDS History" name="tds_history" invisible="1">
+                    <field name="tds_history_ids" >
+                        <tree >
+                            <field name="employer_name"/>
+                            <field name="month" string="From"/>
+                            <field name="year" string="To"/>
+                            <field name="employer_tds"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="TDS Details" name="tds_details" invisible="1">
+                    <field name="tds_details_ids" context="{'default_hr_contract_id': id, 'default_hr_employee_id': employee_id, 'default_tax_regime_slab': tax_regime_slab}">
+                        <tree>
+                            <field name="tds_from_date"/>
+                            <field name="tds_to_date"/>
+                            <field name="tax_regime_slab"/>
+                            <field name="annual_salary"/>
+                            <field name="previous_employer_taxable"/>
+                            <field name="tax_payable_cess"/>
+                            <field name="tds_deduction_month_cess"/>
+                            <field name="is_tds_payslip" widget="boolean_toggle"/>
+                        </tree>
+                        
+                        <form string="TDS Configuration">
+                            <sheet>
+                                <group>
+                                    <group string="Period &amp; Regime">
+                                        <field name="tds_from_date"/>
+                                        <field name="tds_to_date"/>
+                                        <field name="tax_regime_slab" options="{'no_create': True}"/>
+                                        <field name="available_scheme_ids" invisible="1"/>
+                                        <field name="tax_regime_type" invisible="1"/>
+                                        <field name="is_tds_payslip"/>
+                                    </group>
+                                </group>
+
+                                <separator string=""/>
+                                
+                                <!-- 3 COLUMN LAYOUT -->
+                                <group col="3">
+                                    <!-- COLUMN 1: Current Employer -->
+                                    <group string="✅ CURRENT EMPLOYER (Auto)">
+                                        <field name="annual_salary" readonly="1" string="Salary for Period" class="fw-bold"/>
+                                        <span class="text-muted" colspan="2">Auto-calculated: Wage × Months</span>
+                                    </group>
+
+                                    <!-- COLUMN 2: Previous Employer -->
+                                    <group string="✏️ PREVIOUS EMPLOYER (Manual)">
+                                        <field name="previous_employer_company_name" string="Previous Employer Company" placeholder="e.g. ABC Pvt Ltd"/>
+                                        <field name="previous_employer_taxable" string="Previous Salary" placeholder="e.g. 800990"/>
+                                        <field name="prepaid_tds" string="TDS Already Paid" placeholder="e.g. 25040"/>
+                                    </group>
+
+                                    <!-- COLUMN 3: Calculation Results -->
+                                    <group string="📊 TAX CALCULATION">
+                                        <field name="income_chargeable_salaries" readonly="1" string="Total Income" class="fw-bold text-primary"/>
+                                        <field name="taxable_amount" readonly="1" string="Taxable Amount" class="fw-bold"/>
+                                        <field name="tax_payable_cess" readonly="1" string="Total Tax" class="fw-bold text-danger"/>
+                                        <field name="tax_pay_ref" readonly="1" string="Net TDS to Pay" class="fw-bold text-success"/>
+                                        <field name="tds_deduction_month_cess" readonly="1" string="Monthly TDS" class="fw-bold text-warning"/>
+                                    </group>
+                                </group>
+
+                                <separator string="Chapter VI-A Investment Declarations"/>
+                                <field name="deduction_ids">
+                                    <tree editable="bottom">
+                                        <field name="section_id"/>
+                                        <field name="scheme_id" domain="[('section_id', '=', section_id), ('id', 'in', parent.available_scheme_ids)]"/>
+                                        <field name="scheme_details"/>
+                                        <field name="max_limit_deduction"/>
+                                        <field name="deduction_amt" sum="Total"/>
+                                        <field name="tax_regime_type" widget="badge" decoration-info="tax_regime_type == 'old'" decoration-success="tax_regime_type == 'new'"/>
+                                    </tree>
+                                </field>
+                                
+                                <group string="Deduction Summary" class="mt-3">
+                                    <group>
+                                        <field name="old_regime_total_deductions" string="Old Regime Total" widget="monetary" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="new_regime_total_deductions" string="New Regime Total" widget="monetary" readonly="1"/>
+                                    </group>
+                                </group>
+
+                                <div class="o_row">
+                                    <div class="o_col-12">
+                                        <separator string="Monthly Breakdown"/>
+                                        <field name="monthly_breakdown_html" nolabel="1" class="o_full_width" readonly="1"/>
+                                    </div>
+                                </div>
+                            </sheet>
+                        </form>
+                    </field>
+                </page>
+                
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_hr_contract_new_wizard_form" model="ir.ui.view">
+        <field name="name">hr.contract.new.wizard.form</field>
+        <field name="model">hr.contract.new.wizard</field>
+        <field name="arch" type="xml">
+            <form string="New Contract">
+                <group>
+                    <field name="current_contract_id" invisible="1"/>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="previous_contract_end_date" required="1"/>
+                    <field name="new_contract_start_date" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
