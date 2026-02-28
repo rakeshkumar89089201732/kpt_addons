@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_manager_team_access" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.manager.team.access</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="100"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Access Rights" string="Access Rights" name="manager_team_access" groups="base.group_system">
+                    <block title="HR Module Access Rights" name="hr_access_rights_container">
+                        <setting string="Employees?" title="Employees Access Group">
+                            <field name="hr_employee_access_group" widget="radio"/>
+                        </setting>
+                        <setting string="Contracts?" title="Contracts Access Group">
+                            <field name="hr_contract_access_group" widget="radio"/>
+                        </setting>
+                        <setting string="Attendances?" title="Attendances Access Group">
+                            <field name="hr_attendance_access_group" widget="radio"/>
+                        </setting>
+                        <setting string="Time Off?" title="Time Off Access Group">
+                            <field name="hr_leave_access_group" widget="radio"/>
+                        </setting>
+                        <setting string="Expenses?" title="Expenses Access Group">
+                            <field name="hr_expense_access_group" widget="radio"/>
+                        </setting>
+                        <setting string="Payroll?" title="Payroll Access Group">
+                            <field name="hr_payroll_access_group" widget="radio"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

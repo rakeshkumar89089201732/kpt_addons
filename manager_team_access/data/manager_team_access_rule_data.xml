@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="rule_hr_employee" model="manager.team.access.rule">
+            <field name="name">Employees</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="employee_field">id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">10</field>
+        </record>
+        <record id="rule_hr_contract" model="manager.team.access.rule">
+            <field name="name">Contracts</field>
+            <field name="model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">20</field>
+        </record>
+        <record id="rule_res_partner" model="manager.team.access.rule">
+            <field name="name">Contacts (work contacts of team)</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="employee_field"/>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">30</field>
+        </record>
+        <record id="rule_hr_attendance" model="manager.team.access.rule">
+            <field name="name">Attendance</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">40</field>
+        </record>
+        <record id="rule_hr_leave" model="manager.team.access.rule">
+            <field name="name">Time Off</field>
+            <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">50</field>
+        </record>
+        <record id="rule_hr_expense" model="manager.team.access.rule">
+            <field name="name">Expenses</field>
+            <field name="model_id" ref="hr_expense.model_hr_expense"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">60</field>
+        </record>
+        <record id="rule_hr_expense_sheet" model="manager.team.access.rule">
+            <field name="name">Expense Reports</field>
+            <field name="model_id" ref="hr_expense.model_hr_expense_sheet"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">70</field>
+        </record>
+        <record id="rule_hr_payslip" model="manager.team.access.rule">
+            <field name="name">Payslips</field>
+            <field name="model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="employee_field">employee_id</field>
+            <field name="include_own" eval="True"/>
+            <field name="include_team" eval="True"/>
+            <field name="sequence">80</field>
+        </record>
+    </data>
+</odoo>

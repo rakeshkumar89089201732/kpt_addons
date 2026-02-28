@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_manager_team_access_rule" model="ir.actions.act_window">
+        <field name="name">Manager Team Access Rules</field>
+        <field name="res_model">manager.team.access.rule</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define which models are restricted for users in the "Manager (Team Data Only)" group.
+            </p>
+            <p>
+                Users in that group will only see records linked to their own employee or to their direct/indirect subordinates (based on hr.employee parent_id).
+            </p>
+            <p>
+                <strong>Employee field:</strong> Use "employee_id" for most HR models. Use "id" for Employees. Leave empty for Contacts (work contacts of allowed employees).
+            </p>
+        </field>
+    </record>
+    <record id="view_manager_team_access_rule_tree" model="ir.ui.view">
+        <field name="name">manager.team.access.rule.tree</field>
+        <field name="model">manager.team.access.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Manager Team Access Rules" create="1" delete="1" edit="1">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="employee_field"/>
+                <field name="include_own"/>
+                <field name="include_team"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_manager_team_access_rule_form" model="ir.ui.view">
+        <field name="name">manager.team.access.rule.form</field>
+        <field name="model">manager.team.access.rule</field>
+        <field name="arch" type="xml">
+            <form string="Manager Team Access Rule">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="model_id" options="{'no_create': True}"/>
+                            <field name="employee_field" placeholder="e.g. employee_id or id for Employees"/>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="include_own"/>
+                            <field name="include_team"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <menuitem id="menu_manager_team_access_rules"
+              name="Manager Team Access Rules"
+              parent="hr.menu_human_resources_configuration"
+              action="action_manager_team_access_rule"
+              sequence="100"
+              groups="hr.group_hr_manager"/>
+</odoo>

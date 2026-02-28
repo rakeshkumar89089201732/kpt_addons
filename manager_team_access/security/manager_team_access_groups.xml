@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Main groups in parent category for access control logic -->
+        <record id="group_employee_own_access" model="res.groups">
+            <field name="name">Employee (Own Data Only)</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Users in this group see only their own HR data (own employee, contracts, attendance, leaves, expenses). Assign this when creating a user so the employee sees only their own records.</field>
+        </record>
+        <record id="group_manager_team_access" model="res.groups">
+            <field name="name">Manager (Team Data Only)</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="comment">Users in this group see only their own and their subordinates' data (employees, contracts, contacts, attendance, leaves, expenses) according to Manager Team Access rules.</field>
+        </record>
+        
+        <!-- Groups in subcategories for dropdown display -->
+        <!-- Employees subcategory -->
+        <record id="group_employee_own_access_employees" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_employees"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own employee data.</field>
+        </record>
+        <record id="group_manager_team_access_employees" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_employees"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' employee data.</field>
+        </record>
+        
+        <!-- Contracts subcategory -->
+        <record id="group_employee_own_access_contracts" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_contracts"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own contract data.</field>
+        </record>
+        <record id="group_manager_team_access_contracts" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_contracts"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' contract data.</field>
+        </record>
+        
+        <!-- Attendance subcategory -->
+        <record id="group_employee_own_access_attendance" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own attendance data.</field>
+        </record>
+        <record id="group_manager_team_access_attendance" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' attendance data.</field>
+        </record>
+        
+        <!-- Time Off subcategory -->
+        <record id="group_employee_own_access_time_off" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_time_off"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own time off data.</field>
+        </record>
+        <record id="group_manager_team_access_time_off" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_time_off"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' time off data.</field>
+        </record>
+        
+        <!-- Expenses subcategory -->
+        <record id="group_employee_own_access_expense" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own expense data.</field>
+        </record>
+        <record id="group_manager_team_access_expense" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_expenses"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' expense data.</field>
+        </record>
+        
+        <!-- Payroll subcategory -->
+        <record id="group_employee_own_access_payroll" model="res.groups">
+            <field name="name">Employee own data</field>
+            <field name="category_id" ref="base.module_category_human_resources_payroll"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_employee_own_access'))]"/>
+            <field name="comment">Users see only their own payroll data.</field>
+        </record>
+        <record id="group_manager_team_access_payroll" model="res.groups">
+            <field name="name">Manager team data</field>
+            <field name="category_id" ref="base.module_category_human_resources_payroll"/>
+            <field name="implied_ids" eval="[(4, ref('manager_team_access.group_manager_team_access'))]"/>
+            <field name="comment">Users see their own and subordinates' payroll data.</field>
+        </record>
+    </data>
+</odoo>
