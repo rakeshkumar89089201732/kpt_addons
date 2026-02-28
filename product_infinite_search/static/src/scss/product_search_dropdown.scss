@@ -1,0 +1,8 @@
+// Bigger and longer search dropdown (Many2one / autocomplete) — side position + size
+.o-autocomplete.dropdown .o-autocomplete--dropdown-menu {
+    min-width: 460px;
+    max-width: 580px;
+    max-height: 650px;
+    min-height: 400px;
+    overflow-y: auto;
+}
