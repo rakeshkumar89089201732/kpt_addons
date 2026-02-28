@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_net_purchase_summary_report" model="ir.ui.view">
+    <field name="name">net.purchase.summary.wizard.form</field>
+    <field name="model">net.purchase.report</field>
+    <field name="arch" type="xml">
+      <form string="Net Purchase Summary Report">
+        <group>
+          <field name="date_from"/>
+          <field name="date_to"/>
+        </group>
+        <footer>
+          <button name="generate_report"
+                  string="Generate Report"
+                  type="object"
+                  class="btn-primary"/>
+          <button string="Cancel" class="btn-secondary" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_net_purchase_summary_wizard" model="ir.actions.act_window">
+    <field name="name">Purchase Summary Report</field>
+    <field name="res_model">net.purchase.report</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+
+
+
+  <menuitem id="menu_net_purchase_summary"
+            name="Net Purchase Summary"
+            parent="account.menu_finance_reports"
+            action="action_net_purchase_summary_wizard"
+            sequence="5"/>
+</odoo>

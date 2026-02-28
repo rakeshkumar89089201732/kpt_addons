@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="custom_internal_layout_net_purchase">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div class="header d-flex flex-column">
+            <div class="row w-100 align-items-center">
+                <div class="col-3 text-left">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;"
+                         alt="Logo"/>
+                </div>
+                <div class="col-6 text-center">
+                    <div t-field="company.partner_id.name" class="fw-bold"
+                         style="font_weight:600 !important;font-family: sans-serif !important;"/>
+                    <div>
+                        <span t-if="company.partner_id.street" t-field="company.partner_id.street"/>
+                        <span t-if="company.partner_id.street2" t-field="company.partner_id.street2"/>
+                    </div>
+                    <div t-if="company.partner_id.state_id">
+                        <span t-if="company.partner_id.city" t-field="company.partner_id.city"/>-
+                        <span t-if="company.partner_id.zip" t-field="company.partner_id.zip"/>,
+                        <span t-field="company.partner_id.state_id.name"/>-
+                        <span t-field="company.partner_id.state_id.code"/>,
+                        <span t-if="company.partner_id.country_id" t-field="company.partner_id.country_id.name"/>.
+                    </div>
+                    <div>GSTIN/UIN :
+                        <span t-field="company.vat"/>
+                    </div>
+                    <div>CIN :
+                        <span t-field="company.company_registry"/>
+                    </div>
+                    <div>
+                        <span t-field="company.email"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-out="0"/>
+        </div>
+        <div class="footer" style="width: 100%; text-align: center;  padding: 0 20px;">
+            <p style="font-size: 15px; color: black; margin: 0;text-decoration: underline;">
+                This is a Computer Generated Document
+            </p>
+            <div t-if="report_type == 'pdf'" class="text-muted text-end">
+                Page:
+                <span class="page"/>
+                /
+                <span class="topage"/>
+            </div>
+            <div class="page-break" style="page-break-before: always;">
+            </div>
+
+        </div>
+
+
+    </template>
+
+    <template id="report_net_purchase_document1">
+        <!-- Orginal Copy -->
+        <t t-call="sale_order_extension.custom_internal_layout_net_purchase">
+            <t t-esc="data" />
+            <t t-esc="doc.name" />
+        </t>
+
+
+
+    </template>
+
+    <template id="report_net_purchase">
+        <t t-call="web.html_container">
+            <t t-call="sale_order_extension.custom_internal_layout_net_purchase">
+<div class="page">
+        <h2 class="text-center">Group Monthly Summary</h2>
+        <p class="text-center">    <t t-esc="date_from.strftime('%d-%b-%y')" /> to
+    <t t-esc="date_to.strftime('%d-%b-%y')" /></p>
+
+        <table class="table table-sm table-bordered">
+          <thead>
+            <tr >
+              <th class="align-middle" rowspan="2">Month</th>
+              <th colspan="4">Purchase Accounts</th>
+
+            </tr>
+              <tr><th>Debit</th>
+              <th>Credit</th>
+              <th>Closing Balance</th>
+              </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="data" t-as="row">
+              <tr>
+                <td><t t-esc="row['month']"/></td>
+                <td class="text-end"><t t-if="row['debit']"  t-esc="format_indian_number(row['debit'])"/></td>
+                <td class="text-end"><t t-if="row['credit']"  t-esc="format_indian_number(row['credit'])"/></td>
+                <td class="text-end"><span t-if="row['closing']"><t t-esc="format_indian_number(row['closing'])"/>&amp;nbsp;<t t-esc="row['closing_type']" /></span></td>
+              </tr>
+            </t>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Grand Total</strong></td>
+              <td class="text-end"><t t-if="totals['debit']" t-esc="format_indian_number(totals['debit'])"/></td>
+              <td class="text-end"><t t-if="totals['credit']"  t-esc="format_indian_number(totals['credit'])"/></td>
+              <td class="text-end"> <span t-if="totals['closing']" ><t t-esc="format_indian_number(totals['closing'])"/>&amp;nbsp;<t t-esc="row['closing_type']" /></span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+            </t>
+        </t>
+    </template>
+
+
+
+    <record id="net_purchase_summary_pdf" model="ir.actions.report">
+      <field name="name">Net Purchase Summary</field>
+      <field name="model">net.purchase.report</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">sale_order_extension.report_net_purchase</field>
+      <field name="report_file">sale_order_extension.report_net_purchase</field>
+        <field name="print_report_name">'Net Purchase - %s' % (object.name)</field>
+                <field name="binding_model_id" ref="model_net_purchase_report"/>
+        <field name="binding_type">report</field>
+  </record>
+
+</odoo>

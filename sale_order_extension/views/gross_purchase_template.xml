@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="report_gross_purchase">
+        <t t-call="web.html_container">
+            <t t-call="sale_order_extension.custom_internal_layout_net_purchase">
+<div class="page">
+        <h2 class="text-center">Sales Register</h2>
+        <p class="text-center">Monthly Summary</p>
+        <p class="text-center">    <t t-esc="date_from.strftime('%d-%b-%y')" /> to
+    <t t-esc="date_to.strftime('%d-%b-%y')" /></p>
+
+        <table class="table table-sm table-bordered">
+          <thead>
+            <tr >
+              <th class="align-middle" rowspan="2">Month</th>
+              <th rowspan="1" colspan="2">Transactions</th>
+              <th rowspan="2"  class="align-middle" >Closing Balance</th>
+
+            </tr>
+              <tr colspan="1"><th>Debit</th>
+              <th colspan="1">Credit</th>
+              </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="data" t-as="row">
+              <tr>
+                <td><t t-esc="row['month']"/></td>
+                <td class="text-end"><t t-if="row['debit']" t-esc="format_indian_number(row['debit'])" /></td>
+                <td class="text-end"><t t-if="row['credit']" t-esc="format_indian_number(row['credit'])" /></td>
+                  <td class="text-end"><span t-if="row['closing']"><t  t-esc="format_indian_number(row['closing'])"/>&amp;nbsp;<t t-esc="row['closing_type']" /></span></td>
+              </tr>
+            </t>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Grand Total</strong></td>
+              <td class="text-end"><t t-if="totals['debit']" t-esc="format_indian_number(totals['debit'])"  /></td>
+              <td class="text-end"><t t-if="totals['credit']" t-esc="format_indian_number(totals['credit'])"  /></td>
+              <td class="text-end"> <span t-if="totals['closing']"><t  t-esc="format_indian_number(totals['closing'])"/>&amp;nbsp;<t t-esc="row['closing_type']" /></span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+            </t>
+        </t>
+    </template>
+
+
+
+    <record id="gross_purchase_summary_pdf" model="ir.actions.report">
+      <field name="name">Gross Purchase Summary</field>
+      <field name="model">Gross.purchase.report</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">sale_order_extension.report_gross_purchase</field>
+      <field name="report_file">sale_order_extension.report_gross_purchase</field>
+        <field name="print_report_name">'Gross Purchase - %s' % (object.name)</field>
+                <field name="binding_model_id" ref="model_gross_purchase_report"/>
+        <field name="binding_type">report</field>
+  </record>
+
+</odoo>

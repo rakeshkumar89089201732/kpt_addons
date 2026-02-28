@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="custom_internal_layout_delivery">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div class="header">
+<!--            <div class="row w-100 align-items-center">-->
+<!--                <div class="col-3 text-left">-->
+<!--                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 70px;"-->
+<!--                         alt="Logo"/>-->
+<!--                </div>-->
+<!--                <div class="col-6 text-center">-->
+<!--                    <div t-field="company.partner_id.name" class="fw-bold"-->
+<!--                         style="font_weight:600 !important;font-family: sans-serif !important;"/>-->
+<!--                    <div>-->
+<!--                        <span t-if="company.partner_id.street" t-field="company.partner_id.street"/>-->
+<!--                        <span t-if="company.partner_id.street2" t-field="company.partner_id.street2"/>-->
+<!--                    </div>-->
+<!--                    <div t-if="company.partner_id.state_id">-->
+<!--                        <span t-if="company.partner_id.city" t-field="company.partner_id.city"/>- -->
+<!--                        <span t-if="company.partner_id.zip" t-field="company.partner_id.zip"/>,-->
+<!--                        <span t-field="company.partner_id.state_id.name"/>- -->
+<!--                        <span t-field="company.partner_id.state_id.code"/>,-->
+<!--                        <span t-if="company.partner_id.country_id" t-field="company.partner_id.country_id.name"/>.-->
+<!--                    </div>-->
+<!--                    <div>GSTIN/UIN :-->
+<!--                        <span t-field="doc.company_id.vat"/>-->
+<!--                    </div>-->
+<!--                    <div>CIN :-->
+<!--                        <span t-field="doc.company_id.company_registry"/>-->
+<!--                    </div>-->
+<!--                    <div>E-Mail :-->
+<!--                        <span t-field="company.partner_id.email"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="col-3 text-end">-->
+<!--                    <div t-if="report_type == 'pdf'" class="text-muted">-->
+<!--                        Page:-->
+<!--                        <span class="page"/>-->
+<!--                        /-->
+<!--                        <span class="topage"/>-->
+<!--                    </div>-->
+<!--                </div><br />-->
+<!--            </div>-->
+            <style>
+    @media print {
+        .header-table {
+            position: relative;
+            top: 20px; /* Adjust if needed */
+        }
+    }
+</style>
+
+          <table class="header-table" style="width: 100%; border-collapse: collapse; border-color: transparent; table-layout: fixed;">
+              <tr>
+                  <th style="width: 25%; text-align: left; vertical-align: middle; padding: 5px;">
+                      <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+                           style="max-height: 70px;" alt="Logo"/>
+                  </th>
+                  <th style="width: 50%; text-align: center; vertical-align: middle; padding: 5px;">
+                      <div t-field="company.partner_id.name"
+                           style="font-weight: 600; font-family: sans-serif;"/>
+                      <div>
+                          <span t-if="company.partner_id.street" t-field="company.partner_id.street"/>
+                          <span t-if="company.partner_id.street2" t-field="company.partner_id.street2"/>
+                      </div>
+                      <div t-if="company.partner_id.state_id">
+                          <span t-if="company.partner_id.city" t-field="company.partner_id.city"/> -
+                          <span t-if="company.partner_id.zip" t-field="company.partner_id.zip"/>,
+                          <span t-field="company.partner_id.state_id.name"/> -
+                          <span t-field="company.partner_id.state_id.code"/>,
+                          <span t-if="company.partner_id.country_id" t-field="company.partner_id.country_id.name"/>.
+                      </div>
+                      <div>GSTIN/UIN : <span t-field="doc.company_id.vat"/></div>
+                      <div>CIN : <span t-field="doc.company_id.company_registry"/></div>
+                      <div>E-Mail : <span t-field="company.partner_id.email"/></div>
+                  </th>
+                  <th style="width: 25%; text-align: right; vertical-align: middle; padding: 5px;">
+                      <div t-if="report_type == 'pdf'" class="text-muted">
+                          Page: <span class="page"/> / <span class="topage"/>
+                      </div>
+                  </th>
+              </tr>
+              <thead>
+
+</thead>
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <thead>
+
+            <tr>
+                <th style="width: 50%; padding: 8px; border-top: 2px solid black;">
+                    <p>Delivery Challan No:
+                        <span class="fw-bold"
+                              style="font-weight: 600 !important; font-family: sans-serif !important;"
+                              t-field="doc.name"/>
+                    </p>
+                    <p>Ref. No:</p>
+                </th>
+                <th></th>
+                <th style="width: 50%; padding: 8px; border-top: 2px solid black; text-align: right;">
+                    <p>Date:
+                        <span class="fw-bold"
+                              style="font-weight: 600 !important; font-family: sans-serif !important;"
+                              t-esc="doc.scheduled_date.strftime('%d-%m-%Y')"/>
+                    </p>
+                </th>
+            </tr>
+        </thead>
+</table>
+
+</table>
+
+
+<!--            <t t-call="sale_order_extension.custom_sub_header_delivery_challan"/>-->
+
+        </div>
+
+
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+
+            <t t-out="0"/>
+        </div>
+        <div class="footer" style="width: 100%; text-align: center;  padding: 0 20px;">
+            <p style="font-size: 15px; color: black; margin: 0;text-decoration: underline;">
+                This is a Computer Generated Document
+            </p>
+
+            <div class="page-break" style="page-break-before: always;">
+            </div>
+
+        </div>
+
+
+    </template>
+    <template id="custom_sub_header_delivery_challan">
+        <div class="col-12 subheader" style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 30px;">
+
+            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 1% 0%;">
+                 <tbody>
+                <tr>
+                    <td style="width: 80%;padding: 1%;">
+                        <p>Delivery Challan No:
+                            <span class="fw-bold"
+                                  style="font_weight:600 !important;font-family: sans-serif !important;"
+                                  t-field="doc.name"/>
+                        </p>
+                        <p>Ref. No:</p>
+                    </td>
+                    <td style="width: 20%;padding: 1%;">
+                        <p>Date:
+                            <span class="fw-bold"
+                                  style="font-weight: 600 !important; font-family: sans-serif !important;"
+                                  t-esc="doc.scheduled_date.strftime('%d-%m-%Y')"/>
+                        </p>
+                    </td>
+                </tr>
+                 </tbody>
+            </table>
+
+            <h2 class="text-center" style="margin: 0; padding: 5px 0;">
+                <span>Delivery Challan</span>
+            </h2>
+
+
+            <table style="width: 100%; border-collapse: collapse; table-layout: fixed; margin: 1% 0%;">
+                 <tbody>
+
+                <tr>
+                    <!-- Party Name Section -->
+                    <td style="width: 50%; border: 1px solid black; padding: 10px; vertical-align: top;">
+
+                        <div class="fw-bold"
+                             style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;">
+                            Party Name
+                        </div>
+                        <div t-field="doc.partner_id.commercial_partner_id.name" class="fw-bold"
+                             style="font_weight:600 !important;font-family: sans-serif !important;"></div>
+                        <div t-field="doc.partner_id.commercial_partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, }'/>
+                        <div>State :
+                            <span class="fw-bold" style="font-family: sans-serif !important;"
+                                  t-field="doc.partner_id.commercial_partner_id.state_id.name"/>
+                        </div>
+                        <div>GSTIN/UIN :
+                            <span class="fw-bold" style="font-family: sans-serif !important;"
+                                  t-field="doc.partner_id.commercial_partner_id.vat"/>
+                        </div>
+                    </td>
+
+                    <!-- Delivery At Section -->
+                    <td style="width: 50%; border: 1px solid black; padding: 1%;">
+                        <div class="fw-bold"
+                             style="font_weight:600 !important;font-family: sans-serif !important; text-decoration: underline; margin-bottom:3%;">
+                            Delivery At
+                        </div>
+                        <div t-field="doc.partner_id.name" class="fw-bold"
+                             style="font_weight:600 !important;font-family: sans-serif !important;"></div>
+                        <div t-field="doc.partner_id"
+                             t-options='{"widget": "contact", "fields": ["address", "phone","email"], "no_marker": True, "phone_icons": True}'/>
+                        <div>State :
+                            <span class="fw-bold" style="font-family: sans-serif !important;"
+                                  t-field="doc.partner_id.state_id.name"/>
+                        </div>
+                        <div>GSTIN/UIN :
+                            <span class="fw-bold" style="font-family: sans-serif !important;"
+                                  t-field="doc.partner_id.vat"/>
+                        </div>
+                    </td>
+                </tr>
+                 </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template id="report_delivery_note_document">
+
+        <t t-call="sale_order_extension.custom_internal_layout_delivery">
+            <t t-set="doc" t-value="o.with_context(lang=o.partner_id.lang)"/>
+
+
+
+            <div class="page">
+<!--                             <t t-call="sale_order_extension.custom_sub_header_delivery_challan"/>-->
+                <!-- Products Table -->
+                <table class="table table-sm" style="margin: 1% 0%;font-size:16px">
+                    <style>
+                        .table-sm > :not(caption) > * > * {
+                        padding: 0
+                        }
+                    </style>
+                    <thead>
+                        <tr>
+                            <th style="padding: 3px; border: 1px solid black;text-align: left;">Sl No</th>
+                            <th style="padding: 8px; border: 1px solid black;">Description of Goods</th>
+                            <th style="padding: 8px; border: 1px solid black;">HSN/SAC</th>
+                            <th style="padding: 8px; border: 1px solid black;">Packs</th>
+                            <th style="padding: 8px; border: 1px solid black;">Quantity</th>
+                            <th style="padding: 8px; border: 1px solid black;">Rate</th>
+                            <th style="padding: 8px; border: 1px solid black;">Per</th>
+                            <th style="padding: 8px; border: 1px solid black;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="sequence" t-value="1"/>
+                        <t t-foreach="doc.move_ids_without_package" t-as="line">
+                            <tr>
+                                <td style="text-align: center; border: 1px solid black;">
+                                    <span t-esc="sequence"/>
+                                </td>
+                                <td style="text-align: left; border: 1px solid black;">
+                                    <span t-esc="line.description_picking"/>
+                                </td>
+                                <td style="text-align: left; border: 1px solid black;">
+                                    <span t-esc="line.product_id.l10n_in_hsn_code"/>
+                                </td>
+                                <td style="text-align: right; border: 1px solid black;">
+                                    <span t-esc="line.product_packaging_id.name"/>
+                                </td>
+                                <td style=" text-align: right; border: 1px solid black;"><span
+                                        t-esc="'{:.2f}'.format(line.quantity or line.product_uom_qty)"/>&amp;nbsp;
+                                    <span>PCS</span>
+                                </td>
+                                <td style=" text-align: right; border: 1px solid black;">
+                                    <span t-esc="'{:.2f}'.format(line.price_unit * (1 - line.discount / 100))"/>
+                                </td>
+                                <td style=" text-align: right; border: 1px solid black;">
+                                    <span t-esc="line.product_uom.name"/>
+                                </td>
+                                <td style="text-align: right; border: 1px solid black;">
+                                    <span t-esc="'{:.2f}'.format(line.price_subtotal)"/>
+                                </td>
+                            </tr>
+                            <t t-set="sequence" t-value="sequence + 1"/>
+                        </t>
+                        <style>
+                            .border-cell {
+                            border-right: 1px solid black !important;
+                            border-bottom: transparent !important;
+                            }
+                            .border-left {
+                            border-left: 1px solid black !important;
+                            }
+                            .border-bottom {
+                            border-bottom: 1px solid black !important;
+                            }
+                        </style>
+                        <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                        <t t-foreach="tax_totals.get('subtotals')" t-as="subtotal">
+                            <tr style="padding: 8px; text-align: right; ">
+                                <td class="border-left border-cell" rowspan="1"></td>
+                                <td class="border-cell"></td>
+                                <td class="border-cell"></td>
+                                <td class="border-cell"></td>
+                                <td class="border-cell"></td>
+                                <td class="border-cell"></td>
+                                <td class="border-cell"></td>
+
+                                <td class="text-end border-cell">
+
+                                    <span
+
+                                            t-out="'{:.2f}'.format(subtotal['amount'])"
+                                    >27.00
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                            <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]"
+                               t-as="amount_by_group">
+                                <t t-set="display_tax_base" t-value="tax_totals['display_tax_base']"/>
+                                <tr style="padding: 8px; text-align: right;">
+                                    <td class="border-left border-cell"></td>
+                                    <t t-if="tax_totals['display_tax_base']">
+
+                                        <td class="border-cell">
+                                            <i>
+                                                <span t-if="doc.sale_id">Output</span>
+                                                <span t-if="doc.purchase_id">Input</span>
+                                                <span t-esc="amount_by_group['tax_group_name']"/>
+                                                <span t-if="not amount_by_group['hide_base_amount']"
+                                                      class="text-nowrap">@
+                                                    <t t-esc="round((amount_by_group['tax_group_amount'] / amount_by_group['tax_group_base_amount']) * 100)"/>
+                                                    %
+                                                </span>
+                                            </i>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td class="border-cell">
+                                            <span t-if="doc.sale_id">Output</span>
+                                            <span t-if="doc.purchase_id">Input</span>
+                                            <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                        </td>
+<!--                                        <td class="text-end o_price_total">-->
+<!--                                            <span class="text-nowrap"-->
+<!--                                                  t-out="amount_by_group['formatted_tax_group_amount']">4.05-->
+<!--                                            </span>-->
+<!--                                        </td>-->
+                                    </t>
+                                    <td class="border-cell"></td>
+                                    <td class="border-cell"></td>
+                                    <td class="border-cell"></td>
+                                    <td class="border-cell">
+                                        <span t-if="not amount_by_group['hide_base_amount']"
+                                              class="text-nowrap">
+                                            <i>
+                                                <t t-esc="round((amount_by_group['tax_group_amount'] / amount_by_group['tax_group_base_amount']) * 100)"/>
+                                            </i>
+                                        </span>
+                                    </td>
+                                    <td class="text-start align-middle border-cell">%</td>
+                                    <td class="text-end o_price_total"
+                                        style="border-right: 1px solid black;border-bottom:transparent">
+                                        <span class="text-nowrap"
+                                              t-out="'{:.2f}'.format(amount_by_group['tax_group_amount'])">1.05
+                                        </span>
+                                    </td>
+
+
+                                </tr>
+                            </t>
+                        </t>
+
+                        <tr t-if="doc.amount_total_difference" style="padding: 8px; text-align: right;">
+                            <td class="border-left border-cell"></td>
+                            <td class="border-cell">
+                                <i>Round Off (+/-)</i>
+                            </td>
+                            <td class="border-cell"></td>
+                            <td class="border-cell"></td>
+                            <td class="border-cell"></td>
+                            <td class="border-cell"></td>
+                            <td class="border-cell"></td>
+                            <td class="text-end border-cell ">
+                                <span t-out="'{:.2f}'.format(abs(doc.amount_total_difference))">0</span>
+                            </td>
+                        </tr>
+
+                        <!--Total amount with all taxes-->
+                        <tr class="border-black o_total">
+                            <td class="border-left border-bottom"></td>
+                            <td class="text-end border-left border-bottom">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="border-left border-bottom"></td>
+                            <td class="border-left border-bottom"></td>
+                            <td class="text-end border-left border-bottom"><t
+                                    t-esc="'{:.2f}'.format(sum(doc.move_ids_without_package.mapped('quantity')) or sum(doc.move_ids_without_package.mapped('product_uom_qty')))"/>&amp;nbsp;PCS
+                            </td>
+                            <td class="border-left border-bottom"></td>
+                            <td class="border-left border-bottom"></td>
+                            <td class="text-end border-left border-cell border-bottom">
+                                <span t-out="'{:.2f}'.format(doc.amount_total_rounded)">31.05</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            <table class="table table-sm" style="width: 100%;border-color:transparent">
+                <tr>
+                    <td style="text-align: left; white-space: nowrap;">Amount Chargeable (in words)</td>
+                    <td style="text-align: right; white-space: nowrap;">E. &amp; O.E</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-weight: 600; font-family: sans-serif;">INR
+                        <t t-esc="doc.currency_id.amount_to_text(doc.amount_total_rounded)"/>
+                    </td>
+                </tr>
+            </table>
+
+                                            <t t-set="hsn_displayed" t-value="[]"/>
+                            <t t-set="total_tax_group_amount" t-value="0"/>
+                <t t-if="doc.move_ids_without_package.mapped('tax_id')">
+
+                    <table class="table table-sm break-inside-avoid" border="1" style="width: 100%; border-collapse: collapse;">
+                        <style>
+                            .table-sm > :not(caption) > * > * {
+                            padding: 2px
+                            }
+                                .break-inside-avoid {
+                                break-inside: avoid;
+                                page-break-inside: avoid;
+                            }
+                            .page-break-before-avoid {
+                                page-break-before: avoid;
+                            }
+                            .page-break-after-avoid {
+                                page-break-after: avoid;
+                            }
+                        </style>
+                        <thead>
+                            <tr class="page-break-before-avoid">
+                                <th style="padding: 8px; border: 1px solid black;" rowspan="2">HSN/SAC</th>
+                                <th rowspan="2" colspan="2" style="padding: 8px; border: 1px solid black;">Taxable Value
+                                </th>
+                                <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+                                    <th colspan="2" style="padding: 8px; border: 1px solid black;">
+                                        <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                    </th>
+                                </t>
+                                <th rowspan="2" colspan="2" style="padding: 8px; border: 1px solid black;">Total Tax
+                                    Amount
+                                </th>
+                            </tr>
+                            <tr class="page-break-before-avoid">
+                                <t t-foreach="range(len(tax_totals['groups_by_subtotal'][subtotal_to_show]))" t-as="index">
+                                    <th style="padding: 8px; border: 1px solid black;">Rate</th>
+                                    <th style="padding: 8px; border: 1px solid black;">Amount</th>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <!-- Initialize a variable to track the last HSN Code -->
+
+
+                            <!-- Loop through all One2many records -->
+                            <t t-foreach="doc.move_ids_without_package.filtered(lambda l: l.product_id.l10n_in_hsn_code).sorted(lambda l: l.product_id.l10n_in_hsn_code)"
+                               t-as="line">
+                                <t t-if="line.product_id.l10n_in_hsn_code not in hsn_displayed">
+                                    <!-- Add the HSN Code to the displayed list -->
+                                    <t t-set="hsn_displayed" t-value="hsn_displayed + [line.product_id.l10n_in_hsn_code]"/>
+
+                                    <!-- Calculate group totals -->
+                                    <t t-set="group_taxable_value"
+                                       t-value="sum(l.price_subtotal for l in doc.move_ids_without_package if (l.product_id.l10n_in_hsn_code == line.product_id.l10n_in_hsn_code and l.tax_id))"/>
+
+                                    <!--                <t t-set="group_igst_amount" t-value="sum(l.igst_amount for l in doc.move_ids_without_package if l.product_id.l10n_in_hsn_code == line.product_id.l10n_in_hsn_code)" />-->
+                                    <!--                <t t-set="group_tax_amount" t-value="sum(l.tax_amount for l in doc.move_ids_without_package if l.product_id.l10n_in_hsn_code == line.product_id.l10n_in_hsn_code)" />-->
+
+                                    <!-- Display the grouped row -->
+                                    <tr class="break-inside-avoid">
+                                        <td style="text-align: center;border: 1px solid black;">
+                                            <t t-esc="line.product_id.l10n_in_hsn_code"/>
+                                        </td>
+                                        <td colspan="2" style="text-align: right;border: 1px solid black;">
+                                            <t t-esc="'{:.2f}'.format(group_taxable_value)"/>
+                                        </td>
+                                        <t t-set="group_tax_amt" t-value="0"/>
+                                        <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]"
+                                           t-as="amount_by_group">
+                                            <t t-set="tax_per"
+                                               t-value="round((amount_by_group['tax_group_amount'] / amount_by_group['tax_group_base_amount']) * 100)"/>
+                                            <!--                        <t t-if="amount_by_group['tax_group_name'] in line.tax_id.mapped('name') or amount_by_group['tax_group_name'] in line.tax_id.children_tax_ids.mapped('name')">-->
+                                            <!--                        <t t-out="amount_by_group['tax_group_id'] " /><br />-->
+                                            <!--                        <t t-out="line.tax_id.tax_group_id" />-->
+                                            <t t-if="amount_by_group['tax_group_id'] == line.tax_id.tax_group_id.id or amount_by_group['tax_group_id'] in line.tax_id.children_tax_ids.tax_group_id.ids">
+                                                <td style="text-align: right;border: 1px solid black;"><t t-out="tax_per"/>%
+                                                </td>
+                                                <td style="text-align: right;border: 1px solid black;">
+                                                    <t t-esc="'{:.2f}'.format(group_taxable_value * tax_per / 100)"/>
+                                                </td>
+                                                <t t-set="group_tax_amt"
+                                                   t-value="group_tax_amt + (group_taxable_value * tax_per / 100)"/>
+                                            </t>
+                                            <t t-else="">
+                                                <td style="text-align: right;border: 1px solid black;"></td>
+                                                <td style="text-align: center;border: 1px solid black;"></td>
+                                            </t>
+                                        </t>
+                                        <td colspan="2" style="text-align: right;border: 1px solid black;">
+                                            <t t-set="total_tax_group_amount"
+                                               t-value="total_tax_group_amount + group_tax_amt"/>
+                                            <t t-esc="'{:.2f}'.format(group_tax_amt)"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+
+                            <tr class="break-inside-avoid">
+                                <td style="font-weight: bold; text-align: right;border: 1px solid black;">Total</td>
+                                <td colspan="2" style="font-weight: bold; text-align: right;border: 1px solid black;">
+                                    <t t-esc="'{:.2f}'.format(subtotal['amount'])"/>
+                                </td>
+                                <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+                                    <td style="font-weight: bold; text-align: right;border: 1px solid black;"></td>
+                                    <td style="font-weight: bold; text-align: right;border: 1px solid black;">
+                                        <t t-esc="'{:.2f}'.format(amount_by_group['tax_group_amount'])"/>
+                                    </td>
+                                </t>
+                                <td colspan="2" style="font-weight: bold; text-align: right;border: 1px solid black;">
+                                    <t t-esc="'{:.2f}'.format(total_tax_group_amount)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </t>
+
+
+
+
+                <table class="table table-sm" style="width: 100%; border-color:transparent">
+                        <style>
+                                                                              p {
+                        margin: 0;
+                        padding: 0;
+                        }
+                            .table > :not(:first-child) {
+    border-top: transparent;
+
+}
+                            .table-sm > :not(caption) > * > * {
+                            padding: 1px;
+                            margin: 0px;
+                            }
+                                .break-inside-avoid {
+                                break-inside: avoid;
+                                page-break-inside: avoid;
+                            }
+                            .page-break-before-avoid {
+                                page-break-before: avoid;
+                            }
+                            .page-break-after-avoid {
+                                page-break-after: avoid;
+                            }
+                        </style>
+                                    <tr class="page-break-before-avoid">
+                    <td style="col-6 text-align: left; white-space: nowrap;">Tax Amount (in words)<span class="fw-bold">
+                                                                                    : INR
+                        <t t-esc="doc.currency_id.amount_to_text(total_tax_group_amount)"/>
+                    </span>
+</td>
+
+                </tr>
+<!--                <tr>-->
+<!--                    <td colspan="2" style="font-weight: 600; font-family: sans-serif;">INR-->
+<!--                        <t t-esc="doc.currency_id.amount_to_text(total_tax_group_amount)"/>-->
+<!--                    </td>-->
+<!--                </tr>-->
+                    <tr class="page-break-before-avoid">
+                        <td style="width:20%">
+                            <p>Remarks: <span t-esc="doc.note"/></p>
+                            <p>Company's PAN:
+                                <span class="fw-bold"
+                                      style="font_weight:600 !important;font-family: sans-serif !important; "
+                                      t-esc="doc.company_id.partner_id.l10n_in_pan"/>
+                            </p>
+
+                        </td>
+                    <td style="width:80%" >
+<!--                            <td style="width:50%">-->
+<!--        <table style="width:100%;">-->
+<!--            <tr>-->
+<!--                <td class="text-center" style="font-weight: bold;">Company's Bank Details</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>A/c Holder's Name:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Bank Name:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>A/c No.:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].acc_number"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Branch &amp; IFS Code:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].ifsc_code"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>SWIFT Code:-->
+<!--                    <span class="fw-bold" t-if="doc.company_id.partner_id.bank_ids"-->
+<!--                          t-esc="doc.company_id.partner_id.bank_ids[0].swift_code"/>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>/-->
+                        <p class="text-center" style="font-weight: bold;">Company's Bank Details</p>
+                        <p>A/c Holder's Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].acc_holder_name"/></p>
+                        <p>Bank Name : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids and doc.company_id.partner_id.bank_ids[0].bank_id" t-esc="doc.company_id.partner_id.bank_ids[0].bank_id.name"/></p>
+                        <p>A/c No. : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].acc_number"/></p>
+                        <p>Branch &amp; IFS Code : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].ifsc_code"/></p>
+                        <p>SWIFT Code : <span class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important; " t-if="doc.company_id.partner_id.bank_ids" t-esc="doc.company_id.partner_id.bank_ids[0].swift_code"/></p>
+                    </td>
+
+                    </tr>
+                    <tr class="page-break-before-avoid">
+                        <td>
+                            <p style="padding: 30px 0px;">Recd. in Good Condition
+                            </p>
+                        </td>
+                        <td>
+                            <p  class="text-end" style="font-weight: bold;right:0;padding: 30px 0px;">for KPT Piping System Pvt. Ltd.</p>
+                        </td>
+                    </tr>
+<!--                    <tr><td></td><td></td></tr>-->
+                    <tr class="page-break-before-avoid"><td></td><td><p class="text-end" style="padding-top: 30px;">Authorised Signatory</p></td></tr>
+                </table>
+
+            </div>
+        </t>
+    </template>
+
+    <template id="report_delivery_note">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="sale_order_extension.report_delivery_note_document" t-lang="o.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="action_report_delivery_note" model="ir.actions.report">
+        <field name="name">KPT Delivery Challan</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_order_extension.report_delivery_note</field>
+        <field name="report_file">sale_order_extension.report_delivery_note</field>
+        <field name="print_report_name">'Delivery Challan - %s' % (object.name)</field>
+        <field name="binding_model_id" eval="False"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
