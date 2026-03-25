@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Using Odoo's built-in cash rounding feature -->
+    <!-- Configuration is done via Accounting > Configuration > Cash Roundings -->
+    <!-- Each cash rounding has its own profit/loss accounts -->
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="hr_pan_verification.PANField" owl="1">
+        <div class="o_field_pan_validator">
+            <input
+                type="text"
+                class="o_input"
+                t-att-class="validationClass"
+                t-att-id="props.id"
+                t-att-placeholder="props.placeholder || 'e.g., ABCDE1234F'"
+                t-att-maxlength="10"
+                t-ref="input"
+                t-on-input="onInput"
+                t-on-blur="onBlur"
+                t-att-readonly="props.readonly"
+                t-att-required="props.required"
+                style="text-transform: uppercase;"
+            />
+            <t t-if="state.showValidation and state.validationResult">
+                <span t-att-class="'ms-2 ' + validationClass">
+                    <i t-att-class="'fa ' + validationIcon"/>
+                    <span class="ms-1" t-esc="state.validationResult.message"/>
+                </span>
+            </t>
+        </div>
+    </t>
+</templates>

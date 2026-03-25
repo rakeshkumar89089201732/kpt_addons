@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_gross_purchase_summary_report" model="ir.ui.view">
+    <field name="name">gross.purchase.summary.wizard.form</field>
+    <field name="model">gross.purchase.report</field>
+    <field name="arch" type="xml">
+      <form string="Gross Purchase Summary Report">
+        <group>
+          <field name="date_from"/>
+          <field name="date_to"/>
+        </group>
+        <footer>
+          <button name="generate_report"
+                  string="Generate Report"
+                  type="object"
+                  class="btn-primary"/>
+          <button string="Cancel" class="btn-secondary" special="cancel"/>
+        </footer>
+      </form>
+    </field>
+  </record>
+
+  <record id="action_gross_purchase_summary_wizard" model="ir.actions.act_window">
+    <field name="name">Gross Purchase Summary Report</field>
+    <field name="res_model">gross.purchase.report</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+  </record>
+
+
+
+
+  <menuitem id="menu_gross_purchase_summary"
+            name="Gross Purchase Summary"
+            parent="account.menu_finance_reports"
+            action="action_gross_purchase_summary_wizard"
+            sequence="6"/>
+</odoo>

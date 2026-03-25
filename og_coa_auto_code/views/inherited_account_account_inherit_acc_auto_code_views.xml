@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_account_form_inherit_auto_code" model="ir.ui.view">
+            <field name="name">account.account.form.inherit.auto.code</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_type']" position="replace">
+                </xpath>
+
+                <xpath expr="//form/sheet/div[1]" position="before">
+                    <group>
+                        <group >
+                            <field name="account_type" string="Account Type" widget="account_type_selection"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_account_account_list_inherit_auto_code" model="ir.ui.view">
+            <field name="name">account.account.tree.inherit.auto.code</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_type']" position="replace">
+                </xpath>
+
+                <xpath expr="//field[@name='code']" position="before">
+                    <field name="account_type" widget="account_type_selection"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

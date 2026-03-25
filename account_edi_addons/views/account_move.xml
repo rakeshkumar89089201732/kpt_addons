@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="account_edi_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.edi.move.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account_edi.view_move_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_draft']" position="after">
+                <field name="show_process_section" invisible="1"/>
+                <button name="button_send_einvoice" type="object" class="btn-primary" string="Send E-invoice" invisible="state != 'posted'"/>
+                 <button name="einvoice_button_cancel_posted_moves"
+                            string="E-Invoice Cancellation"
+                            type="object"
+                            groups="account.group_account_invoice"
+                            invisible="edi_show_cancel_button == False"/>
+                    <button name="eway_button_cancel_posted_moves"
+                            string="E-Way Bill Cancellation"
+                            type="object"
+                            groups="account.group_account_invoice"
+                            invisible="edi_show_cancel_button == False"/>
+                <xpath expr="//div[@role='alert']" position="replace">
+                     <div class="alert alert-info" role="alert" style="margin-bottom:0px;" invisible="show_process_section == False">
+                        <div>CLICK TO PROCESS A E-DOCUMENT:
+                            <field name="edi_web_services_to_process" class="oe_inline"/>
+                        </div>
+                        <button name="button_process_edi_web_services" type="object" class="btn-primary" string="Process now"/>
+                    </div>
+                </xpath>
+            </xpath>
+            <xpath expr="//button[@name='button_cancel_posted_moves']" position="attributes">
+                <invisible>1</invisible>
+            </xpath>
+        </field>
+    </record>
+</odoo>

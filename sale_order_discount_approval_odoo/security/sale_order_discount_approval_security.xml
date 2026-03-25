@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <!-- User Group -->
+        <record id="group_sale_order_discount_user" model="res.groups">
+            <field name="name">Sales Discount User</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="group_sale_order_discount_manager" model="res.groups">
+            <field name="name">Sales Discount Manager</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+        </record>
+    </data>
+</odoo>

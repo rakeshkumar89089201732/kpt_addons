@@ -1,0 +1,10 @@
+// = Home Menu Background
+// ============================================================================
+// No CSS hacks, variables overrides only
+
+.o_home_menu_background {
+    --homeMenu-bg-color: #000511;
+    // --homeMenu-bg-image: url("/web_enterprise/static/img/background-dark.jpg");
+    // Replaced to avoid depending on web_enterprise assets which may be unavailable.
+    --homeMenu-bg-image: url("/enterprise_theme/static/img/background-dark.jpg");
+}

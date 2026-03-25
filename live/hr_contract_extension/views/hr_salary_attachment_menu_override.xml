@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Override core labels without editing core modules -->
+    <record id="hr_payroll.hr_menu_salary_attachments" model="ir.ui.menu">
+        <field name="name">Salary Attachment and Expenses</field>
+    </record>
+
+    <record id="hr_payroll.hr_salary_attachment_action" model="ir.actions.act_window">
+        <field name="name">Salary Attachment and Expenses</field>
+    </record>
+
+    <record id="hr_payroll.hr_salary_attachment_action_view_employee" model="ir.actions.act_window">
+        <field name="name">Salary Attachment and Expenses</field>
+    </record>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_bulk_certificate_wizard_form" model="ir.ui.view">
+        <field name="name">tds.bulk.certificate.wizard.form</field>
+        <field name="model">tds.bulk.certificate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate TDS Certificates">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="financial_year"/>
+                            <field name="certificate_date"/>
+                        </group>
+                        <group>
+                            <field name="auto_issue"/>
+                            <field name="only_approved_calculations"/>
+                            <field name="min_tds_amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="all_employees"/>
+                        <field name="employee_ids" widget="many2many_tags" invisible="all_employees == True"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_certificates" string="Generate Certificates" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_bulk_certificate_wizard" model="ir.actions.act_window">
+        <field name="name">Bulk Certificate Generation</field>
+        <field name="res_model">tds.bulk.certificate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Add menu item for wizard -->
+    <menuitem id="menu_tds_bulk_certificate_wizard" 
+              name="Bulk Certificates" 
+              parent="menu_tds_certificate_root" 
+              action="action_tds_bulk_certificate_wizard" 
+              sequence="20"
+              groups="indian_tds_system.group_tds_manager"/>
+</odoo>

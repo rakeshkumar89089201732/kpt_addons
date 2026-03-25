@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="sale_order_extension.KptSaleTaxTotalsField">
+        <table t-if="totals">
+            <tbody>
+                <t t-foreach="totals.subtotals" t-as="subtotal" t-key="subtotal['name']">
+                    <tr>
+                        <td class="o_td_label">
+                            <label class="o_form_label o_tax_total_label" t-out="subtotal['name']"/>
+                        </td>
+                        <td class="o_list_monetary">
+                            <span t-att-name="subtotal['name']" style="white-space: nowrap; font-weight: bold;" t-out="subtotal['formatted_amount']"/>
+                        </td>
+                    </tr>
+
+                    <t t-foreach="totals.groups_by_subtotal[subtotal['name']]" t-as="taxGroup" t-key="taxGroup.group_key">
+                        <TaxGroupComponent
+                            currency="currency"
+                            taxGroup="taxGroup"
+                            isReadonly="true"
+                            onChangeTaxGroup.bind="_onChangeTaxValueByTaxGroup"
+                            invalidate.bind="invalidate"
+                        />
+                    </t>
+                </t>
+
+                <tr t-if="'formatted_rounding_amount' in totals and totals.display_rounding">
+                    <td class="o_td_label">
+                        <label class="o_form_label o_tax_total_label">Round Off</label>
+                    </td>
+                    <td class="o_list_monetary">
+                        <t t-if="readonly">
+                            <span t-out="totals.formatted_rounding_amount"/>
+                        </t>
+                        <t t-else="">
+                            <t t-if="['edit', 'disable'].includes(roundingState.value)">
+                                <span class="o_tax_group_edit_input" t-ref="numpadDecimal">
+                                    <input type="text"
+                                           t-ref="roundingValueInput"
+                                           class="o_field_float o_field_number o_input"
+                                           t-att-disabled="roundingState.value === 'disable'"
+                                           t-on-change.prevent="onChangeRoundingValue"
+                                           t-on-blur="onChangeRoundingValue"/>
+                                </span>
+                            </t>
+                            <t t-else="">
+                                <span class="o_tax_group_edit" t-on-click.prevent="() => this.setRoundingState('edit')">
+                                    <span class="o_tax_group_amount_value o_list_monetary">
+                                        <i class="fa fa-pencil me-2"/> <t t-out="totals.formatted_rounding_amount"/>
+                                    </span>
+                                </span>
+                            </t>
+                        </t>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="o_td_label">
+                        <label class="o_form_label o_tax_total_label">Total</label>
+                    </td>
+                    <td class="o_list_monetary">
+                        <span
+                            name="amount_total"
+                            t-att-class="Object.keys(totals.groups_by_subtotal).length > 0 ? 'oe_subtotal_footer_separator' : ''"
+                            t-out="totals.formatted_amount_total"
+                            style="font-size: 1.3em; font-weight: bold; white-space: nowrap;"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+</templates>

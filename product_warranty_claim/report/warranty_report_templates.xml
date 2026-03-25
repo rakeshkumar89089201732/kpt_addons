@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_warranty_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-12">
+                                <h2>Warranty Certificate</h2>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Warranty Number:</strong></td>
+                                        <td><t t-esc="doc.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Customer:</strong></td>
+                                        <td><t t-esc="doc.partner_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Product:</strong></td>
+                                        <td><t t-esc="doc.product_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serial Number:</strong></td>
+                                        <td><t t-esc="doc.serial_number or 'N/A'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Warranty Type:</strong></td>
+                                        <td><t t-esc="'Free Warranty' if doc.warranty_type == 'free' else 'Paid Warranty'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Start Date:</strong></td>
+                                        <td><t t-esc="doc.warranty_start_date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>End Date:</strong></td>
+                                        <td><t t-esc="doc.warranty_end_date"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Period:</strong></td>
+                                        <td><t t-esc="str(doc.warranty_period) + ' months'"/></td>
+                                    </tr>
+                                    <tr t-if="doc.warranty_type == 'paid'">
+                                        <td><strong>Warranty Price:</strong></td>
+                                        <td><t t-esc="doc.warranty_price"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_report_warranty" model="ir.actions.report">
+        <field name="name">Warranty Certificate</field>
+        <field name="model">product.warranty</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_warranty_claim.report_warranty_document</field>
+        <field name="report_file">product_warranty_claim.report_warranty_document</field>
+        <field name="print_report_name">'Warranty-%s' % (object.name)</field>
+    </record>
+</odoo>

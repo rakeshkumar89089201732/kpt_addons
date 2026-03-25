@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_global_account_type_user,global.account.type.user,model_global_account_type,,1,0,0,0
+access_global_account_type_manager,global.account.type.manager,model_global_account_type,account.group_account_manager,1,1,1,1
+access_global_account_category_user,global.account.category.user,model_global_account_category,,1,0,0,0
+access_global_account_category_manager,global.account.category.manager,model_global_account_category,account.group_account_manager,1,1,1,1

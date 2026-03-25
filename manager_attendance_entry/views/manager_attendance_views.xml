@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Wizard form with enhanced list view for direct check-in/out -->
+        <record id="view_manager_attendance_wizard_form" model="ir.ui.view">
+            <field name="name">manager.attendance.wizard.form</field>
+            <field name="model">manager.attendance.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Team Attendance" class="o_manager_attendance_wizard">
+                    <sheet>
+                        <div class="o_manager_attendance_header">
+                            <h3>
+                                <i class="fa fa-users"/> Team Attendance Management
+                            </h3>
+                            <div class="o_manager_attendance_summary">
+                                <span class="o_summary_item">
+                                    <i class="fa fa-calendar"/> <strong>Date:</strong>
+                                    <field name="date" readonly="1" class="o_manager_attendance_date"/>
+                                </span>
+                                <span class="o_summary_item">
+                                    <i class="fa fa-user"/> <strong>Manager:</strong>
+                                    <field name="manager_id" readonly="1"/>
+                                </span>
+                                <span class="o_summary_item o_counter_item o_present_count">
+                                    <i class="fa fa-check-circle"/> <strong>Present:</strong>
+                                    <field name="present_count" readonly="1"/>
+                                </span>
+                                <span class="o_summary_item o_counter_item o_absent_count">
+                                    <i class="fa fa-times-circle"/> <strong>Absent:</strong>
+                                    <field name="absent_count" readonly="1"/>
+                                </span>
+                            </div>
+                            
+                            <!-- Search Bar -->
+                            <div class="o_manager_attendance_search">
+                                <i class="fa fa-search"/>
+                                <field name="search_query" placeholder="Search employee..." nolabel="1"/>
+                            </div>
+                        </div>
+
+                        <div class="o_attendance_list_container">
+                            <field name="line_ids" nolabel="1">
+                                <tree create="0" delete="0" 
+                                      open_form_view="0"
+                                      no_open="1"
+                                      editable="bottom"
+                                      class="o_manager_attendance_tree"
+                                      decoration-success="status == 'checked_in'"
+                                      decoration-muted="status == 'checked_out'">
+                                    
+                                    <!-- Serial Number -->
+                                    <field name="serial_no" readonly="1" class="o_serial_column"/>
+                                    
+                                    <!-- Employee Column with Avatar -->
+                                    <field name="employee_id" readonly="1" widget="many2one_avatar_employee"/>
+                                    <field name="status" widget="badge"/>
+                                    
+                                    <!-- Invisible technical fields -->
+                                    <field name="can_check_in" column_invisible="1"/>
+                                    <field name="can_check_out" column_invisible="1"/>
+                                    
+                                    <!-- Only show Check In button when can_check_in is True -->
+                                    <button name="action_manager_check_in"
+                                            string="Check In"
+                                            type="object"
+                                            icon="fa-sign-in"
+                                            class="btn btn-success o_btn_check_in"
+                                            invisible="can_check_in == False"/>
+                                    
+                                    <!-- Only show Check Out button when can_check_out is True -->
+                                    <button name="action_manager_check_out"
+                                            string="Check Out"
+                                            type="object"
+                                            icon="fa-sign-out"
+                                            class="btn btn-danger o_btn_check_out"
+                                            invisible="can_check_out == False"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Server action to open the wizard -->
+        <record id="action_manager_attendance_wizard_server" model="ir.actions.server">
+            <field name="name">Team Attendance Entry</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="state">code</field>
+            <field name="code">action = env['manager.attendance.wizard'].action_open()</field>
+        </record>
+
+        <!-- Menu entry under Attendances for HR Attendance Managers -->
+        <menuitem id="menu_manager_attendance_entry"
+                  name="Team Attendance Entry"
+                  parent="hr_attendance.menu_hr_attendance_root"
+                  action="action_manager_attendance_wizard_server"
+                  groups="hr_attendance.group_hr_attendance_manager"
+                  sequence="12"/>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menu Item for Payroll Dashboard -->
+        <record id="action_payroll_dashboard" model="ir.actions.act_url">
+            <field name="name">Payroll Dashboard</field>
+            <field name="url">/payroll/dashboard</field>
+            <field name="target">self</field>
+        </record>
+
+        <menuitem id="menu_payroll_dashboard"
+                  name="Payroll Dashboard"
+                  parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root"
+                  action="action_payroll_dashboard"
+                  sequence="1"/>
+    </data>
+</odoo>

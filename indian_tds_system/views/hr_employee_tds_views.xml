@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_employee_form_tds_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.form.tds.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="TDS Info" groups="indian_tds_system.group_tds_user">
+                    <group>
+                        <group string="Tax Identification">
+                            <field name="pan_number"/>
+                            <field name="aadhar_number"/>
+                            <field name="preferred_tax_regime"/>
+                        </group>
+                        <group string="Current FY TDS Summary">
+                            <field name="current_fy_tds_calculation_id" readonly="1"/>
+                            <field name="current_fy_annual_salary" readonly="1"/>
+                            <field name="current_fy_tax_liability" readonly="1"/>
+                            <field name="current_fy_monthly_tds" readonly="1"/>
+                        </group>
+                    </group>
+                    <div class="oe_button_box" name="button_box_tds">
+                        <button name="action_view_tds_calculations" type="object" class="oe_stat_button" icon="fa-calculator" string="TDS Calcs"/>
+                        <button name="action_view_tds_certificates" type="object" class="oe_stat_button" icon="fa-certificate" string="Certificates"/>
+                        <button name="action_create_tds_calculation" type="object" class="oe_stat_button" icon="fa-plus" string="Create Calc"/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

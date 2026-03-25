@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_sale_order_line_report_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//th[@name='th_description']" position="before">
+            <th class="text">No.</th>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position="before">
+            <td><span t-field="line.nf_number"></span></td>
+        </xpath>
+    </template>
+</odoo>

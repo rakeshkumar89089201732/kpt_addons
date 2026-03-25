@@ -1,0 +1,252 @@
+/* Odoo UI Enhancements - Tree View Improvements */
+
+/* Fix tree view column headers - prevent truncation and improve alignment */
+.o_list_view {
+
+    /* Ensure table headers have proper spacing */
+    thead th {
+        white-space: normal !important;
+        word-wrap: break-word;
+        vertical-align: middle !important;
+        padding: 8px 4px !important;
+        min-height: 40px;
+
+        /* Better text alignment */
+        .o_column_title {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            line-height: 1.3;
+            word-break: break-word;
+            white-space: normal;
+        }
+    }
+
+    /* Fix for optional columns */
+    thead th.o_optional_columns_dropdown_toggle {
+        white-space: nowrap !important;
+    }
+
+    /* Improve cell content display */
+    tbody td {
+        vertical-align: middle !important;
+        padding: 6px 4px !important;
+
+        /* Better text wrapping for long content */
+        .o_field_widget {
+            word-break: break-word;
+        }
+    }
+
+    /* Fix for numeric fields alignment */
+    thead th[data-name*="weight"],
+    thead th[data-name*="qty"],
+    thead th[data-name*="price"],
+    thead th[data-name*="amount"],
+    thead th[data-name*="pcs"],
+    thead th[data-name*="pieces"] {
+        text-align: left !important;
+
+        .o_column_title {
+            justify-content: flex-start !important;
+        }
+    }
+
+    /* Ensure consistent column width distribution */
+    table.o_list_table {
+        table-layout: auto !important;
+
+        /* Better minimum widths for common field types */
+        th {
+            min-width: 80px;
+
+            &.o_list_record_selector {
+                min-width: 40px;
+            }
+
+            &.o_list_actions_header {
+                min-width: 32px;
+            }
+        }
+    }
+}
+
+/* Fix for editable tree views */
+.o_list_view.o_editable_list {
+    thead th {
+        .o_column_title {
+            font-weight: 600;
+        }
+    }
+}
+
+/* Fix for tree views in modals/dialogs */
+.modal .o_list_view {
+    thead th {
+        font-size: 13px;
+
+        .o_column_title {
+            font-size: 13px;
+        }
+    }
+}
+
+/* Fix for tree views in notebook pages (like packaging in product form) */
+.o_notebook .o_list_view {
+    thead th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+
+        .o_column_title {
+            font-weight: 600;
+            color: #212529;
+        }
+    }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .o_list_view {
+        thead th {
+            font-size: 12px;
+            padding: 6px 2px !important;
+
+            .o_column_title {
+                font-size: 12px;
+            }
+        }
+
+        tbody td {
+            padding: 4px 2px !important;
+        }
+    }
+}
+
+/* Fix for sortable column headers */
+.o_list_view thead th.o_column_sortable {
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    .o_column_title {
+        user-select: none;
+    }
+}
+
+/* Better visibility for required fields in tree view */
+.o_list_view thead th.o_required_modifier {
+    .o_column_title::after {
+        content: "*";
+        color: #dc3545;
+        margin-left: 2px;
+        font-weight: bold;
+    }
+}
+
+/* Fix for boolean fields in tree view */
+.o_list_view {
+    .o_field_boolean {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Fix for many2one fields in tree view */
+.o_list_view {
+    .o_field_many2one {
+        .o_field_widget {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+}
+
+/* Improve overall readability */
+.o_list_view {
+    font-size: 13px;
+
+    /* Better row hover effect */
+    tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
+
+    /* Better selected row highlighting */
+    tbody tr.o_data_row.o_selected_row {
+        background-color: #e7f3ff !important;
+    }
+}
+
+/* ========================================
+   DRAG AND DROP FIXES - MINIMAL
+   ======================================== */
+
+/* Fix for faint text when dragging rows - keep Odoo's default drag UI */
+.ui-sortable-helper {
+
+    /* Only fix text color, don't change anything else */
+    td,
+    th {
+        color: #212529 !important;
+
+        /* Fix text in all nested elements */
+        *,
+        span,
+        div,
+        a,
+        label,
+        input {
+            color: #212529 !important;
+        }
+    }
+}
+
+/* Additional fix for list view sortable helper */
+.o_list_view .ui-sortable-helper {
+    td {
+        color: #212529 !important;
+
+        .o_field_widget,
+        .o_data_cell {
+            color: #212529 !important;
+
+            * {
+                color: #212529 !important;
+            }
+        }
+    }
+}
+
+/* ========================================
+   ROW COUNTER (SL No)
+   ======================================== */
+
+.o_list_view {
+    /* Reset counter on the table */
+    counter-reset: o-list-row-counter;
+
+    tbody tr.o_data_row {
+        /* Increment counter for each row */
+        counter-increment: o-list-row-counter;
+
+        /* Display counter in the handle cell */
+        .o_handle_cell::before {
+            content: counter(o-list-row-counter);
+            display: inline-block;
+            font-size: 10px;
+            color: #888;
+            margin-right: 4px;
+            min-width: 15px;
+            text-align: right;
+            font-weight: normal;
+        }
+
+        /* Adjust handle icon spacing */
+        .o_handle_cell .o_row_handle {
+            margin-left: 2px !important;
+        }
+    }
+}

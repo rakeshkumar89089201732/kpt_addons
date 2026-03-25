@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Navigation Actions -->
+        <record id="action_next_field" model="shortcut.action">
+            <field name="name">Next Field</field>
+            <field name="sequence">10</field>
+            <field name="action_type">navigation</field>
+            <field name="action_code">next_field</field>
+            <field name="action_params">{}</field>
+            <field name="description">Move focus to the next input field</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_previous_field" model="shortcut.action">
+            <field name="name">Previous Field</field>
+            <field name="sequence">20</field>
+            <field name="action_type">navigation</field>
+            <field name="action_code">previous_field</field>
+            <field name="action_params">{}</field>
+            <field name="description">Move focus to the previous input field</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_first_field" model="shortcut.action">
+            <field name="name">First Field</field>
+            <field name="sequence">30</field>
+            <field name="action_type">navigation</field>
+            <field name="action_code">first_field</field>
+            <field name="action_params">{}</field>
+            <field name="description">Move focus to the first input field</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <!-- Form Actions -->
+        <record id="action_save_record" model="shortcut.action">
+            <field name="name">Save Record</field>
+            <field name="sequence">40</field>
+            <field name="action_type">form_action</field>
+            <field name="action_code">save_record</field>
+            <field name="action_params">{}</field>
+            <field name="description">Save the current record</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_discard_changes" model="shortcut.action">
+            <field name="name">Discard Changes</field>
+            <field name="sequence">50</field>
+            <field name="action_type">form_action</field>
+            <field name="action_code">discard_changes</field>
+            <field name="action_params">{}</field>
+            <field name="description">Discard changes and reload</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_edit_record" model="shortcut.action">
+            <field name="name">Edit Record</field>
+            <field name="sequence">60</field>
+            <field name="action_type">form_action</field>
+            <field name="action_code">edit_record</field>
+            <field name="action_params">{}</field>
+            <field name="description">Switch to edit mode</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <!-- Text Input Actions -->
+        <record id="action_new_line" model="shortcut.action">
+            <field name="name">New Line</field>
+            <field name="sequence">70</field>
+            <field name="action_type">text_input</field>
+            <field name="action_code">new_line</field>
+            <field name="action_params">{}</field>
+            <field name="description">Insert a new line in text field</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_tab_indent" model="shortcut.action">
+            <field name="name">Tab Indent</field>
+            <field name="sequence">80</field>
+            <field name="action_type">text_input</field>
+            <field name="action_code">tab_indent</field>
+            <field name="action_params">{}</field>
+            <field name="description">Insert tab or indent</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <!-- Record Actions -->
+        <record id="action_create_record" model="shortcut.action">
+            <field name="name">Create New Record</field>
+            <field name="sequence">90</field>
+            <field name="action_type">record_action</field>
+            <field name="action_code">create_record</field>
+            <field name="action_params">{}</field>
+            <field name="description">Create a new record</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_delete_record" model="shortcut.action">
+            <field name="name">Delete Record</field>
+            <field name="sequence">100</field>
+            <field name="action_type">record_action</field>
+            <field name="action_code">delete_record</field>
+            <field name="action_params">{}</field>
+            <field name="description">Delete the current record</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_duplicate_record" model="shortcut.action">
+            <field name="name">Duplicate Record</field>
+            <field name="sequence">110</field>
+            <field name="action_type">record_action</field>
+            <field name="action_code">duplicate_record</field>
+            <field name="action_params">{}</field>
+            <field name="description">Duplicate the current record</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <!-- Additional Navigation -->
+        <record id="action_close_dialog" model="shortcut.action">
+            <field name="name">Close Dialog</field>
+            <field name="sequence">120</field>
+            <field name="action_type">navigation</field>
+            <field name="action_code">close_dialog</field>
+            <field name="action_params">{}</field>
+            <field name="description">Close the current dialog or form</field>
+            <field name="is_system">True</field>
+        </record>
+
+        <record id="action_search_focus" model="shortcut.action">
+            <field name="name">Focus Search</field>
+            <field name="sequence">130</field>
+            <field name="action_type">navigation</field>
+            <field name="action_code">search_focus</field>
+            <field name="action_params">{}</field>
+            <field name="description">Focus on the search bar</field>
+            <field name="is_system">True</field>
+        </record>
+
+    </data>
+</odoo>

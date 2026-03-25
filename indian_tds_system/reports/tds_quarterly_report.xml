@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_tds_quarterly" model="ir.actions.report">
+        <field name="name">Quarterly TDS Report (24Q)</field>
+        <field name="model">tds.quarterly.return</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">indian_tds_system.report_tds_quarterly_template</field>
+        <field name="report_file">indian_tds_system.report_tds_quarterly_template</field>
+        <field name="print_report_name">'TDS_24Q_%s_%s' % (object.financial_year, object.quarter)</field>
+        <field name="binding_model_id" ref="model_tds_quarterly_return"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_tds_quarterly_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Quarterly Return of TDS (Form 24Q)</h2>
+                            <h4>Financial Year: <span t-field="o.financial_year"/> | Quarter: <span t-field="o.quarter"/></h4>
+                        </div>
+
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Employer Details:</strong><br/>
+                                <span t-field="o.company_id.name"/><br/>
+                                <span t-field="o.company_id.partner_id.contact_address"/>
+                            </div>
+                            <div class="col-6 text-right">
+                                <strong>PAN:</strong> <span t-field="o.company_pan"/><br/>
+                                <strong>TAN:</strong> <span t-field="o.company_tan"/>
+                            </div>
+                        </div>
+
+                        <div class="mt32">
+                            <h4>Annexure - I: Deductee wise break up of TDS</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Employee Name</th>
+                                        <th>PAN of Employee</th>
+                                        <th class="text-right">Amount Paid (Rs.)</th>
+                                        <th class="text-right">TDS Deducted (Rs.)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="count" t-value="1"/>
+                                    <t t-foreach="o.return_line_ids" t-as="line">
+                                        <tr>
+                                            <td><t t-out="count"/><t t-set="count" t-value="count + 1"/></td>
+                                            <td><span t-field="line.employee_id.name"/></td>
+                                            <td><span t-field="line.employee_pan"/></td>
+                                            <td class="text-right"><span t-field="line.salary_paid" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                            <td class="text-right"><span t-field="line.tds_deducted" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                        </tr>
+                                    </t>
+                                    <tr class="table-active">
+                                        <td colspan="3"><strong>Total</strong></td>
+                                        <td class="text-right"><strong><span t-field="o.total_salary_paid" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></strong></td>
+                                        <td class="text-right"><strong><span t-field="o.total_tds_deducted" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt32">
+                            <h4>Details of Tax Deposited (Challans)</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Challan No.</th>
+                                        <th>Date</th>
+                                        <th>Bank</th>
+                                        <th class="text-right">Amount (Rs.)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.challan_ids" t-as="challan">
+                                        <tr>
+                                            <td><span t-field="challan.challan_number"/></td>
+                                            <td><span t-field="challan.challan_date"/></td>
+                                            <td><span t-field="challan.bank_name"/></td>
+                                            <td class="text-right"><span t-field="challan.total_tax_deposited" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                        </tr>
+                                    </t>
+                                    <tr class="table-active">
+                                        <td colspan="3"><strong>Total Deposited</strong></td>
+                                        <td class="text-right"><strong><span t-field="o.total_tds_deposited" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

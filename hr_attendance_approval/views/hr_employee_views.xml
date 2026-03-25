@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit Employee Form View -->
+    <record id="hr_employee_form_view_inherit_attendance_approval" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.attendance.approval</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_attendance_approvals" type="object"
+                        class="oe_stat_button" icon="fa-calendar-check-o"
+                        groups="hr_attendance_approval.group_attendance_approval_user">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="attendance_approval_count"/>
+                        </span>
+                        <span class="o_stat_text">Attendance</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

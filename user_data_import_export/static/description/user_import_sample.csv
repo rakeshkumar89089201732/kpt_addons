@@ -1,0 +1,2 @@
+id,login,name,email,password,groups_id/id,company_id/id,active
+,new_user,New User,newuser@example.com,SetSecurePassword1,"base.group_user,base.group_partner_manager",base.main_company,True

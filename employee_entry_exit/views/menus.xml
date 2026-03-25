@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Employee Offers Menu under Payroll -->
+    <menuitem id="menu_employee_offer" 
+              name="Employee Offers" 
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_root" 
+              action="action_employee_offer" 
+              sequence="75"/>
+
+    <!-- Configuration Menu under Payroll > Configuration -->
+    <menuitem id="menu_offer_letter_template" 
+              name="Offer Letter Templates" 
+              parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" 
+              action="action_offer_letter_template" 
+              sequence="50"/>
+</odoo>

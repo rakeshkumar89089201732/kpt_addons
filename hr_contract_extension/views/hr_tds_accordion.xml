@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- New Accordion-style TDS Form View -->
+    <record id="view_hr_tds_form_accordion" model="ir.ui.view">
+        <field name="name">hr.tds.form.accordion</field>
+        <field name="model">hr.tds</field>
+        <field name="priority">1</field>
+        <field name="arch" type="xml">
+            <form string="TDS Calculation" delete="false" class="o_tds_accordion_form">
+                <header>
+                    <field name="is_tds_payslip" invisible="1"/>
+                </header>
+                <sheet>
+                    <div class="tds_accordion_container">
+                        
+                        <!-- Section 1: Employee & Period -->
+                        <div class="tds_accordion_section section_employee" data-section="employee">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">👤</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Employee &amp; Period Information</h3>
+                                        <p class="tds_accordion_subtitle">Basic employee details and TDS calculation period</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <group>
+                                    <group string="Employee Information">
+                                        <field name="hr_employee_id"/>
+                                        <field name="hr_contract_id" domain="[('employee_id', '=', hr_employee_id)]"/>
+                                        <field name="tax_regime_slab" required="1"/>
+                                        <field name="tax_regime_type" invisible="1"/>
+                                        <field name="available_scheme_ids" invisible="1"/>
+                                        <field name="available_section_ids" invisible="1"/>
+                                        <field name="has_slab_scheme_config" invisible="1"/>
+                                        <field name="is_tds_payslip"/>
+                                    </group>
+                                    <group string="Period">
+                                        <field name="tds_from_date"/>
+                                        <field name="tds_to_date"/>
+                                        <field name="tds_from_month" invisible="1" force_save="1"/>
+                                        <field name="tds_to_month" invisible="1" force_save="1"/>
+                                    </group>
+                                </group>
+                                <div class="mt-2">
+                                    <button name="action_open_regime_comparison" 
+                                            type="object" 
+                                            string="⚖️ Compare Tax Regimes" 
+                                            class="btn btn-info" 
+                                            icon="fa-balance-scale"
+                                            help="Compare Old vs New tax regime to find the best option with lower tax liability"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Income Details -->
+                        <div class="tds_accordion_section section_income" data-section="income">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">💰</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Income Details</h3>
+                                        <p class="tds_accordion_subtitle">Current and previous employer salary information</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <group>
+                                    <group string="Current Employer">
+                                        <field name="current_ctc" readonly="1" force_save="1" string="Current CTC"/>
+                                        <field name="annual_salary" force_save="1" string="Salary (Current Employer - Current FY)" readonly="1"/>
+                                        <field name="total_hra_exemption" readonly="1" string="HRA Exemption (Allowed)"/>
+                                    </group>
+                                    <group string="Previous Employer (If Any)">
+                                        <field name="previous_employer_company_name" string="Previous Employer Company" placeholder="e.g. ABC Pvt Ltd"/>
+                                        <field name="previous_employer_taxable" string="Previous Employer Salary"/>
+                                        <label for="previous_employer_from_date" string="Previous Employer Period"/>
+                                        <div class="o_row mw-50" name="previous_employer_period">
+                                            <field name="previous_employer_from_date" nolabel="1" class="oe_inline" placeholder="From"/>
+                                            <span class="o_form_label ms-2 me-2">to</span>
+                                            <field name="previous_employer_to_date" nolabel="1" class="oe_inline" placeholder="To"/>
+                                        </div>
+                                        <field name="prepaid_tds" string="TDS Already Paid by Previous Employer" force_save="1"/>
+                                    </group>
+                                </group>
+
+                                <div class="o_row">
+                                    <div class="o_col-12">
+                                        <separator string="Salary Increments (Multiple Salary Changes During FY)"/>
+                                        <div class="o_row mb-2" invisible="1">
+                                            <div class="o_col-12">
+                                                <field name="use_paid_tds_periods" widget="boolean_toggle" string="I have already paid TDS for some months"/>
+                                                <button name="action_open_paid_tds_period_wizard" type="object" string="Add Paid TDS Period" class="btn btn-secondary" icon="fa-plus" invisible="not use_paid_tds_periods"/>
+                                            </div>
+                                        </div>
+                                        <field name="salary_increment_ids" nolabel="1" class="o_full_width" force_save="1">
+                                            <tree editable="bottom" decoration-success="increment_reason == 'increment'" decoration-info="increment_reason == 'promotion'">
+                                                <field name="line_type" string="Type" required="1"/>
+                                                <field name="effective_from" required="1"/>
+                                                <field name="effective_to" attrs="{'required':[('line_type','=','monthly')], 'invisible':[('line_type','=','one_time')]}"/>
+                                                <button name="action_open_paid_tds_period_wizard" type="object" string="Paid TDS" icon="fa-plus" class="btn btn-link" attrs="{'invisible': [('line_type','=','one_time')]}"/>
+                                                <field name="monthly_gross" attrs="{'required':[('line_type','=','monthly')], 'invisible':[('line_type','=','one_time')]}"/>
+                                                <field name="one_time_amount" attrs="{'invisible':[('line_type','=','monthly')]}"/>
+                                                <field name="one_time_tds" attrs="{'invisible':[('line_type','=','monthly')]}"/>
+                                                <field name="increment_reason" required="1"/>
+                                                <field name="number_of_months" readonly="1" attrs="{'invisible':[('line_type','=','one_time')]}"/>
+                                                <field name="total_for_period" readonly="1"/>
+                                                <field name="remarks" optional="hide"/>
+                                            </tree>
+                                        </field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Other Income -->
+                        <div class="tds_accordion_section section_other_income collapsed" data-section="other_income">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">📊</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Other Income</h3>
+                                        <p class="tds_accordion_subtitle">Income beyond salary (interest, rental, etc.)</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <separator string="Other Income (Beyond Salary)"/>
+                                <field name="other_income_ids" force_save="1">
+                                    <tree editable="bottom" decoration-warning="not is_taxable">
+                                        <field name="income_type" required="1"/>
+                                        <field name="income_amount" required="1" sum="Total Income"/>
+                                        <field name="is_taxable" widget="boolean_toggle"/>
+                                        <field name="tax_exemption_amount" sum="Total Exemption"/>
+                                        <field name="net_taxable_amount" readonly="1" sum="Net Taxable"/>
+                                        <field name="description" optional="hide"/>
+                                    </tree>
+                                </field>
+                                <group>
+                                    <group></group>
+                                    <group>
+                                        <field name="total_other_income" readonly="1" class="oe_subtotal_footer_separator" widget="monetary"/>
+                                    </group>
+                                </group>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: HRA & Rent -->
+                        <div class="tds_accordion_section">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">🏠</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">HRA &amp; Rent</h3>
+                                        <p class="tds_accordion_subtitle">House Rent Allowance and rent payment details</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <separator string="HRA - Rent Payment Details"/>
+                                <div class="alert alert-info" role="alert" invisible="[('tax_regime_type','=','new')]">
+                                    <strong>Note:</strong> HRA exemption is applicable only for Old Tax Regime. Enter your rent payment details below.
+                                </div>
+                                <div class="alert alert-warning" role="alert" invisible="[('tax_regime_type','!=','new')]">
+                                    <strong>Note:</strong> HRA exemption is not applicable in New Tax Regime. This section is for reference only.
+                                </div>
+                                <group>
+                                    <group>
+                                        <field name="total_rent_paid" readonly="1"/>
+                                        <field name="total_hra_exemption" readonly="1" class="font-weight-bold" string="HRA Exemption"/>
+                                    </group>
+                                    <group>
+                                        <field name="hra_received" readonly="1"/>
+                                        <field name="basic_salary" readonly="1" string="Basic (Annual)"/>
+                                    </group>
+                                </group>
+
+                                <field name="use_multiple_rent_periods" invisible="1"/>
+                                <field name="rent_payment_ids" force_save="1">
+                                    <tree editable="bottom">
+                                        <field name="period_from" required="1"/>
+                                        <field name="period_to" required="1"/>
+                                        <field name="monthly_rent" required="1" sum="Total Monthly Rent"/>
+                                        <field name="total_rent_paid" readonly="1" sum="Total Rent"/>
+                                        <field name="landlord_name" optional="hide"/>
+                                        <field name="landlord_pan" optional="hide"/>
+                                        <field name="property_address" optional="hide"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+
+                        <!-- Section 5: Exemptions / Deductions -->
+                        <div class="tds_accordion_section section_deductions collapsed" data-section="deductions">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">📝</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Exemptions / Deductions</h3>
+                                        <p class="tds_accordion_subtitle">Chapter VI-A deductions (80C, 80D, etc.)</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <separator string="Exemptions &amp; Deductions (Chapter VI-A)"/>
+                                <field name="deduction_ids" force_save="1">
+                                    <tree editable="bottom">
+                                        <field name="section_id" domain="[('id', 'in', parent.available_section_ids)]"/>
+                                        <field name="scheme_id" domain="[('section_id', '=', section_id), ('id', 'in', parent.available_scheme_ids)]"/>
+                                        <field name="scheme_details"/>
+                                        <field name="max_limit_deduction" sum="Max Limit"/>
+                                        <field name="deduction_amt" sum="Total Amount"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+
+                        <!-- Section 6: Tax Calculation -->
+                        <div class="tds_accordion_section section_tax" data-section="tax">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">🧮</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Tax Calculation</h3>
+                                        <p class="tds_accordion_subtitle">Final tax computation and TDS amounts</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <div class="o_row mb-2">
+                                    <div class="o_col-12">
+                                        <button name="action_recompute_tds" type="object" string="Recompute TDS" class="btn btn-primary me-2" icon="fa-refresh"/>
+                                        <button name="action_print_tds_details" type="object" string="Print TDS Details" class="btn btn-secondary" icon="fa-print"/>
+                                    </div>
+                                </div>
+                                <separator string="Tax Calculation Results"/>
+                                <div class="o_row">
+                                    <div class="o_col-12 o_col-md-3">
+                                        <group string="Income">
+                                            <field name="annual_salary" readonly="1" string="Salary (Current Employer)"/>
+                                            <field name="previous_employer_taxable" readonly="1" string="Previous Employer Income"/>
+                                            <field name="perquisites_17_2" readonly="1" invisible="1"/>
+                                            <field name="profits_17_3" readonly="1" invisible="1"/>
+                                            <field name="total_other_income" readonly="1" string="Other Income" invisible="total_other_income == 0"/>
+                                            <field name="gross_total_income" readonly="1" string="Gross Total Income"/>
+                                            <field name="taxable_amount" readonly="1" force_save="1" string="Net Taxable Income"/>
+                                        </group>
+                                    </div>
+                                    <div class="o_col-12 o_col-md-6">
+                                        <group string="Exemptions / Deductions">
+                                            <field name="total_exemptions_10" readonly="1" string="Section 10 Exemptions" invisible="tax_regime_type == 'new'"/>
+                                            <field name="total_hra_exemption" readonly="1" string="HRA Exemption" invisible="tax_regime_type == 'new'"/>
+                                            <field name="deduction_summary_html" nolabel="1" readonly="1" class="o_full_width"/>
+                                            <field name="total_deductions" readonly="1" force_save="1" invisible="1"/>
+                                        </group>
+                                    </div>
+                                    <div class="o_col-12 o_col-md-3">
+                                        <group string="Tax">
+                                            <field name="tax_payable" readonly="1" force_save="1" string="Tax Payable"/>
+                                            <field name="health_education_cess" readonly="1" force_save="1" string="Education Cess (4%)"/>
+                                            <field name="tax_payable_cess" readonly="1" force_save="1" string="Tax Payable (incl. Education Cess)"/>
+                                            <field name="tax_round_off_amount" force_save="1" string="Round Off Amount"/>
+                                            <field name="tax_pay_ref" readonly="1" force_save="1" string="Net TDS to Deduct"/>
+                                            <field name="tds_deduction_month" readonly="1" force_save="1" string="TDS Per Month (Base)"/>
+                                            <field name="tds_deduction_month_cess" readonly="1" force_save="1" string="TDS Per Month (incl. Education Cess)"/>
+                                            <field name="tax_breakdown_html" nolabel="1" readonly="1" class="o_full_width" invisible="1"/>
+                                        </group>
+                                    </div>
+                                </div>
+                                <div class="o_row mt-2">
+                                    <div class="o_col-12">
+                                        <div class="o_form_label">Tax Breakdown (Per Slab)</div>
+                                        <field name="tax_breakdown_html" nolabel="1" readonly="1" class="o_full_width"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 7: Monthly Breakdown -->
+                        <div class="tds_accordion_section section_monthly collapsed" data-section="monthly">
+                            <div class="tds_accordion_header">
+                                <div class="tds_accordion_header_content">
+                                    <span class="tds_accordion_icon">📅</span>
+                                    <div>
+                                        <h3 class="tds_accordion_title">Monthly Breakdown</h3>
+                                        <p class="tds_accordion_subtitle">Month-wise TDS deduction schedule</p>
+                                    </div>
+                                </div>
+                                <span class="tds_accordion_toggle">▼</span>
+                            </div>
+                            <div class="tds_accordion_body">
+                                <div class="o_row">
+                                    <div class="o_col-12">
+                                        <separator string="MONTHLY BREAKDOWN"/>
+                                        <field name="monthly_breakdown_html" nolabel="1" class="o_full_width" readonly="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </sheet>
+                <script type="text/javascript">
+                    (function() {
+                        setTimeout(function() {
+                            var headers = document.querySelectorAll('.tds_accordion_header');
+                            headers.forEach(function(header) {
+                                header.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    var section = this.closest('.tds_accordion_section');
+                                    section.classList.toggle('collapsed');
+                                });
+                            });
+                        }, 500);
+                    })();
+                </script>
+            </form>
+        </field>
+    </record>
+
+    <!-- Update the action to use the new view -->
+    <record id="action_hr_tds" model="ir.actions.act_window">
+        <field name="name">TDS Calculation</field>
+        <field name="res_model">hr.tds</field>
+        <field name="view_mode">form,tree</field>
+        <field name="view_id" ref="view_hr_tds_form_accordion"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a TDS Calculation
+            </p>
+            <p>
+                Calculate employee TDS for current financial year.
+                For employees with previous employment, enter their previous employer salary.
+            </p>
+        </field>
+    </record>
+
+</odoo>

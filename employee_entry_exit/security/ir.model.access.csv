@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_offer_user,employee.offer.user,model_employee_offer,base.group_user,1,1,1,0
+access_employee_offer_manager,employee.offer.manager,model_employee_offer,hr.group_hr_manager,1,1,1,1
+access_employee_offer_reject_wizard_user,employee.offer.reject.wizard.user,model_employee_offer_reject_wizard,base.group_user,1,1,1,0
+access_offer_letter_template_user,offer.letter.template.user,model_offer_letter_template,base.group_user,1,0,0,0
+access_offer_letter_template_manager,offer.letter.template.manager,model_offer_letter_template,hr.group_hr_manager,1,1,1,1

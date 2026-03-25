@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+       <record id="view_execute_python_code_tree" model="ir.ui.view">
+            <field name="name">view.execute.python.code.tree</field>
+            <field name="model">execute.python.code</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+            	<tree string="Python Code">
+            		<field name="name" />
+            		<button name="execute_code" string="Execute" type="object" icon="terp-gtk-go-back-rtl"/>
+            	</tree>
+            </field>
+       </record>
+    
+        <record id="view_execute_python_code" model="ir.ui.view">
+            <field name="name">view.execute.python.code</field>
+            <field name="model">execute.python.code</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+             <form string="Execute Python Code">
+             <sheet>
+             	<div class="oe_button_box" name="button_box">
+             			<button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button"/>
+                        </button>
+             			<button name="download_code" type="object" string="Download Code" class="oe_stat_button" icon="fa-download">
+                        </button>
+                        <button name="execute_code" type="object" string="Execute" class="oe_stat_button" icon="fa-code">
+                        </button>
+                 </div>
+                <h1>
+                 <field name="name" colspan="4"  nolabel="1"/>
+                 </h1>
+                 <group colspan="4">
+                 	<field name="track_error_with_log"/>
+                 	<field name="last_execution_date" readonly="1"/>
+                 </group>
+                 <separator colspan="4" string="Generate your python code below and click on Execute button."/>
+                 <group >
+                 	<html>
+                 		
+		         		<b >
+                 			<field name="code" widget="ace" style="width: 1500px;" options="{'mode': 'python'}"  nolabel="1" />
+                        </b>
+                 	</html>
+                 </group>
+                 <group colspan="4">
+                 	<separator colspan="4" string="Result"/>
+                 	<field name="result" colspan="4" nolabel="1"/>
+                 </group>
+            </sheet>
+            </form>
+            </field>
+        </record>
+
+        <record id="action_execute_python_code" model="ir.actions.act_window">
+            <field name="name">Execute Python Code</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">execute.python.code</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_execute_python_code_tree"/>
+        </record>
+        
+        <menuitem
+            parent="base.menu_automation"
+            id="menu_execute_python_code"
+            action="action_execute_python_code"/>
+        
+</data>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_contract_renewal_wizard_form" model="ir.ui.view">
+        <field name="name">contract.renewal.wizard.form</field>
+        <field name="model">contract.renewal.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Contract Renewal Confirmation">
+                <group>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="employee_id"/>
+                    <field name="current_salary"/>
+                    <field name="currency_id" invisible="1"/>
+                </group>
+                <group>
+                    <field name="warning_message" nolabel="1" widget="html"/>
+                </group>
+                <footer>
+                    <button name="action_confirm_renewal" string="Continue" type="object" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

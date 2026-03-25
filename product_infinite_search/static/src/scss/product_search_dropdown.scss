@@ -1,0 +1,21 @@
+// Bigger and longer search dropdown (Many2one / autocomplete) — responsive sizing
+.o-autocomplete.dropdown .o-autocomplete--dropdown-menu {
+    min-width: 400px;
+    max-width: 580px;
+    max-height: 650px;
+    min-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+    // Responsive adjustments using media queries instead of min() to avoid SCSS compilation errors
+    @media (max-width: 768px) {
+        max-width: 90vw;
+        max-height: 80vh;
+        min-width: 300px;
+        min-height: 150px;
+    }
+    
+    @media (max-height: 800px) {
+        max-height: 70vh;
+    }
+}

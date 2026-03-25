@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kpt_frontdesk_reception.WelcomePage" t-inherit="frontdesk.WelcomePage" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'o_main_bg_img')]" position="attributes">
+            <attribute name="class" add="o_kpt_welcome_stage" separator=" "/>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'o_main_bg_img')]/div[1]" position="replace">
+            <div class="position-relative d-flex flex-column align-items-center align-items-lg-start justify-content-center h-lg-100 p-4 p-lg-5 text-center text-lg-start o_kpt_welcome_content">
+                <div class="o_kpt_welcome_badge">Visitor Experience Suite</div>
+                <div class="o_kpt_welcome_title_wrap">
+                    <div class="o_kpt_welcome_eyebrow">Professional frontdesk reception</div>
+                    <div class="display-2 m-0 fw-bold o_kpt_welcome_title">
+                        Welcome to
+                        <div class="o_kpt_welcome_company" t-out="props.companyName"/>
+                    </div>
+                </div>
+                <div class="o_kpt_welcome_subtitle">
+                    Deliver a polished arrival flow with guided visitor check-in, instant host communication, and optional selfie registration.
+                </div>
+                <div class="o_kpt_welcome_actions">
+                    <div class="btn btn-lg btn-primary o_kpt_checkin_btn" t-on-click="() => props.showScreen('VisitorForm')">Check in</div>
+                </div>
+                <div class="o_kpt_welcome_feature_row">
+                    <div class="o_kpt_feature_chip">Fast arrival</div>
+                    <div class="o_kpt_feature_chip">Selfie ready</div>
+                    <div class="o_kpt_feature_chip">Enterprise feel</div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'o_main_bg_img')]/div[2]" position="replace">
+            <div class="position-lg-absolute start-0 end-0 top-0 bottom-0 d-flex gap-3 flex-column justify-content-between align-items-stretch p-4 p-lg-5 pe-none o_kpt_welcome_overlay">
+                <div class="d-flex justify-content-center justify-content-lg-end">
+                    <div t-if="props.langs" class="o_kpt_toolbar_chip pe-auto">
+                        <select class="form-select w-auto border-0 bg-transparent pe-auto" t-att-class="props.stationInfo.theme == 'dark' ? 'text-white' : ''" t-on-change="(ev) => props.onChangeLang(ev)">
+                            <t t-foreach="props.langs" t-as="lang" t-key="lang.code">
+                                <option t-att-value="lang.code" t-att-selected="lang.code === props.currentLang ? true : undefined"><t t-out="lang.name"/></option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center align-items-lg-end gap-3 gap-lg-4 mt-auto">
+                    <div class="o_kpt_time_card">
+                        <div class="o_kpt_card_label">Local time</div>
+                        <div class="o_kpt_time_value" t-out="state.today"/>
+                    </div>
+                    <div t-if="props.stationInfo.self_check_in" class="o_kpt_qr_card pe-auto">
+                        <div>
+                            <div class="o_kpt_card_label">Mobile Check-In</div>
+                            <div class="o_kpt_qr_text">Scan to continue on your phone</div>
+                        </div>
+                        <img class="o_qrcode o_kpt_qrcode" t-att-src="state.qrCode" alt="QR Code"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'o_main_bg_img')]" position="inside">
+            <div t-if="props.stationInfo.kpt_enable_reception_animation" class="o_kpt_reception_showcase d-none d-lg-flex">
+                <div class="o_kpt_showcase_panel">
+                    <div class="o_kpt_reception_glow o_kpt_reception_glow_main"/>
+                    <div class="o_kpt_reception_glow o_kpt_reception_glow_secondary"/>
+                    <div class="o_kpt_showcase_stat">Selfie ready</div>
+                    <div class="o_kpt_showcase_stat o_kpt_showcase_stat_secondary">Host notified instantly</div>
+                    <div class="o_kpt_reception_bubble">
+                        <div class="o_kpt_reception_bubble_label">Reception Desk</div>
+                        <div t-out="props.stationInfo.kpt_welcome_message || 'Please have a seat. You can register your selfie while checking in.'"/>
+                    </div>
+                    <div class="o_kpt_reception_character" aria-hidden="true">
+                        <div class="o_kpt_reception_shadow"/>
+                        <div class="o_kpt_reception_body">
+                            <div class="o_kpt_reception_hair"/>
+                            <div class="o_kpt_reception_face">
+                                <span class="o_kpt_eye o_kpt_eye_left"/>
+                                <span class="o_kpt_eye o_kpt_eye_right"/>
+                                <span class="o_kpt_smile"/>
+                            </div>
+                            <div class="o_kpt_reception_neck"/>
+                            <div class="o_kpt_reception_torso"/>
+                            <div class="o_kpt_reception_arm o_kpt_reception_arm_left"/>
+                            <div class="o_kpt_reception_arm o_kpt_reception_arm_right"/>
+                            <div class="o_kpt_reception_skirt"/>
+                        </div>
+                        <div class="o_kpt_reception_desk">
+                            <div class="o_kpt_reception_monitor"/>
+                            <div class="o_kpt_reception_badge">Check In</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+
+    <t t-name="kpt_frontdesk_reception.VisitorForm" t-inherit="frontdesk.VisitorForm" t-inherit-mode="extension">
+        <xpath expr="//button[@type='submit']" position="before">
+            <div t-if="props.stationInfo.kpt_enable_selfie_check_in" class="o_kpt_selfie_card mt-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                    <div>
+                        <div class="o_kpt_selfie_title">Register your selfie</div>
+                        <div class="text-muted">
+                            Capture a photo during check-in so the reception team can identify you quickly.
+                        </div>
+                    </div>
+                    <div class="o_kpt_selfie_hint">Optional but recommended</div>
+                </div>
+                <div class="row g-3 mt-1 align-items-stretch">
+                    <div class="col-lg-7">
+                        <div class="o_kpt_selfie_stage">
+                            <video
+                                t-ref="kptSelfieVideo"
+                                autoplay=""
+                                muted=""
+                                playsinline=""
+                                t-att-class="selfieState.isCameraOpen &amp;&amp; !selfieState.previewImage ? '' : 'd-none'"
+                            />
+                            <img
+                                t-if="selfieState.previewImage"
+                                t-att-src="selfieState.previewImage"
+                                alt="Selfie preview"
+                                class="w-100 h-100 object-fit-cover"
+                            />
+                            <div t-if="!selfieState.isCameraOpen &amp;&amp; !selfieState.previewImage" class="o_kpt_selfie_placeholder">
+                                <div class="o_kpt_selfie_placeholder_icon">Selfie</div>
+                                <div class="fw-semibold">Add your photo</div>
+                                <div class="small opacity-75">Use the camera or upload from your device.</div>
+                            </div>
+                        </div>
+                        <canvas t-ref="kptSelfieCanvas" class="d-none"/>
+                    </div>
+                    <div class="col-lg-5 d-flex">
+                        <div class="o_kpt_selfie_actions w-100">
+                            <button
+                                t-if="!selfieState.isCameraOpen"
+                                type="button"
+                                class="btn btn-outline-primary"
+                                t-on-click="openSelfieCamera"
+                            >
+                                Open Camera
+                            </button>
+                            <button
+                                t-if="selfieState.isCameraOpen"
+                                type="button"
+                                class="btn btn-primary"
+                                t-on-click="captureSelfie"
+                            >
+                                Capture Selfie
+                            </button>
+                            <label class="btn btn-outline-secondary mb-0">
+                                Upload Photo
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    capture="user"
+                                    class="d-none"
+                                    t-on-change="onSelfieFileChange"
+                                />
+                            </label>
+                            <button
+                                t-if="selfieState.previewImage || selfieState.isCameraOpen"
+                                type="button"
+                                class="btn btn-light"
+                                t-on-click="clearSelfie"
+                            >
+                                Clear
+                            </button>
+                            <div t-if="selfieState.errorMessage" class="alert alert-warning py-2 mb-0">
+                                <t t-out="selfieState.errorMessage"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

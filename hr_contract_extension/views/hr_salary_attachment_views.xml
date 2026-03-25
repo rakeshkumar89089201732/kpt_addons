@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Salary Attachment Type Form View -->
+    <record id="hr_salary_attachment_type_view_form" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.type.form.extend</field>
+        <field name="model">hr.salary.attachment.type</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="category"/>
+                <!--
+                TODO: Ownership moved to kpt_salary_attachment_approval
+                show_in_mobile field is now added there.
+                <field name="show_in_mobile"/>
+                -->
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend Salary Attachment Type Tree View -->
+    <record id="hr_salary_attachment_type_view_tree" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.type.tree.extend</field>
+        <field name="model">hr.salary.attachment.type</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_type_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="code" position="after">
+                <field name="category"/>
+                <field name="is_from_structure"/>
+                <!--
+                TODO: Ownership moved to kpt_salary_attachment_approval
+                show_in_mobile field is now added there.
+                <field name="show_in_mobile" optional="show"/>
+                -->
+            </field>
+        </field>
+    </record>
+    
+    <!-- Add Sync Button to Salary Attachment Type Form -->
+    <record id="hr_salary_attachment_type_view_form_extend" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.type.form.extend.button</field>
+        <field name="model">hr.salary.attachment.type</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_type_view_form"/>
+        <field name="arch" type="xml">
+            <form position="inside">
+                <header>
+                    <button name="action_sync_from_structure" string="Sync from Salary Structure" type="object" class="btn-primary" groups="hr_payroll.group_hr_payroll_manager"/>
+                </header>
+            </form>
+            <field name="code" position="after">
+                <field name="category"/>
+                <field name="is_from_structure"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend Salary Attachment Form View -->
+    <record id="hr_salary_attachment_view_form" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.form.extend</field>
+        <field name="model">hr.salary.attachment</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_view_form"/>
+        <field name="arch" type="xml">
+            <field name="deduction_type_id" position="attributes">
+                <attribute name="domain">[('code', 'not in', ['BASIC', 'HRA']), ('is_from_structure', '=', True)]</attribute>
+            </field>
+            <field name="deduction_type_id" position="after">
+                <field name="category" readonly="1"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend Salary Attachment Tree View -->
+    <record id="hr_salary_attachment_view_tree" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.tree.extend</field>
+        <field name="model">hr.salary.attachment</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="deduction_type_id" position="after">
+                <field name="category"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Extend Salary Attachment Search View -->
+    <record id="hr_salary_attachment_view_search" model="ir.ui.view">
+        <field name="name">hr.salary.attachment.search.extend</field>
+        <field name="model">hr.salary.attachment</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_attachment_view_search"/>
+        <field name="arch" type="xml">
+            <field name="deduction_type_id" position="after">
+                <field name="category"/>
+            </field>
+            <xpath expr="//filter[@name='state']" position="after">
+                <separator/>
+                <filter string="Deductions" name="deductions" domain="[('category', '=', 'deduction')]"/>
+                <filter string="Allowances" name="allowances" domain="[('category', '=', 'allowance')]"/>
+                <separator/>
+                <filter string="Category" name="category" context="{'group_by': 'category'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

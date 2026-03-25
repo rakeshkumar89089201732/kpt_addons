@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Main Dashboard Template -->
+    <t t-name="ks_dashboard_ninja.DashboardTemplate" owl="1">
+        <div class="ks_dashboard_ninja_main_container" t-ref="root">
+            <!-- Dashboard Header -->
+            <div class="ks_dashboard_header">
+                <div class="ks_dashboard_header_container d-flex justify-content-between align-items-center p-3 bg-white">
+                    <div class="ks_dashboard_title_section">
+                        <h2 class="ks_dashboard_name mb-0">
+                            <t t-esc="state.dashboard_data.name or 'Dashboard'"/>
+                        </h2>
+                        <small class="text-muted" t-if="state.dashboard_data.ks_dashboard_menu_name">
+                            <t t-esc="state.dashboard_data.ks_dashboard_menu_name"/>
+                        </small>
+                    </div>
+                    
+                    <!-- Dashboard Controls -->
+                    <div class="ks_dashboard_controls d-flex align-items-center">
+                        <!-- Date Filter -->
+                        <div class="ks_date_filter_container mr-3" t-if="state.dashboard_data.ks_dashboard_date_filter_data">
+                            <!-- Date filter will be dynamically created by JavaScript -->
+                        </div>
+                        
+                        <!-- Refresh Button -->
+                        <button class="btn btn-outline-secondary mr-2" 
+                                t-on-click="(ev) => this.onRefreshDashboard(ev)"
+                                title="Refresh Dashboard">
+                            <i class="fa fa-refresh"/>
+                        </button>
+
+                        <!-- Dashboard Manager Controls -->
+                        <div class="ks_dashboard_manager_controls" t-if="state.ks_dashboard_manager">
+                            <button class="btn btn-primary mr-2" 
+                                    t-on-click="(ev) => this.onEditModeToggle(ev)"
+                                    t-att-class="{'btn-success': state.edit_mode, 'btn-primary': !state.edit_mode}">
+                                <i class="fa fa-edit mr-1"/>
+                                <span t-if="!state.edit_mode">Edit</span>
+                                <span t-else="">Save</span>
+                            </button>
+                            
+                            <div class="btn-group">
+                                <button class="btn btn-outline-secondary dropdown-toggle" 
+                                        type="button" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                    <i class="fa fa-cog"/>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#" t-on-click="(ev) => this.onAddItem(ev)">
+                                        <i class="fa fa-plus mr-2"/>Add Item
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="#" t-on-click="(ev) => this.onExportItem(ev, 'dashboard')">
+                                        <i class="fa fa-download mr-2"/>Export Dashboard
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"/></li>
+                                    <li><a class="dropdown-item" href="#" t-on-click="(ev) => this.onToggleFullscreen(ev)">
+                                        <i class="fa fa-expand mr-2"/>Fullscreen
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="ks_dashboard_container p-3">
+                <div class="ks_dashboard_items_container" 
+                     t-att-class="{'grid-stack': state.edit_mode, 'ks_dashboard_items_view': !state.edit_mode}"
+                     t-on-click="(ev) => this.onDashboardItemClick(ev)">
+                    <!-- Dashboard items will be rendered here by JavaScript -->
+                </div>
+                
+                <!-- Empty State -->
+                <div class="ks_dashboard_empty_state text-center py-5" 
+                     t-if="!state.dashboard_data.ks_item_data or Object.keys(state.dashboard_data.ks_item_data).length === 0">
+                    <div class="ks_empty_state_content">
+                        <i class="fa fa-dashboard fa-5x text-muted mb-3"/>
+                        <h3 class="text-muted">No Dashboard Items</h3>
+                        <p class="text-muted">Start by adding some dashboard items to visualize your data.</p>
+                        <button class="btn btn-primary" 
+                                t-if="state.ks_dashboard_manager"
+                                t-on-click="(ev) => this.onAddItem(ev)">
+                            <i class="fa fa-plus mr-2"/>Add Item
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div class="ks_dashboard_loading_overlay" t-if="state.loading">
+                <div class="ks_loading_content text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="mt-2">Loading dashboard...</p>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- KPI Item Template -->
+    <t t-name="ks_dashboard_ninja.KpiItemTemplate" owl="1">
+        <div class="ks_kpi_item_container h-100" 
+             t-att-data-item-id="props.item.id"
+             t-on-click="(ev) => this.onDashboardItemClick(ev, props.item)">
+            <div class="ks_kpi_header d-flex justify-content-between align-items-center p-2 border-bottom">
+                <h6 class="ks_kpi_title mb-0" t-esc="props.item.name"/>
+                <div class="ks_kpi_actions" t-if="props.edit_mode">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onEditItem(ev, props.item)"
+                                title="Edit">
+                            <i class="fa fa-edit"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onRefreshItem(ev, props.item)"
+                                title="Refresh">
+                            <i class="fa fa-refresh"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" 
+                                t-on-click="(ev) => this.onDeleteItem(ev, props.item)"
+                                title="Delete">
+                            <i class="fa fa-trash"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="ks_kpi_content p-3 text-center h-100 d-flex flex-column justify-content-center">
+                <div class="ks_kpi_icon mb-2" t-if="props.item.ks_icon">
+                    <i t-att-class="props.item.ks_icon + ' fa-2x'" 
+                       t-att-style="'color: ' + (props.item.ks_default_icon_color or '#007bff')"/>
+                </div>
+                <div class="ks_kpi_value">
+                    <h2 class="ks_kpi_number mb-1" 
+                        t-att-style="'color: ' + (props.item.ks_font_color or '#000')">
+                        <t t-esc="props.formatted_value"/>
+                    </h2>
+                    <small class="ks_kpi_label text-muted" t-esc="props.item.ks_model_display_name"/>
+                </div>
+                
+                <!-- Target Progress -->
+                <div class="ks_kpi_target mt-2" t-if="props.target_progress">
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar" 
+                             t-att-class="props.target_progress.color_class"
+                             t-att-style="'width: ' + props.target_progress.percentage + '%'"
+                             role="progressbar"/>
+                    </div>
+                    <small class="text-muted">
+                        <t t-esc="props.target_progress.deviation_text"/>
+                    </small>
+                </div>
+                
+                <!-- KPI Comparison -->
+                <div class="ks_kpi_comparison mt-2" t-if="props.comparison">
+                    <span t-att-class="props.comparison.color_class">
+                        <i t-att-class="props.comparison.icon"/>
+                        <t t-esc="props.comparison.text"/>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- Chart Item Template -->
+    <t t-name="ks_dashboard_ninja.ChartItemTemplate" owl="1">
+        <div class="ks_chart_item_container h-100" 
+             t-att-data-item-id="props.item.id"
+             t-on-click="(ev) => this.onDashboardItemClick(ev, props.item)">
+            <div class="ks_chart_header d-flex justify-content-between align-items-center p-2 border-bottom">
+                <h6 class="ks_chart_title mb-0" t-esc="props.item.name"/>
+                <div class="ks_chart_actions" t-if="props.edit_mode">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onEditItem(ev, props.item)"
+                                title="Edit">
+                            <i class="fa fa-edit"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onRefreshItem(ev, props.item)"
+                                title="Refresh">
+                            <i class="fa fa-refresh"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onExportItem(ev, props.item)"
+                                title="Export">
+                            <i class="fa fa-download"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" 
+                                t-on-click="(ev) => this.onDeleteItem(ev, props.item)"
+                                title="Delete">
+                            <i class="fa fa-trash"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="ks_chart_content p-2 h-100">
+                <canvas class="ks_chart_canvas w-100" 
+                        t-att-id="'ks_chart_' + props.item.id"
+                        style="height: 300px;"/>
+            </div>
+        </div>
+    </t>
+
+    <!-- List Item Template -->
+    <t t-name="ks_dashboard_ninja.ListItemTemplate" owl="1">
+        <div class="ks_list_item_container h-100" 
+             t-att-data-item-id="props.item.id"
+             t-on-click="(ev) => this.onDashboardItemClick(ev, props.item)">
+            <div class="ks_list_header d-flex justify-content-between align-items-center p-2 border-bottom">
+                <h6 class="ks_list_title mb-0" t-esc="props.item.name"/>
+                <div class="ks_list_actions" t-if="props.edit_mode">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onEditItem(ev, props.item)"
+                                title="Edit">
+                            <i class="fa fa-edit"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onRefreshItem(ev, props.item)"
+                                title="Refresh">
+                            <i class="fa fa-refresh"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                t-on-click="(ev) => this.onExportItem(ev, props.item)"
+                                title="Export">
+                            <i class="fa fa-download"/>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" 
+                                t-on-click="(ev) => this.onDeleteItem(ev, props.item)"
+                                title="Delete">
+                            <i class="fa fa-trash"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="ks_list_content p-2 h-100 overflow-auto">
+                <div class="ks_list_view_data">
+                    <table class="table table-sm table-hover" t-if="props.item.ks_list_view_data and props.item.ks_list_view_data.data_rows">
+                        <thead class="table-light">
+                            <tr>
+                                <th t-foreach="props.item.ks_list_view_data.labels" 
+                                    t-as="label" 
+                                    t-key="label_index"
+                                    t-esc="label"/>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="props.item.ks_list_view_data.data_rows" 
+                                t-as="row" 
+                                t-key="row_index"
+                                t-on-click="(ev) => this.onListRowClick(ev, row, props.item)"
+                                style="cursor: pointer;">
+                                <td t-foreach="row" 
+                                    t-as="cell" 
+                                    t-key="cell_index"
+                                    t-esc="cell"/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center text-muted py-3" t-else="">
+                        <i class="fa fa-list fa-2x mb-2"/>
+                        <p>No data available</p>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="ks_list_pagination d-flex justify-content-between align-items-center mt-2" 
+                         t-if="props.pagination and props.pagination.total_pages > 1">
+                        <small class="text-muted">
+                            Showing <t t-esc="props.pagination.start"/> to <t t-esc="props.pagination.end"/> 
+                            of <t t-esc="props.pagination.total"/> entries
+                        </small>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-secondary" 
+                                    t-att-disabled="props.pagination.current_page === 1"
+                                    t-on-click="(ev) => this.loadMoreListData(ev, props.item, props.pagination.current_page - 1)">
+                                <i class="fa fa-chevron-left"/>
+                            </button>
+                            <button class="btn btn-outline-secondary" 
+                                    t-att-disabled="props.pagination.current_page === props.pagination.total_pages"
+                                    t-on-click="(ev) => this.loadMoreListData(ev, props.item, props.pagination.current_page + 1)">
+                                <i class="fa fa-chevron-right"/>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <!-- Tile Item Template -->
+    <t t-name="ks_dashboard_ninja.TileItemTemplate" owl="1">
+        <div class="ks_tile_item_container h-100 d-flex flex-column justify-content-center align-items-center text-center p-3 position-relative"
+             t-att-style="'background-color:' + (props.item.ks_background_color or '#ffffff') + '; color:' + (props.item.ks_font_color or '#000000')"
+             t-att-data-item-id="props.item.id"
+             t-on-click="(ev) => this.onDashboardItemClick(ev, props.item)"
+             style="cursor: pointer;">
+            
+            <!-- Icon -->
+            <div class="ks_tile_icon mb-2" t-if="props.item.ks_icon">
+                <i t-att-class="'fa ' + props.item.ks_icon + ' fa-3x'"/>
+            </div>
+            
+            <!-- Value -->
+            <div class="ks_tile_value mb-2">
+                <h2 class="mb-0" t-esc="props.item.ks_data_calculation_type === 'custom' ? props.item.ks_record_data_field : props.item.ks_record_count"/>
+            </div>
+            
+            <!-- Title -->
+            <div class="ks_tile_title">
+                <h6 class="mb-0" t-esc="props.item.name"/>
+            </div>
+            
+            <!-- Progress Bar for Target -->
+            <div class="ks_tile_progress mt-2 w-100" t-if="props.item.ks_goal_enable and props.item.ks_goal_value">
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar" 
+                         role="progressbar" 
+                         t-att-style="'width: ' + Math.min(100, (props.item.ks_record_count / props.item.ks_goal_value) * 100) + '%'"
+                         t-att-aria-valuenow="props.item.ks_record_count"
+                         t-att-aria-valuemin="0"
+                         t-att-aria-valuemax="props.item.ks_goal_value"/>
+                </div>
+                <small class="text-muted">
+                    <t t-esc="props.item.ks_record_count"/> / <t t-esc="props.item.ks_goal_value"/>
+                </small>
+            </div>
+            
+            <!-- Edit Actions -->
+            <div class="ks_tile_actions position-absolute" 
+                 style="top: 10px; right: 10px;" 
+                 t-if="props.edit_mode">
+                <div class="btn-group-vertical">
+                    <button class="btn btn-sm btn-outline-light mb-1" 
+                            t-on-click="(ev) => this.onEditItem(ev, props.item)"
+                            title="Edit">
+                        <i class="fa fa-edit"/>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light mb-1" 
+                            t-on-click="(ev) => this.onRefreshItem(ev, props.item)"
+                            title="Refresh">
+                        <i class="fa fa-refresh"/>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light mb-1" 
+                            t-on-click="(ev) => this.onDuplicateItem(ev, props.item)"
+                            title="Duplicate">
+                        <i class="fa fa-copy"/>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" 
+                            t-on-click="(ev) => this.onDeleteItem(ev, props.item)"
+                            title="Delete">
+                        <i class="fa fa-trash"/>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

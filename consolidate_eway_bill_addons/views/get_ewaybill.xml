@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+<!--    Get ewaybill details form view-->
+    <record id="get_eway_bill_form_view" model="ir.ui.view">
+        <field name="name">get.eway.bill.form.view</field>
+        <field name="model">get.ewaybill</field>
+        <field name="arch" type="xml">
+            <form string="Get-Eway Bill">
+                <sheet>
+                    <widget name="web_ribbon" title="Active" invisible="get_status == False or get_status== 'CNL'"/>
+                    <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="get_status == False or get_status== 'ACT'"/>
+                    <group>
+                        <group string="Enter Eway No">
+                            <field name="user_ewbNo"/>
+                            <br/>
+                            <field name="get_ewbNo_json" widget="many2many_binary"/>
+                        </group>
+                        <group string="Print/Clear Json Data">
+                             <button name="read_ewaybill_json" string="Print" type="object" class="btn-primary"/>
+                             <button name="clear_the_field" string="Clear" type="object" class="btn-primary"/>
+                        </group>
+                        <group string="Download PDF">
+                            <button name="action_print_eway_bill" string="Download PDF" type="object" class="btn-primary"/>
+                        </group>
+                        <group string="Created By">
+                            <field name="company_id" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="created_date" readonly="1"/>
+                        </group>
+                        <group string="Eway Bill Details">
+                            <field name="get_ewbNo" readonly="1"/>
+                            <field name="get_ewayBillDate" readonly="1"/>
+                            <field name="get_genMode" readonly="1"/>
+                            <field name="get_userGstin" readonly="1"/>
+                            <field name="get_noValidDays" readonly="1"/>
+                            <field name="get_validUpto" readonly="1"/>
+                        </group>
+                        <group string="Bill From">
+                            <field name="get_billfrom_Gstin" readonly="1"/>
+                            <field name="get_billfrom_TrdName" readonly="1"/>
+                            <field name="get_billfrom_state" readonly="1"/>
+                        </group>
+                        <group string="Dispatch From" >
+                            <field name="get_dispatch_fromAddr1" readonly="1"/>
+                            <field name="get_dispatch_fromAddr2" readonly="1"/>
+                            <field name="get_dispatch_fromPlace" readonly="1"/>
+                            <field name="get_dispatch_fromPincode" readonly="1"/>
+                            <field name="get_dispatch_fromStateCode" readonly="1"/>
+                            <field name="get_dispatch_actFromStateCode" readonly="1"/>
+                        </group>
+                        <group string="Bill To">
+                            <field name="get_billto_Gstin" readonly="1"/>
+                            <field name="get_billto_TrdName" readonly="1"/>
+                            <field name="get_billto_StateCode" readonly="1"/>
+                        </group>
+                        <group string="Ship to">
+                            <field name="get_shipto_Addr1" readonly="1"/>
+                            <field name="get_shipto_Addr2" readonly="1"/>
+                            <field name="get_shipto_Place" readonly="1"/>
+                            <field name="get_shipto_Pincode" readonly="1"/>
+                            <field name="get_shipto_StateCode" readonly="1"/>
+                            <field name="get_actToStateCode" readonly="1"/>
+                        </group>
+                          <group string="Transaction Details">
+                            <field name="get_supplyType" readonly="1"/>
+                            <field name="get_subSupplyType" readonly="1"/>
+                            <field name="get_docType" readonly="1"/>
+                            <field name="get_transactionType" readonly="1"/>
+                            <field name="get_vehicleType" readonly="1"/>
+                        </group>
+                        <group string="Document details">
+                            <field name="get_transporterId" readonly="1"/>
+                            <field name="get_transporterName" readonly="1"/>
+                            <field name="get_docNo" readonly="1"/>
+                            <field name="get_docDate" readonly="1"/>
+                            <field name="get_actualDist" readonly="1"/>
+                        </group>
+                        <group string="Total Details">
+                            <field name="get_cgstValue" readonly="1"/>
+                            <field name="get_sgstValue" readonly="1"/>
+                            <field name="get_igstValue" readonly="1"/>
+                            <field name="get_cessValue" readonly="1"/>
+                            <field name="get_otherValue" readonly="1"/>
+                            <field name="get_cessNonAdvolValue" readonly="1"/>
+                            <field name="get_totalValue" readonly="1"/>
+                            <field name="get_totInvValue" readonly="1"/>
+                        </group>
+                        <group string="Other Details">
+                            <field name="get_status" readonly="1"/>
+                            <field name="get_extendedTimes" readonly="1"/>
+                            <field name="get_rejectStatus" readonly="1"/>
+                            <field name="get_eway_qr_code" widget='image' options="{'size': [100, 100]}" readonly="1"/>
+                            <field name="get_eway_barcode" widget='image' options="{'size': [100, 100]}" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="product_details" string="Products Details">
+                            <field name="products_id" readonly="1">
+                                <tree>
+                                    <field name="get_eway_hsnCode"/>
+                                    <field name="get_eway_productName"/>
+                                    <field name="get_eway_quantity"/>
+                                    <field name="get_eway_qtyUnit"/>
+                                    <field name="get_eway_cgstRate"/>
+                                    <field name="get_eway_sgstRate"/>
+                                    <field name="get_eway_igstRate"/>
+                                    <field name="get_eway_cessRate"/>
+                                    <field name="get_eway_cessNonAdvol"/>
+                                    <field name="get_eway_taxableAmount"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="vehicle_details" string="Vehicle Details">
+                            <field name="vehicles_id" context="{'default_order': 'get_veh_enteredDate desc'}" readonly="1">
+                                <tree>
+                                    <field name="get_veh_transMode"/>
+                                    <field name="get_veh_vehicleNo"/>
+                                    <field name="get_veh_fromPlace"/>
+                                    <field name="get_veh_fromState"/>
+                                    <field name="get_veh_tripshtNo"/>
+                                    <field name="get_veh_userGSTINTransin"/>
+                                    <field name="get_veh_enteredDate"/>
+                                    <field name="get_veh_transDocNo"/>
+                                    <field name="get_veh_transDocDate"/>
+                                    <field name="get_veh_groupNo"/>
+                                    <field name="get_veh_updMode"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+<!--    Get ewaybill details tree view-->
+    <record id="get_eway_bill_tree_view" model="ir.ui.view">
+        <field name="name">get.eway.bill.tree.view</field>
+        <field name="model">get.ewaybill</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="get_status == 'ACT'" decoration-danger="get_status == 'CNL'">
+                <field name="name"/>
+                <field name="created_date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                 <field name="company_id"/>
+                <field name="get_genMode"/>
+                <field name="get_userGstin"/>
+                <field name="get_noValidDays"/>
+                <field name="get_validUpto"/>
+                <field name="get_status"/>
+            </tree>
+        </field>
+    </record>
+
+<!--    Get ewaybill details action window-->
+    <record id="action_get_ewaybill_details" model="ir.actions.act_window">
+        <field name="name">Get Eway Bill</field>
+        <field name="res_model">get.ewaybill</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+<!--    Menu for Get Eway bill-->
+    <menuitem id="main_menu_ewaybill_root"
+              name="Eway Bill"
+              web_icon="consolidate_eway_bill_addons,static/src/img/ewaybill.png"
+    />
+
+    <menuitem id="get_ewaybill_root"
+              parent="main_menu_ewaybill_root"
+              name="Get Eway Bill"
+              sequence="5"/>
+
+    <menuitem id="get_ewaybill"
+              parent="get_ewaybill_root"
+              name="E-Way Bill"
+              action="action_get_ewaybill_details"
+              sequence="5"/>
+
+
+</odoo>

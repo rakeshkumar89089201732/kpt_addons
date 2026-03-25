@@ -1,0 +1,129 @@
+// Base Typography and Elements
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+body {
+    font-size: $font-size-base;
+    font-family: lato, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+p {
+    font-family: lato, sans-serif;
+    font-size: $font-size-lg;
+    line-height: 26px;
+    color: #444;
+    margin-bottom: 0;
+
+    img {
+        margin: 0;
+    }
+}
+
+a,
+a:visited {
+    text-decoration: none;
+    transition: all $transition-slow;
+    outline: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #000000 !important;
+
+    &:hover {
+        text-decoration: none;
+        color: $primary-color;
+    }
+
+    &:focus {
+        text-decoration: none;
+        outline: 0;
+    }
+}
+
+p a,
+p a:visited {
+    line-height: inherit;
+    outline: 0;
+}
+
+ul,
+ol {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0;
+}
+
+ul {
+    margin: 0;
+    list-style-type: none;
+
+    &.square {
+        list-style: square outside;
+    }
+
+    &.circle {
+        list-style: circle outside;
+    }
+
+    &.disc {
+        list-style: disc outside;
+    }
+}
+
+ol {
+    list-style: decimal;
+    margin-left: 0;
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+    margin: 0;
+
+    li {
+        margin-bottom: 0;
+    }
+}
+
+button {
+    cursor: pointer;
+    outline: none !important;
+    letter-spacing: 0;
+}
+
+blockquote {
+    padding: 60px;
+    position: relative;
+    background: #853bfa;
+
+    &:before {
+        content: '\f10d';
+        font-family: fontawesome;
+        color: #fff;
+        font-size: 32px;
+        position: absolute;
+        left: 16px;
+        top: 46px;
+    }
+
+    p {
+        font-size: 17px;
+        color: #fff;
+    }
+}
+
+.blockquote-footer {
+    color: #fff;
+}
+
+select>option {
+    color: black;
+}

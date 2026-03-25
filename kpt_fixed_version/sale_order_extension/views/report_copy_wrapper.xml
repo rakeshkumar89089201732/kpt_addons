@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Generic wrapper template for handling multiple copies -->
+    <template id="report_copy_wrapper">
+        <t t-set="num_copies" t-value="num_copies or 1"/>
+        <t t-set="copy_labels" t-value="['Original', 'Duplicate', 'Triplicate']"/>
+        
+        <t t-foreach="range(num_copies)" t-as="copy_index">
+            <t t-set="copy_label" t-value="copy_labels[copy_index]"/>
+            <t t-raw="0"/>
+            <!-- Add page break between copies except for the last one -->
+            <div t-if="copy_index &lt; num_copies - 1" style="page-break-after: always;"/>
+        </t>
+    </template>
+</odoo>

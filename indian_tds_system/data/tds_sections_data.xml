@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- TDS Sections Data -->
+        <record id="tds_section_80c" model="tds.section">
+            <field name="name">Deduction under Section 80C</field>
+            <field name="section_code">80C</field>
+            <field name="description">Investments in PPF, ELSS, Life Insurance, etc.</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">150000</field>
+            <field name="is_unlimited">False</field>
+        </record>
+        
+        <record id="tds_section_80d" model="tds.section">
+            <field name="name">Deduction under Section 80D</field>
+            <field name="section_code">80D</field>
+            <field name="description">Medical Insurance Premium</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">25000</field>
+            <field name="is_unlimited">False</field>
+        </record>
+        
+        <record id="tds_section_80e" model="tds.section">
+            <field name="name">Deduction under Section 80E</field>
+            <field name="section_code">80E</field>
+            <field name="description">Interest on Education Loan</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">0</field>
+            <field name="is_unlimited">True</field>
+        </record>
+        
+        <record id="tds_section_80g" model="tds.section">
+            <field name="name">Deduction under Section 80G</field>
+            <field name="section_code">80G</field>
+            <field name="description">Donations to Charitable Organizations</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">0</field>
+            <field name="is_unlimited">True</field>
+        </record>
+        
+        <record id="tds_section_80tta" model="tds.section">
+            <field name="name">Deduction under Section 80TTA</field>
+            <field name="section_code">80TTA</field>
+            <field name="description">Interest on Savings Account</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">10000</field>
+            <field name="is_unlimited">False</field>
+        </record>
+        
+        <record id="tds_section_24b" model="tds.section">
+            <field name="name">Deduction under Section 24(b)</field>
+            <field name="section_code">24B</field>
+            <field name="description">Interest on Home Loan</field>
+            <field name="applicable_regime">old</field>
+            <field name="max_deduction_limit">200000</field>
+            <field name="is_unlimited">False</field>
+        </record>
+        
+        <!-- Sub-sections for 80C -->
+        <record id="tds_subsection_80c_ppf" model="tds.section.subsection">
+            <field name="section_id" ref="tds_section_80c"/>
+            <field name="name">Public Provident Fund (PPF)</field>
+            <field name="subsection_code">80C-PPF</field>
+            <field name="description">Investment in PPF</field>
+            <field name="max_limit">150000</field>
+        </record>
+        
+        <record id="tds_subsection_80c_elss" model="tds.section.subsection">
+            <field name="section_id" ref="tds_section_80c"/>
+            <field name="name">Equity Linked Savings Scheme (ELSS)</field>
+            <field name="subsection_code">80C-ELSS</field>
+            <field name="description">Investment in ELSS Mutual Funds</field>
+            <field name="max_limit">150000</field>
+        </record>
+        
+        <record id="tds_subsection_80c_life_insurance" model="tds.section.subsection">
+            <field name="section_id" ref="tds_section_80c"/>
+            <field name="name">Life Insurance Premium</field>
+            <field name="subsection_code">80C-LIC</field>
+            <field name="description">Life Insurance Premium</field>
+            <field name="max_limit">150000</field>
+        </record>
+        
+        <!-- Sub-sections for 80D -->
+        <record id="tds_subsection_80d_self" model="tds.section.subsection">
+            <field name="section_id" ref="tds_section_80d"/>
+            <field name="name">Medical Insurance - Self &amp; Family</field>
+            <field name="subsection_code">80D-SELF</field>
+            <field name="description">Medical Insurance Premium for Self and Family</field>
+            <field name="max_limit">25000</field>
+        </record>
+        
+        <record id="tds_subsection_80d_parents" model="tds.section.subsection">
+            <field name="section_id" ref="tds_section_80d"/>
+            <field name="name">Medical Insurance - Parents</field>
+            <field name="subsection_code">80D-PARENTS</field>
+            <field name="description">Medical Insurance Premium for Parents</field>
+            <field name="max_limit">25000</field>
+        </record>
+        
+    </data>
+</odoo>

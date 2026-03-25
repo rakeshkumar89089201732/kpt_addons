@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+     <record id="einvoice_addons_inherit_form_view" model="ir.ui.view">
+        <field name="name">einvoice.addons.inherit.form.view</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='invoice_tab']" position="after">
+                <page string="E-Invoice Details" name="einvoice_details">
+                    <group string="E-Invoice Details" name="e_invoice">
+                        <field name="ack_no" readonly="1"/>
+                        <field name="ack_date" readonly="1"/>
+                        <field name="irn" readonly="1"/>
+                        <field name="signed_qr" readonly="1"/>
+                        <button name="print_einvoice_data" type="object" string="Print" class="oe_highlight"/>
+                    </group>
+                    <group string="E-Invoice QR Code">
+                        <field name="e_qr_code" widget='image' class="oe_avatar" readonly="1"/>
+                        <button name="invoice_remove_qr_code" type="object" string="Remove QR" class="oe_highlight"/>
+                    </group>
+                    <group string="E-Invoice Barcode" name="barcode_einvoice">
+                        <field name="e_barcode" widget="image" options="{'size': [250, 100]}"/>
+                        <button name="einvoice_remove_barcode" type="object" string="Remove Barcode"
+                                class="oe_highlight"/>
+                    </group>
+                    <group string="E-Invoice Print Date" name="print_date">
+                        <field name="current_date"/>
+                    </group>
+                    <group string="E-Invoice Cancel Details">
+                        <field name="cancel_irn" readonly="1"/>
+                        <field name="cancel_date" readonly="1"/>
+                        <button name="print_cancel_einvoice_data" type="object" string="Print" class="oe_highlight"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+     </record>
+</odoo>

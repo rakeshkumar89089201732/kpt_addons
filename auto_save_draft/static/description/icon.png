@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <!-- Main gradient for background -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5D4157"/>
+      <stop offset="100%" style="stop-color:#A8416D"/>
+    </linearGradient>
+    
+    <!-- Subtle inner shadow -->
+    <radialGradient id="innerGlow" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </radialGradient>
+    
+    <!-- Clock face gradient -->
+    <linearGradient id="clockFace" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#F0EDF1"/>
+    </linearGradient>
+    
+    <!-- Green checkmark gradient -->
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34D399"/>
+      <stop offset="100%" style="stop-color:#10B981"/>
+    </linearGradient>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/>
+    </filter>
+    
+    <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feComponentTransfer in="SourceAlpha">
+        <feFuncA type="table" tableValues="1 0"/>
+      </feComponentTransfer>
+      <feGaussianBlur stdDeviation="2"/>
+      <feOffset dx="0" dy="1" result="offsetblur"/>
+      <feFlood flood-color="#000" flood-opacity="0.15"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background rounded square -->
+  <rect x="4" y="4" width="120" height="120" rx="24" fill="url(#bgGrad)"/>
+  <rect x="4" y="4" width="120" height="120" rx="24" fill="url(#innerGlow)"/>
+  
+  <!-- Stopwatch body -->
+  <g filter="url(#shadow)">
+    <!-- Main clock circle -->
+    <circle cx="64" cy="68" r="38" fill="url(#clockFace)" filter="url(#innerShadow)"/>
+    
+    <!-- Clock rim -->
+    <circle cx="64" cy="68" r="38" fill="none" stroke="#E5E0E6" stroke-width="2"/>
+    <circle cx="64" cy="68" r="36" fill="none" stroke="#D1CBD3" stroke-width="0.5"/>
+  </g>
+  
+  <!-- Top button -->
+  <rect x="58" y="22" width="12" height="10" rx="2" fill="#F0EDF1" stroke="#D1CBD3" stroke-width="1"/>
+  <rect x="60" y="20" width="8" height="6" rx="1.5" fill="#E5E0E6"/>
+  
+  <!-- Side button -->
+  <rect x="96" y="52" width="8" height="14" rx="2" fill="#F0EDF1" stroke="#D1CBD3" stroke-width="1"/>
+  
+  <!-- Clock tick marks -->
+  <g stroke="#A8416D" stroke-width="2" stroke-linecap="round">
+    <!-- 12 o'clock -->
+    <line x1="64" y1="36" x2="64" y2="42"/>
+    <!-- 3 o'clock -->
+    <line x1="96" y1="68" x2="90" y2="68"/>
+    <!-- 6 o'clock -->
+    <line x1="64" y1="100" x2="64" y2="94"/>
+    <!-- 9 o'clock -->
+    <line x1="32" y1="68" x2="38" y2="68"/>
+  </g>
+  
+  <!-- Small tick marks -->
+  <g stroke="#D1CBD3" stroke-width="1" stroke-linecap="round">
+    <line x1="79" y1="38" x2="76" y2="42"/>
+    <line x1="90" y1="53" x2="86" y2="56"/>
+    <line x1="90" y1="83" x2="86" y2="80"/>
+    <line x1="79" y1="98" x2="76" y2="94"/>
+    <line x1="49" y1="98" x2="52" y2="94"/>
+    <line x1="38" y1="83" x2="42" y2="80"/>
+    <line x1="38" y1="53" x2="42" y2="56"/>
+    <line x1="49" y1="38" x2="52" y2="42"/>
+  </g>
+  
+  <!-- Clock hands -->
+  <!-- Hour hand -->
+  <line x1="64" y1="68" x2="64" y2="52" stroke="#5D4157" stroke-width="3" stroke-linecap="round"/>
+  <!-- Minute hand -->
+  <line x1="64" y1="68" x2="78" y2="58" stroke="#5D4157" stroke-width="2" stroke-linecap="round"/>
+  <!-- Center dot -->
+  <circle cx="64" cy="68" r="3" fill="#5D4157"/>
+  
+  <!-- Green success badge with checkmark -->
+  <g filter="url(#shadow)">
+    <circle cx="88" cy="92" r="16" fill="url(#checkGrad)"/>
+    <circle cx="88" cy="92" r="14" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.3"/>
+    
+    <!-- Checkmark -->
+    <path d="M80 92 L85 97 L96 86" 
+          fill="none" 
+          stroke="white" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Subtle circular arrow hint (auto/repeat concept) -->
+  <path d="M44 50 Q34 58 34 68 Q34 80 44 88" 
+        fill="none" 
+        stroke="#A8416D" 
+        stroke-width="2" 
+        stroke-linecap="round"
+        stroke-dasharray="4 3"
+        opacity="0.4"/>
+</svg>

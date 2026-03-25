@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add smart button to employee form to view related offer -->
+    <record id="view_employee_form_inherit_offer" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.offer</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(employee_entry_exit.action_employee_offer)d" type="action" class="oe_stat_button" icon="fa-file-text-o" invisible="not id" context="{'search_default_employee_id': id, 'default_employee_id': id}">
+                    <field name="offer_count" widget="statinfo" string="Offers"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

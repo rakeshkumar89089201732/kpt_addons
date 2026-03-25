@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Employee Offer Form View -->
+    <record id="view_employee_offer_form" model="ir.ui.view">
+        <field name="name">employee.offer.form</field>
+        <field name="model">employee.offer</field>
+        <field name="arch" type="xml">
+            <form string="Employee Offer">
+                <header>
+                    <button name="action_send_offer" string="Send Offer" type="object" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_accept_offer" string="Accept Offer" type="object" class="btn-success" invisible="state != 'sent'"/>
+                    <button name="action_reject_offer" string="Reject Offer" type="object" class="btn-danger" invisible="state not in ['draft', 'sent']"/>
+                    <button name="action_cancel_offer" string="Cancel" type="object" class="btn-secondary" invisible="state in ['accepted', 'cancelled']"/>
+                    <button name="action_print_offer_letter" string="Print Offer Letter" type="object" class="btn-secondary" icon="fa-print"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,accepted"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_print_offer_letter" type="object" class="oe_stat_button" icon="fa-file-pdf-o" invisible="not employee_id">
+                            <field name="employee_id" widget="statinfo" string="Employee"/>
+                        </button>
+                        <button name="%(hr_contract.action_hr_contract)d" type="action" class="oe_stat_button" icon="fa-file-text-o" invisible="not contract_id" context="{'search_default_employee_id': employee_id}">
+                            <field name="contract_id" widget="statinfo" string="Contract"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="candidate_name" required="1"/>
+                            <field name="email" required="1"/>
+                            <field name="phone"/>
+                            <field name="position_id" required="1" options="{'no_create': True}"/>
+                            <field name="department_id" readonly="1"/>
+                            <!-- template_id domain relaxed — user can pick any active template -->
+                            <field name="template_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="offer_date" required="1"/>
+                            <field name="joining_date" required="1"/>
+                            <field name="offer_valid_till"/>
+                            <field name="user_id" groups="base.group_user"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Salary &amp; Allowances" name="salary">
+                            <group>
+                                <group string="Basic Salary">
+                                    <field name="basic_salary" required="1"/>
+                                </group>
+                                <group string="Gross Salary">
+                                    <field name="gross_salary" readonly="1"/>
+                                    <field name="ctc_annual" readonly="1"/>
+                                    <field name="effective_salary_annual" readonly="1"/>
+                                </group>
+                            </group>
+                            <group string="Allowances">
+                                <group>
+                                    <field name="hra"/>
+                                    <field name="conveyance_allowance"/>
+                                    <field name="medical_allowance"/>
+                                    <field name="vehicle_allowance"/>
+                                </group>
+                                <group>
+                                    <field name="washing_allowance"/>
+                                    <field name="other_allowance"/>
+                                    <field name="tour_expenses"/>
+                                </group>
+                            </group>
+                            <!-- Print / PDF settings -->
+                            <separator string="PDF Print Settings"/>
+                            <group string="PDF Customization" col="4">
+                                <group>
+                                    <field name="letter_title" placeholder="e.g., OFFER OF APPOINTMENT"/>
+                                    <field name="custom_footer_text" placeholder="Leave blank for default footer"/>
+                                </group>
+                                <group>
+                                    <field name="show_salary_table" widget="boolean_toggle"/>
+                                    <field name="show_acceptance_block" widget="boolean_toggle"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Roles &amp; Responsibilities" name="roles">
+                            <group>
+                                <field name="roles_responsibilities" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Define key roles and responsibilities..."/>
+                            </group>
+                        </page>
+                        <page string="Work Details" name="work_details">
+                            <group>
+                                <group>
+                                    <field name="work_location" placeholder="e.g., Head Office, Mumbai"/>
+                                    <field name="work_hours" placeholder="e.g., 9:00 AM - 6:00 PM"/>
+                                    <field name="probation_period"/>
+                                    <field name="notice_period"/>
+                                </group>
+                            </group>
+                            <separator string="Reporting Structure"/>
+                            <group>
+                                <field name="reporting_structure" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Define reporting hierarchy..."/>
+                            </group>
+                        </page>
+                        <page string="Benefits &amp; Perks" name="benefits">
+                            <group>
+                                <field name="benefits" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="List benefits and perks..."/>
+                            </group>
+                        </page>
+                        <page string="Letter Content" name="letter_content">
+                            <group string="Introduction">
+                                <field name="introduction_text" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Introduction paragraph..."/>
+                            </group>
+                            <separator string="Additional Terms"/>
+                            <group>
+                                <field name="additional_terms" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Additional terms specific to this offer..."/>
+                            </group>
+                            <separator string="Terms &amp; Conditions"/>
+                            <group>
+                                <field name="terms_conditions" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"/>
+                            </group>
+                            <separator string="Closing"/>
+                            <group>
+                                <field name="closing_text" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Closing paragraph..."/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Internal notes about this offer..."/>
+                        </page>
+                        <page string="Rejection Details" name="rejection" invisible="state != 'rejected'">
+                            <group>
+                                <field name="rejection_date" readonly="1"/>
+                                <field name="rejection_reason" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Employee Offer Tree View -->
+    <record id="view_employee_offer_tree" model="ir.ui.view">
+        <field name="name">employee.offer.tree</field>
+        <field name="model">employee.offer</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Offers" decoration-success="state == 'accepted'" decoration-danger="state == 'rejected'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="candidate_name"/>
+                <field name="position_id"/>
+                <field name="offer_date"/>
+                <field name="joining_date"/>
+                <field name="offer_valid_till"/>
+                <field name="gross_salary" sum="Total"/>
+                <field name="letter_title"/>
+                <field name="state" widget="badge" decoration-success="state == 'accepted'" decoration-danger="state == 'rejected'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Employee Offer Search View -->
+    <record id="view_employee_offer_search" model="ir.ui.view">
+        <field name="name">employee.offer.search</field>
+        <field name="model">employee.offer</field>
+        <field name="arch" type="xml">
+            <search string="Employee Offers">
+                <field name="name"/>
+                <field name="candidate_name"/>
+                <field name="email"/>
+                <field name="position_id"/>
+                <field name="department_id"/>
+                <field name="letter_title"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Sent" name="sent" domain="[('state', '=', 'sent')]"/>
+                <filter string="Accepted" name="accepted" domain="[('state', '=', 'accepted')]"/>
+                <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                <separator/>
+                <filter string="My Offers" name="my_offers" domain="[('user_id', '=', uid)]"/>
+                <filter string="With Employee" name="with_employee" domain="[('employee_id', '!=', False)]"/>
+                <filter string="Without Employee" name="without_employee" domain="[('employee_id', '=', False)]"/>
+                <filter string="Employee" name="employee_id" invisible="1" domain="[('employee_id', '=', active_id)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Position" name="group_position" context="{'group_by': 'position_id'}"/>
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Responsible" name="group_user" context="{'group_by': 'user_id'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by': 'offer_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Employee Offer Action -->
+    <record id="action_employee_offer" model="ir.actions.act_window">
+        <field name="name">Employee Offers</field>
+        <field name="res_model">employee.offer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new employee offer
+            </p>
+            <p>
+                Manage employee offer letters, track acceptance/rejection, and automatically create employees and contracts upon acceptance.
+            </p>
+        </field>
+    </record>
+
+    <!-- Reject Wizard Form -->
+    <record id="view_employee_offer_reject_wizard_form" model="ir.ui.view">
+        <field name="name">employee.offer.reject.wizard.form</field>
+        <field name="model">employee.offer.reject.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reject Offer">
+                <group>
+                    <field name="offer_id" readonly="1"/>
+                    <field name="rejection_reason" placeholder="Please provide a reason for rejection..." required="1"/>
+                </group>
+                <footer>
+                    <button string="Reject" name="action_reject" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

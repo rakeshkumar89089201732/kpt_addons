@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="get_ewaybill_products_form_view" model="ir.ui.view">
+        <field name="name">get.ewaybill.products.form.view</field>
+        <field name="model">get.products.ewaybill</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                     <div class="oe_title">
+                       <h1>
+                            <field name="name" readonly="1"/>
+                       </h1>
+                    </div>
+                    <group>
+                         <group string="Created By">
+                            <field name="company_id" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="created_date" readonly="1"/>
+                        </group>
+                        <group string="Product Info">
+                            <field name="get_eway_hsnCode" readonly="1"/>
+                            <field name="get_eway_product_itemno" readonly="1"/>
+                            <field name="get_eway_product_id" readonly="1"/>
+                            <field name="get_eway_productName" readonly="1"/>
+                            <field name="get_eway_quantity" readonly="1"/>
+                            <field name="get_eway_qtyUnit" readonly="1"/>
+                        </group>
+                        <group string="Tax Info">
+                            <field name="get_eway_cgstRate" readonly="1"/>
+                            <field name="get_eway_sgstRate" readonly="1"/>
+                            <field name="get_eway_igstRate" readonly="1"/>
+                            <field name="get_eway_cessRate" readonly="1"/>
+                            <field name="get_eway_cessNonAdvol" readonly="1"/>
+                            <field name="get_eway_taxableAmount" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                 <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="get_ewaybill_products_tree_view" model="ir.ui.view">
+        <field name="name">get.ewaybill.products.tree.view</field>
+        <field name="model">get.products.ewaybill</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="created_date"/>
+                <field name="company_id"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="get_eway_hsnCode"/>
+                <field name="get_eway_productName"/>
+                <field name="get_eway_quantity"/>
+                <field name="get_eway_qtyUnit"/>
+                <field name="get_eway_cgstRate"/>
+                <field name="get_eway_sgstRate"/>
+                <field name="get_eway_igstRate"/>
+                <field name="get_eway_cessRate"/>
+                <field name="get_eway_cessNonAdvol"/>
+                <field name="get_eway_taxableAmount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_get_ewaybill_products" model="ir.actions.act_window">
+        <field name="name">Products Logs</field>
+        <field name="res_model">get.products.ewaybill</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+
+    <menuitem id="get_ewaybill_products"
+              name="Products Logs"
+              action="action_get_ewaybill_products"
+              parent="get_ewaybill_root"
+              sequence="10"/>
+</odoo>

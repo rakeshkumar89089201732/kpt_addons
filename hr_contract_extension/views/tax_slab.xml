@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+      <!-- Form View for Tax Slabs -->
+    <record id="tax_slab_view_form" model="ir.ui.view">
+        <field name="name">tax.slab.view.form</field>
+        <field name="model">tax.slab</field>
+        <field name="arch" type="xml">
+            <form>
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Ex: New Tax Regime u/s 115BAC" nolabel="1"/>
+                        </h1>
+                    </div>
+
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_open_help_url" type="object" class="oe_stat_button" icon="fa-question-circle" title="Help">
+                            <div class="o_stat_info">
+                                <field name="help_link_count" widget="statinfo" string="Help"/>
+                            </div>
+                        </button>
+                    </div>
+
+                    <field name="active" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="tax_regime_type" invisible="1"/>
+                            <field name="date_start" />
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="financial_year_name" invisible="1"/>
+                            <field name="age_classification" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Tax Slab" name="tax_slab_lines">
+                            <field name="tax_regime_line_ids">
+                                <tree string="Tax Slabs" editable="bottom" default_order="tax_regime_amt_from">
+                                    <field name="tax_regime_description"/>
+                                    <field name="tax_regime_amt_from"/>
+                                    <field name="tax_regime_amt_to"/>
+                                    <field name="tax_regime_per"/>
+                                    <field name="surcharge"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Rebate / Exemptions" name="rebate_exemptions">
+                            <group>
+                                <group string="Rebate u/s 87A">
+                                    <field name="enable_rebate_87a" widget="boolean_toggle"/>
+                                    <field name="rebate_87a_income_limit" invisible="not enable_rebate_87a" required="enable_rebate_87a"/>
+                                    <field name="rebate_87a_amount" invisible="not enable_rebate_87a" required="enable_rebate_87a"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Allowed Schemes" name="allowed_schemes">
+                            <field name="allowed_scheme_ids" nolabel="1" class="o_full_width" options="{'no_create': True, 'no_create_edit': True}">
+                                <tree string="Allowed Deduction Schemes">
+                                    <field name="section_id"/>
+                                    <field name="scheme_name"/>
+                                    <field name="type_of_deduction"/>
+                                    <field name="max_limit_deduction"/>
+                                    <field name="scheme_details" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Help" name="help">
+                            <field name="help_link_ids" nolabel="1" class="o_full_width">
+                                <tree editable="bottom" string="Help Links">
+                                    <field name="sequence" optional="hide"/>
+                                    <field name="name"/>
+                                    <field name="url" widget="url"/>
+                                </tree>
+                            </field>
+                            <field name="help_url" invisible="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_tax_slab_help_link_tree" model="ir.ui.view">
+        <field name="name">tax.slab.help.link.tree</field>
+        <field name="model">tax.slab.help.link</field>
+        <field name="arch" type="xml">
+            <tree string="Help Links">
+                <field name="sequence" optional="hide"/>
+                <field name="tax_slab_id" optional="hide"/>
+                <field name="name"/>
+                <field name="url" widget="url"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tax_slab_help_link_form" model="ir.ui.view">
+        <field name="name">tax.slab.help.link.form</field>
+        <field name="model">tax.slab.help.link</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tax_slab_id" invisible="1"/>
+                            <field name="sequence"/>
+                            <field name="name"/>
+                            <field name="url" widget="url"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Action for Tax Slab -->
+    <record id="action_tax_slab" model="ir.actions.act_window">
+        <field name="name">Tax Slabs</field>
+        <field name="res_model">tax.slab</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" eval="False"/>
+    </record>
+
+    <!-- Search View for Tax Slabs -->
+    <record id="view_tax_slab_search" model="ir.ui.view">
+        <field name="name">tax.slab.search</field>
+        <field name="model">tax.slab</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="financial_year_name"/>
+                <field name="age_classification"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <filter string="Archived" name="archived" domain="[('active','=',False)]" context="{'active_test': False}"/>
+                <group expand="1" string="Group By">
+                    <filter string="Financial Year" name="group_by_fy" context="{'group_by':'financial_year_name'}"/>
+                    <filter string="Age Classification" name="group_by_age" context="{'group_by':'age_classification'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tax_slab" model="ir.actions.act_window">
+        <field name="search_view_id" ref="view_tax_slab_search"/>
+    </record>
+
+
+    <!-- Tree View for Tax Slabs -->
+    <record id="view_tax_slab_tree" model="ir.ui.view">
+        <field name="name">tax.slab.tree</field>
+        <field name="model">tax.slab</field>
+        <field name="arch" type="xml">
+            <tree string="Tax Slabs" >
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle" optional="show"/>
+                <field name="financial_year_name" force_save="1"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="age_classification"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Menu Items -->
+    <menuitem id="menu_tax_root" name="Tax Management" sequence="10" parent="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration" />
+    <menuitem id="menu_tax_slab" name="Tax Slabs"  parent="menu_tax_root" action="action_tax_slab" sequence="20"/>
+</odoo>

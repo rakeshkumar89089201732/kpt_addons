@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="kpt_frontdesk_frontdesk_view_form" model="ir.ui.view">
+        <field name="name">frontdesk.frontdesk.view.form.kpt.reception</field>
+        <field name="model">frontdesk.frontdesk</field>
+        <field name="inherit_id" ref="frontdesk.frontdesk_frontdesk_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[field[@name='theme']]" position="after">
+                <setting help="Show an animated receptionist with a guided welcome message on the kiosk.">
+                    <field name="kpt_enable_reception_animation"/>
+                </setting>
+                <setting help="Allow visitors to take or upload a selfie during frontdesk registration.">
+                    <field name="kpt_enable_selfie_check_in"/>
+                </setting>
+                <setting help="Speech bubble text shown by the animated receptionist.">
+                    <field name="kpt_welcome_message" placeholder="Please have a seat. You can register your selfie while checking in."/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

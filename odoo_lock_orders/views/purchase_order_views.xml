@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form_lock_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.lock.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Strict Lock: Make order_line readonly in purchase/done states -->
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="readonly">state in ['purchase', 'done', 'cancel']</attribute>
+            </xpath>
+            
+            <!-- Revoke Button -->
+            <xpath expr="//header" position="inside">
+                <button name="action_revoke_to_draft" 
+                        string="Revoke to Draft" 
+                        type="object" 
+                        groups="odoo_lock_orders.group_allow_unlock_orders"
+                        invisible="state == 'draft'"
+                        class="btn-danger"
+                        confirm="Are you sure you want to revoke this order to Draft? This allows editing but may affect consistency."/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_eway_bill" model="ir.actions.report">
+        <field name="name">E-Way Bill</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">eway_addons.report_eway_bill</field>
+        <field name="report_file">eway_addons.report_eway_bill</field>
+        <field name="print_report_name">('Eway Bill - %s' % (object.name)) or 'Order - %s' % (object.name)
+        </field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_eway_bill_cancelled" model="ir.actions.report">
+        <field name="name">Cancelled E-Way Bill</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">eway_addons.report_cancelled_eway_bill</field>
+        <field name="report_file">eway_addons.report_cancelled_eway_bill</field>
+        <field name="print_report_name">('Cancelled Eway Bill - %s' % (object.name)) or 'Order - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_parta_slip" model="ir.actions.report">
+        <field name="name">Part-A Slip</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">eway_addons.report_parta_slip</field>
+        <field name="report_file">eway_addons.report_parta_slip</field>
+        <field name="print_report_name">('Part-A Slip - %s' % (object.name)) or 'Order - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_parta_canclled_slip" model="ir.actions.report">
+        <field name="name">Part-A Slip Cancelled</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">eway_addons.report_parta_slip_cancelled</field>
+        <field name="report_file">eway_addons.report_parta_slip_cancelled</field>
+        <field name="print_report_name">('Cancelled Part-A Slip - %s' % (object.name)) or 'Order - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

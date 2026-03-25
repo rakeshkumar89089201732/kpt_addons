@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_employee_form_view_hr_pan_verification" model="ir.ui.view">
+        <field name="name">hr.employee.form.hr.pan.verification</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pan_number']" position="replace">
+                <label for="pan_number" string="PAN Number"/>
+                <!-- Row 1: PAN input + Verify button -->
+                <div class="o_row o_mb16">
+                    <field name="pan_number"
+                           placeholder="e.g., ABCDE1234F"
+                           class="o_col-4"
+                           style="text-transform: uppercase; min-width: 200px;"/>
+                    <button name="action_verify_pan"
+                            type="object"
+                            string="Verify PAN"
+                            class="btn-primary o_ml8"
+                            icon="fa-check-circle"
+                            help="Click to verify PAN (API or Offline based on settings)"/>
+                </div>
+
+                <!-- Row 2: Status badges aligned and wrapped -->
+                <div class="o_row o_wrap o_mb8" style="gap: 8px;">
+                    <field name="pan_verification_status"
+                           widget="badge"
+                           decoration-success="pan_verification_status == 'verified'"
+                           decoration-danger="pan_verification_status == 'failed'"
+                           decoration-muted="pan_verification_status == 'not_verified'"
+                           readonly="1"/>
+                    <field name="pan_active_status"
+                           widget="badge"
+                           decoration-success="pan_active_status == 'active'"
+                           decoration-danger="pan_active_status in ('cancelled', 'deactivated')"
+                           decoration-warning="pan_active_status == 'inactive'"
+                           decoration-muted="pan_active_status == 'unknown'"
+                           readonly="1"
+                           invisible="not pan_active_status"/>
+                    <field name="pan_verification_method"
+                           widget="badge"
+                           decoration-muted="pan_verification_method == 'offline'"
+                           decoration-success="pan_verification_method == 'api'"
+                           readonly="1"
+                           invisible="not pan_verification_method"/>
+                </div>
+
+                <!-- Row 3: Details/messages stacked for readability -->
+                <div class="o_row o_wrap" style="row-gap: 6px;">
+                    <field name="pan_verification_message"
+                           readonly="1"
+                           invisible="not pan_verification_message"
+                           class="text-muted o_col-12"/>
+                    <field name="pan_verified_name"
+                           readonly="1"
+                           invisible="not pan_verified_name"
+                           string="Verified Name (from Government DB)"
+                           class="o_col-6"/>
+                    <field name="pan_holder_type"
+                           readonly="1"
+                           invisible="not pan_holder_type"
+                           string="PAN Holder Type"
+                           class="o_col-4"/>
+                    <field name="pan_last_verified"
+                           readonly="1"
+                           invisible="not pan_last_verified"
+                           string="PAN Last Verified On"
+                           class="o_col-4"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

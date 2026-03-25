@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_calculation_tree" model="ir.ui.view">
+        <field name="name">tds.calculation.tree</field>
+        <field name="model">tds.calculation</field>
+        <field name="arch" type="xml">
+            <tree string="TDS Calculations">
+                <field name="employee_id"/>
+                <field name="financial_year"/>
+                <field name="tax_regime"/>
+                <field name="total_tax_liability"/>
+                <field name="remaining_tds"/>
+                <field name="monthly_tds"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tds_calculation_form" model="ir.ui.view">
+        <field name="name">tds.calculation.form</field>
+        <field name="model">tds.calculation</field>
+        <field name="arch" type="xml">
+            <form string="TDS Calculation">
+                <header>
+                    <button name="action_calculate" type="object" string="Calculate" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn-success" invisible="state != 'calculated'"/>
+                    <button name="action_lock" type="object" string="Lock" class="btn-secondary" invisible="state != 'approved'"/>
+                    <button name="action_reset_to_draft" type="object" string="Reset to Draft" invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,calculated,approved,locked"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="contract_id"/>
+                            <field name="financial_year"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="tax_regime"/>
+                            <field name="tax_slab_id"/>
+                            <field name="previous_employer_salary"/>
+                            <field name="previous_employer_tds"/>
+                            <field name="other_income"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Income Details">
+                            <group>
+                                <group>
+                                    <field name="annual_salary" readonly="1"/>
+                                    <field name="gross_total_income" readonly="1"/>
+                                    <field name="taxable_income" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="tax_before_rebate" readonly="1"/>
+                                    <field name="rebate_87a" readonly="1"/>
+                                    <field name="tax_after_rebate" readonly="1"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="surcharge" readonly="1"/>
+                                    <field name="surcharge_rate" readonly="1"/>
+                                    <field name="cess" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="total_tax_liability" readonly="1"/>
+                                    <field name="tds_already_deducted" readonly="1"/>
+                                    <field name="remaining_tds" readonly="1"/>
+                                    <field name="monthly_tds" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Deductions">
+                            <field name="deduction_line_ids">
+                                <tree editable="bottom">
+                                    <field name="section_id"/>
+                                    <field name="subsection_id"/>
+                                    <field name="declared_amount"/>
+                                    <field name="proof_submitted"/>
+                                    <field name="verified_amount"/>
+                                    <field name="allowed_amount" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Monthly Breakdown">
+                            <field name="monthly_breakdown_ids">
+                                <tree editable="bottom">
+                                    <field name="month_date"/>
+                                    <field name="month_name" readonly="1"/>
+                                    <field name="is_previous_employer" widget="boolean_toggle"/>
+                                    <field name="salary_amount"/>
+                                    <field name="tds_amount"/>
+                                    <field name="actual_tds_deducted"/>
+                                    <field name="remarks"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_calculation" model="ir.actions.act_window">
+        <field name="name">TDS Calculations</field>
+        <field name="res_model">tds.calculation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

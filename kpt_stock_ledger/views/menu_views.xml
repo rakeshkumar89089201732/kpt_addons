@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Stock Ledger Report in Accounting > Reporting -->
+    <menuitem id="menu_stock_ledger_report"
+              name="Stock Ledger"
+              parent="account.menu_finance_reports"
+              action="action_stock_ledger_report"
+              sequence="50"/>
+    
+    <!-- Also keep in Inventory for convenience -->
+    <menuitem id="menu_stock_ledger_inventory"
+              name="Stock Ledger"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="action_stock_ledger_report"
+              sequence="100"/>
+</odoo>

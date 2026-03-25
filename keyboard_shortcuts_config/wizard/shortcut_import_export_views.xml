@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_shortcut_import_export_form" model="ir.ui.view">
+        <field name="name">shortcut.import.export.form</field>
+        <field name="model">shortcut.import.export</field>
+        <field name="arch" type="xml">
+            <form string="Import/Export Shortcuts">
+                <group>
+                    <field name="operation" widget="radio"/>
+                </group>
+                
+                <group invisible="operation != 'export'">
+                    <field name="export_scope" widget="radio"/>
+                </group>
+                
+                <group invisible="operation != 'import'">
+                    <field name="import_mode" widget="radio"/>
+                    <field name="import_file" filename="import_filename"/>
+                    <field name="import_filename" invisible="1"/>
+                </group>
+                
+                <group invisible="not export_file">
+                    <field name="export_file" filename="export_filename"/>
+                    <field name="export_filename" invisible="1"/>
+                </group>
+                
+                <footer>
+                    <button string="Export" name="action_export" type="object" 
+                            class="btn-primary" invisible="operation != 'export'"/>
+                    <button string="Import" name="action_import" type="object" 
+                            class="btn-primary" invisible="operation != 'import'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_shortcut_import_export" model="ir.actions.act_window">
+        <field name="name">Import/Export Shortcuts</field>
+        <field name="res_model">shortcut.import.export</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

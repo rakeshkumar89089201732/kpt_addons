@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sequence_product_warranty" model="ir.sequence">
+        <field name="name">Product Warranty</field>
+        <field name="code">product.warranty</field>
+        <field name="prefix">WR/</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="sequence_product_warranty_claim" model="ir.sequence">
+        <field name="name">Product Warranty Claim</field>
+        <field name="code">product.warranty.claim</field>
+        <field name="prefix">WC/</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="sequence_product_warranty_renewal" model="ir.sequence">
+        <field name="name">Product Warranty Renewal</field>
+        <field name="code">product.warranty.renewal</field>
+        <field name="prefix">WRR/</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+</odoo>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_attendance_form_inherit_approval_status" model="ir.ui.view">
+        <field name="name">hr.attendance.form.inherit.approval.status</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="before">
+                <header>
+                    <field name="approval_state" widget="statusbar" statusbar_visible="draft,pending,approved,rejected"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_attendance_approval" type="object"
+                            class="oe_stat_button" icon="fa-check-square-o"
+                            invisible="not attendance_approval_id">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="approval_state" widget="badge"/>
+                            </span>
+                            <span class="o_stat_text">Approval</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+
+            <xpath expr="//group/group/field[@name='employee_id']" position="after">
+                <field name="attendance_approval_id" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='worked_hours']" position="replace">
+                <field name="worked_hours_edit" widget="float_time"/>
+                <field name="worked_hours" widget="float_time" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="hr_attendance_tree_inherit_approval_status" model="ir.ui.view">
+        <field name="name">hr.attendance.tree.inherit.approval.status</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='worked_hours']" position="after">
+                <field name="approval_state" widget="badge" optional="show"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='worked_hours']" position="replace">
+                <field name="worked_hours_edit" string="Work Hours" widget="float_time"/>
+                <field name="worked_hours" string="Work Hours" widget="float_time" column_invisible="True"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

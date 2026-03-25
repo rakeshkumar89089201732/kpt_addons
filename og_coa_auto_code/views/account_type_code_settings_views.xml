@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree View -->
+    <record id="view_acc_type_code_sett_tree" model="ir.ui.view">
+        <field name="name">account.type.code.settings.tree</field>
+        <field name="model">account.type.code.settings</field>
+        <field name="arch" type="xml">
+            <tree string="Account type code settings List" multi_edit="1" delete="0">
+                <field name="account_type" />
+                <field name="code_from" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_acc_type_code_sett_form" model="ir.ui.view">
+        <field name="name">account.type.code.settings.requisition.form</field>
+        <field name="model">account.type.code.settings</field>
+        <field name="arch" type="xml">
+            <form string="account type code settings Form">
+
+                <sheet>
+
+                    <group>
+                        <group>
+                            <field name="account_type" />
+                            <field name="code_from" />
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="acc_type_code_sett_action" model="ir.actions.act_window">
+        <field name="name">Account Type Code Settings</field>
+        <field name="res_model">account.type.code.settings</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create account type code settings!
+            </p>
+            <p>
+                The account type code settings for chart of accounts auto code.
+            </p>
+        </field>
+        <field name="view_id" ref="og_coa_auto_code.view_acc_type_code_sett_tree"/>
+    </record>
+
+    <menuitem id="menu_acc_type_code_sett" name="Account Type Code Settings" parent="account.account_account_menu" action="acc_type_code_sett_action" sequence="11" />
+
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="model_change_vehicle_form_view" model="ir.ui.view">
+        <field name="name">model.change.vehicle.form.view</field>
+        <field name="model">change.multivehicle</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="post,cancel"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Created Info">
+                            <field name="company_id" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                            <field name="created_date" readonly="1"/>
+                        </group>
+                        <group string="New Vehicle Info">
+                            <field name="change_invoice_no" readonly="1"/>
+                            <field name="change_ewbNo" readonly="1"/>
+                            <field name="change_group_name" readonly="1"/>
+                            <field name="change_groupNo" readonly="1"/>
+                            <field name="change_vehUpdDate" readonly="1"/>
+                        </group>
+                        <group string="Old Vehicle Info">
+                            <field name="change_old_vehno" readonly="1"/>
+                            <field name="change_new_vehno" readonly="1"/>
+                            <field name="change_old_docno" readonly="1"/>
+                            <field name="change_new_docno" readonly="1"/>
+                        </group>
+                        <group string="Place Info">
+                            <field name="change_from_place" readonly="1"/>
+                            <field name="change_from_state" readonly="1"/>
+                            <field name="change_reason" readonly="1"/>
+                            <field name="change_remarks" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="model_change_vehicle_tree_view" model="ir.ui.view">
+        <field name="name">model.change.vehicle.tree.view</field>
+        <field name="model">change.multivehicle</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="created_date"/>
+                <field name="user_id" widget="many2one_avatar_user"/>
+                <field name="company_id"/>
+                <field name="change_group_name"/>
+                <field name="change_vehUpdDate"/>
+                <field name="change_old_vehno"/>
+                <field name="change_new_vehno"/>
+                <field name="change_from_place"/>
+                <field name="change_reason"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_change_vehicle" model="ir.actions.act_window">
+        <field name="name">Change Vehicle</field>
+        <field name="res_model">change.multivehicle</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+    <menuitem id="change_vehicle_root"
+              name="Vehicle Change"
+              parent="multi_vehicle_root"
+              action="action_change_vehicle"
+              sequence="20"/>
+</odoo>

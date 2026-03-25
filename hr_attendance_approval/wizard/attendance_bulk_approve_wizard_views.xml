@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Bulk Approve Wizard Form View -->
+    <record id="hr_attendance_bulk_approve_wizard_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.bulk.approve.wizard.form</field>
+        <field name="model">hr.attendance.bulk.approve.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Approve Attendance">
+                <group>
+                    <group>
+                        <field name="action_type" widget="radio"/>
+                    </group>
+                </group>
+                <group invisible="action_type != 'approve_all'">
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="department_id"/>
+                        <field name="employee_ids" widget="many2many_tags"/>
+                    </group>
+                </group>
+                <group invisible="action_type != 'approve_selected'">
+                    <field name="attendance_approval_ids" nolabel="1">
+                        <tree string="Selected Records" create="false" delete="false">
+                            <field name="employee_id"/>
+                            <field name="attendance_date"/>
+                            <field name="check_in"/>
+                            <field name="check_out"/>
+                            <field name="state"/>
+                            <field name="can_approve" column_invisible="True"/>
+                        </tree>
+                    </field>
+                </group>
+                <group>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Records to approve:</strong> <field name="pending_count" nolabel="1" class="oe_inline"/>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_approve_all" string="Approve" type="object" class="btn-success"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bulk Reject Wizard Form View -->
+    <record id="hr_attendance_bulk_reject_wizard_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.bulk.reject.wizard.form</field>
+        <field name="model">hr.attendance.bulk.reject.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Reject Attendance">
+                <group>
+                    <field name="attendance_approval_ids" nolabel="1">
+                        <tree string="Selected Records" create="false" delete="false">
+                            <field name="employee_id"/>
+                            <field name="attendance_date"/>
+                            <field name="check_in"/>
+                            <field name="check_out"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </group>
+                <group>
+                    <field name="rejection_reason" placeholder="Please provide a reason for rejecting these records..."/>
+                </group>
+                <footer>
+                    <button name="action_reject_all" string="Reject All" type="object" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bulk Approve Action -->
+    <record id="hr_attendance_bulk_approve_wizard_action" model="ir.actions.act_window">
+        <field name="name">Bulk Approve Attendance</field>
+        <field name="res_model">hr.attendance.bulk.approve.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_hr_attendance_approval"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+    <!-- Bulk Reject Action -->
+    <record id="hr_attendance_bulk_reject_wizard_action" model="ir.actions.act_window">
+        <field name="name">Bulk Reject Attendance</field>
+        <field name="res_model">hr.attendance.bulk.reject.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_hr_attendance_approval"/>
+        <field name="binding_view_types">list</field>
+    </record>
+
+</odoo>

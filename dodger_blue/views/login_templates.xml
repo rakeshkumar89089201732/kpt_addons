@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Login template-->
+    <template id="login_templated_ext" inherit_id="web.login"
+              name="Login Ext">
+        <xpath expr="//button[@type='submit'][1]" position="replace">
+            <button type="submit"
+                    class="btn btn-primary btn-block cybro-login-btn">Log
+                in
+            </button>
+        </xpath>
+        <xpath expr="//t[@t-if='debug']/button" position="replace">
+            <button type="submit" name="redirect"
+                    value="/web/become"
+                    class="btn btn-link btn-sm btn-block cybro-super-btn">Log
+                in
+                as
+                superuser
+            </button>
+        </xpath>
+    </template>
+    <template inherit_id="web.webclient_bootstrap"
+              id="webclient_bootstrap_ext">
+        <xpath expr="//t[@t-set='body_classname']" position="after">
+            <div class="cybro-sidebar"/>
+        </xpath>
+    </template>
+    <!-- Add a specific class to body on login layout for gradient styling -->
+    <template id="login_layout_ext" inherit_id="web.login_layout" name="Login Layout Ext">
+        <xpath expr="//t[@t-set='body_classname']" position="replace">
+            <t t-set="body_classname" t-value="'bg-100 dodger-login-grad'"/>
+        </xpath>
+    </template>
+    <!--
+    Problematic override commented out per error report:
+    ParseError while overriding website.login_layout. We avoid template replacement
+    and use CSS to hide header on the login page instead to keep stability.
+    -->
+
+    <!--
+    Docstring:
+    The previous approach used position="inside" on a t-call, which QWeb
+    cannot parse because t-call does not accept child nodes. We comment
+    it out and provide a safe fix by setting no_header before the t-call.
+    -->
+    <!--
+    <template id="website_login_layout_hide_header" inherit_id="website.login_layout" name="Website Login Layout Hide Header (Deprecated)">
+        <xpath expr="//t[@t-call='website.layout']" position="inside">
+            <t t-set="no_header" t-value="True"/>
+        </xpath>
+    </template>
+    -->
+    <!--
+    Docstring:
+    Using position="before" on the website.layout t-call caused a ParseError.
+    Correct approach: replace the t-call block and set variables inside it.
+    -->
+    <!--
+    <template id="website_login_layout_hide_header_fix" inherit_id="website.login_layout" name="Website Login Layout Hide Header Fix (Deprecated)">
+        <xpath expr="//t[@t-call='website.layout']" position="before">
+            <t t-set="no_header" t-value="True"/>
+        </xpath>
+    </template>
+    -->
+    <!--
+    Docstring:
+    Replacing the website.layout t-call inside website.login_layout can trigger
+    ParseError in some render paths. To remain robust, we comment this override
+    and keep header hidden via CSS selectors on login pages. The gradient and
+    centering are handled by .oe_website_login_container styles.
+    -->
+    <!--
+    <template id="website_login_layout_hide_header_replace" inherit_id="website.login_layout" name="Website Login Layout Hide Header Replace">
+        <xpath expr="//t[@t-call='website.layout']" position="replace">
+            <t t-call="website.layout">
+                <t t-set="no_header" t-value="True"/>
+                <t t-set="body_classname" t-value="'bg-100 dodger-login-grad'"/>
+                <div class="oe_website_login_container dodger-login-centered" t-out="0"/>
+            </t>
+        </xpath>
+    </template>
+    -->
+    <!--
+    <template id="website_login_layout_ext" inherit_id="website.login_layout" name="Website Login Layout Ext">
+        <xpath expr="//t[@t-call='website.layout']" position="replace">
+            <t t-call="website.layout">
+                <t t-set="no_header" t-value="True"/>
+                <div class="oe_website_login_container dodger-login-centered" t-out="0"/>
+            </t>
+        </xpath>
+    </template>
+    -->
+    <!-- Logo inside the login card -->
+    <template id="login_logo_inside_card" inherit_id="web.login" name="Login Logo Inside Card">
+        <xpath expr="//div[@class='mb-3 field-login']" position="before">
+            <div class="dodger-login-logo text-center mb-4">
+                <img t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}"
+                     alt="Logo"
+                     style="max-height:80px; max-width: 100%; width:auto"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Hide the logo that appears above the login card -->
+    <!-- XPath approach doesn't work in this Odoo version, using CSS instead -->
+    <!--
+    <template id="login_layout_hide_card_logo" inherit_id="web.login_layout" name="Hide Card Logo in Login Layout">
+        <xpath expr="//div[hasclass('card-body')]/div[hasclass('border-bottom')]" position="attributes">
+            <attribute name="class" add="d-none" separator=" "/>
+        </xpath>
+    </template>
+    -->
+</odoo>

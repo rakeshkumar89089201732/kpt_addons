@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_return_xlsx_wizard_form" model="ir.ui.view">
+        <field name="name">tds.return.xlsx.wizard.form</field>
+        <field name="model">tds.return.xlsx.wizard</field>
+        <field name="arch" type="xml">
+            <form string="TDS return Quarterly report">
+                <sheet>
+                    <group>
+                        <group string="Period">
+                            <field name="fy_start_year"/>
+                            <field name="quarter"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="challan_id" options="{'no_create': False}"/>
+                            <field name="section_code"/>
+                        </group>
+                        <group string="Employees">
+                            <field name="employee_filter"/>
+                            <field name="employee_ids" widget="many2many_tags" invisible="employee_filter != 'selected'"/>
+                        </group>
+                        <group string="Template">
+                            <field name="template_path"/>
+                        </group>
+                    </group>
+
+                    <group string="Download" invisible="state != 'done'">
+                        <field name="output_file" filename="output_file_name" readonly="1"/>
+                        <field name="output_file_name" invisible="1"/>
+                    </group>
+
+                    <field name="state" invisible="1"/>
+                </sheet>
+                <footer>
+                    <button string="Generate" name="action_generate" type="object" class="btn-primary"/>
+                    <button string="Download" name="action_download" type="object" class="btn-primary" invisible="state != 'done'"/>
+                    <button string="Generate Another" name="action_new" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_return_xlsx_wizard" model="ir.actions.act_window">
+        <field name="name">TDS return Quarterly report</field>
+        <field name="res_model">tds.return.xlsx.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_tds_return_xlsx_report"
+              name="TDS return Quarterly report"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_tds_return_xlsx_wizard"
+              sequence="110"/>
+</odoo>

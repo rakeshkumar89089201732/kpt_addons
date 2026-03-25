@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="hr_contract_form14_tree_view" model="ir.ui.view">
+        <field name="name">hr.contract.form14.tree</field>
+        <field name="model">hr.contract.form14</field>
+        <field name="arch" type="xml">
+            <tree string="Form 14" create="true" edit="true">
+                <field name="name"/>
+                <field name="company_id" optional="show"/>
+                <field name="serial_no" optional="hide"/>
+                <field name="employee_id"/>
+                <field name="department_id" optional="show"/>
+                <field name="year"/>
+                <field name="month"/>
+                <field name="wages_period_from" optional="show"/>
+                <field name="wages_period_to" optional="show"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_contract_form14_form_view" model="ir.ui.view">
+        <field name="name">hr.contract.form14.form</field>
+        <field name="model">hr.contract.form14</field>
+        <field name="arch" type="xml">
+            <form string="Form 14">
+                <header>
+                    <button name="action_print" type="object" string="Print" class="btn-primary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="generated,locked"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="contract_id"/>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="department_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="year"/>
+                            <field name="month"/>
+                            <field name="wages_period_from"/>
+                            <field name="wages_period_to"/>
+                        </group>
+                    </group>
+
+                    <group string="Header">
+                        <group>
+                            <field name="serial_no"/>
+                            <field name="register_adult_child_no"/>
+                            <field name="name_of_factory"/>
+                            <field name="father_name"/>
+                            <field name="date_of_entry_into_service"/>
+                            <field name="date_of_discharge"/>
+                        </group>
+                        <group>
+                            <field name="payment_in_lieu_date"/>
+                            <field name="payment_in_lieu_amount"/>
+                        </group>
+                    </group>
+
+                    <group string="Register Columns">
+                        <group col="4">
+                            <field name="col_01_calendar_year_of_service"/>
+                            <field name="col_04_days_worked"/>
+                            <field name="col_05_days_layoff"/>
+                            <field name="col_06_days_maternity_leave"/>
+                            <field name="col_07_days_leave_earned_for_work"/>
+                            <field name="col_08_total_4_to_7" readonly="1"/>
+                            <field name="col_09_leave_balance_prev_year"/>
+                            <field name="col_10_leave_earned_during_year"/>
+                            <field name="col_11_total_9_10" readonly="1"/>
+                            <field name="col_12_scheme_79_8_accepted"/>
+                            <field name="col_13_leave_enjoyed_from"/>
+                            <field name="col_14_leave_enjoyed_to"/>
+                            <field name="col_15_leave_balance_after"/>
+                            <field name="col_16_normal_rate_of_wages"/>
+                            <field name="col_17_cash_equivalent_at_discharge"/>
+                            <field name="col_18_sick"/>
+                            <field name="col_19_without_pay"/>
+                            <field name="col_20_absent"/>
+                            <field name="col_21_remarks"/>
+                            <field name="col_22_extra"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_contract_form14_action" model="ir.actions.act_window">
+        <field name="name">Form 14</field>
+        <field name="res_model">hr.contract.form14</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="menu_hr_contract_form14"
+              name="Form 14"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="hr_contract_form14_action"
+              sequence="95"/>
+
+</odoo>

@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="odoo_product_catalog_selected_items.KanbanControllerPatch" t-inherit="product.ProductCatalogKanbanController" t-inherit-mode="extension">
+        <xpath expr="//button[contains(@class, 'o-kanban-button-back')]" position="before">
+            <button type="button" class="btn btn-info o_kanban_button_review_selected me-2" t-on-click="openSelectedItems">
+                <i class="fa fa-list-ul me-1"/> Review Selected
+                <span t-if="state.selectedCount > 0" class="badge rounded-pill bg-light text-dark ms-1" t-esc="state.selectedCount"/>
+            </button>
+        </xpath>
+    </t>
+</templates>

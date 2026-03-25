@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_warranty_tree" model="ir.ui.view">
+        <field name="name">product.warranty.tree</field>
+        <field name="model">product.warranty</field>
+        <field name="arch" type="xml">
+            <tree string="Warranties" decoration-danger="is_expired == True" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number"/>
+                <field name="warranty_type"/>
+                <field name="warranty_start_date"/>
+                <field name="warranty_end_date"/>
+                <field name="days_remaining"/>
+                <field name="is_expired" invisible="1"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-danger="state == 'expired'"/>
+                <field name="claim_count"/>
+                <field name="renewal_count"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_warranty_form" model="ir.ui.view">
+        <field name="name">product.warranty.form</field>
+        <field name="model">product.warranty</field>
+        <field name="arch" type="xml">
+            <form string="Warranty">
+                <header>
+                    <button name="action_activate" string="Activate" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['cancelled', 'expired']"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="oe_highlight" invisible="warranty_type != 'paid' or invoice_id"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,expired"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_claims" type="object" class="oe_stat_button" icon="fa-exclamation-triangle">
+                            <field name="claim_count" widget="statinfo" string="Claims"/>
+                        </button>
+                        <button name="action_view_renewals" type="object" class="oe_stat_button" icon="fa-refresh">
+                            <field name="renewal_count" widget="statinfo" string="Renewals"/>
+                        </button>
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not invoice_id">
+                            <field name="invoice_id" widget="statinfo" string="Invoice"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="product_id"/>
+                            <field name="serial_number"/>
+                            <field name="lot_id" domain="[('product_id', '=', product_id)]"/>
+                        </group>
+                        <group>
+                            <field name="warranty_type"/>
+                            <field name="warranty_start_date"/>
+                            <field name="warranty_end_date"/>
+                            <field name="warranty_period"/>
+                            <field name="warranty_price" invisible="warranty_type != 'paid'"/>
+                            <field name="days_remaining" readonly="1"/>
+                            <field name="is_expired" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="sale_order_line_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Add internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_warranty_search" model="ir.ui.view">
+        <field name="name">product.warranty.search</field>
+        <field name="model">product.warranty</field>
+        <field name="arch" type="xml">
+            <search string="Search Warranties">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="serial_number"/>
+                <field name="sale_order_id"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Free Warranty" name="free" domain="[('warranty_type', '=', 'free')]"/>
+                <filter string="Paid Warranty" name="paid" domain="[('warranty_type', '=', 'paid')]"/>
+                <separator/>
+                <filter string="Expiring Soon (Next 30 Days)" name="expiring_soon" domain="[('warranty_end_date', '&gt;=', (context_today() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')), ('warranty_end_date', '&lt;=', (context_today() + datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Warranty Type" name="group_type" context="{'group_by': 'warranty_type'}"/>
+                    <filter string="Customer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_product_warranty" model="ir.actions.act_window">
+        <field name="name">Warranties</field>
+        <field name="res_model">product.warranty</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first warranty!
+            </p>
+            <p>
+                Warranties can be created manually or automatically from sales orders.
+            </p>
+        </field>
+    </record>
+</odoo>

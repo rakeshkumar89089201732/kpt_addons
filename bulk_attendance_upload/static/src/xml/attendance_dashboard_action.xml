@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="bulk_attendance_upload.AttendanceDashboardIframeAction">
+        <div class="o_action o_attendance_dashboard_iframe_wrapper">
+            <div class="o_attendance_dashboard_iframe_container">
+                <iframe class="border-0" t-att-src="dashboardUrl"/>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+
+    <!-- Action for Tax Slab -->
+    <record id="action_tax_scheme" model="ir.actions.act_window">
+        <field name="name">Tax Scheme</field>
+        <field name="res_model">tds.section.scheme</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- Tree View for Tax Slabs -->
+    <record id="view_tax_scheme_tree" model="ir.ui.view">
+        <field name="name">tax.scheme.tree</field>
+        <field name="model">tds.section.scheme</field>
+        <field name="arch" type="xml">
+            <tree string="Tax Scheme" editable="top">
+                <field name="section_id" options="{'no_open': True, 'no_create_edit': True}"/>
+                <field name="scheme_name" />
+                <field name="applicable_regime" widget="badge" decoration-info="applicable_regime == 'both'" decoration-success="applicable_regime == 'old'" decoration-warning="applicable_regime == 'new'"/>
+                <field name="scheme_details"/>
+                <field name="type_of_deduction"/>
+                <field name="max_limit_deduction"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Menu Items -->
+    <menuitem id="menu_tax_scheme" name="Tax Scheme"  parent="menu_tax_root" action="action_tax_scheme" sequence="20"/>
+</odoo>

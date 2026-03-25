@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_salary_sheet_filter_wizard_form" model="ir.ui.view">
+        <field name="name">salary.sheet.filter.wizard.form</field>
+        <field name="model">salary.sheet.filter.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Filter Salary Sheet">
+                <sheet>
+                    <group invisible="state == 'done'">
+                        <group string="Upload Salary Sheet">
+                            <field name="file_data" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                        </group>
+                        
+                        <group string="Filter Criteria">
+                            <field name="employee_ids" widget="many2many_tags" placeholder="Leave empty for all employees"/>
+                            <field name="date_from" placeholder="Joining date from"/>
+                            <field name="date_to" placeholder="Joining date to"/>
+                            <field name="salary_month"/>
+                            <field name="salary_year"/>
+                        </group>
+                    </group>
+                    
+                    <group invisible="state == 'draft'">
+                        <group string="Download Filtered Sheet">
+                            <field name="output_file" filename="output_file_name" readonly="1"/>
+                            <field name="output_file_name" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <field name="state" invisible="1"/>
+                </sheet>
+                
+                <footer>
+                    <button string="Generate Filtered Sheet" 
+                            name="action_generate_filtered_sheet" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state == 'done'"/>
+                    <button string="Download" 
+                            name="action_download_filtered_sheet" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state == 'draft'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_salary_sheet_filter_wizard" model="ir.actions.act_window">
+        <field name="name">Filter Salary Sheet</field>
+        <field name="res_model">salary.sheet.filter.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_salary_sheet_filter"
+              name="Filter Salary Sheet"
+              parent="hr_payroll.menu_hr_payroll_root"
+              action="action_salary_sheet_filter_wizard"
+              sequence="100"/>
+</odoo>

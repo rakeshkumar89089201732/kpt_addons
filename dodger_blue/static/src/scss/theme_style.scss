@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+body {
+  font-size: 14px;
+  font-family: lato, sans-serif
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: poppins, sans-serif
+}
+
+p {
+  font-family: lato, sans-serif;
+  font-size: 15px;
+  line-height: 26px;
+  color: #444;
+  margin-bottom: 0
+}
+
+p img {
+  margin: 0
+}
+
+a, a:visited {
+  text-decoration: none;
+  transition: all .3s ease-in-out;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  outline: 0;
+  font-family: poppins, sans-serif
+}
+
+a:hover {
+  text-decoration: none
+}
+
+a:focus {
+  text-decoration: none;
+  outline: 0
+}
+
+p a, p a:visited {
+  line-height: inherit;
+  outline: 0
+}
+
+ul, ol {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0
+}
+
+ul {
+  margin: 0;
+  list-style-type: none
+}
+
+ol {
+  list-style: decimal
+}
+
+ol, ul.square, ul.circle, ul.disc {
+  margin-left: 0
+}
+
+ul.square {
+  list-style: square outside
+}
+
+ul.circle {
+  list-style: circle outside
+}
+
+ul.disc {
+  list-style: disc outside
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin: 0
+}
+
+ul ul li, ul ol li, ol ol li, ol ul li {
+  margin-bottom: 0
+}
+
+button {
+  cursor: pointer;
+  outline: none !important;
+  letter-spacing: 0
+}
+
+blockquote {
+  padding: 60px;
+  position: relative;
+  background: #853bfa
+}
+
+blockquote:before {
+  content: '\f10d';
+  font-family: fontawesome;
+  color: #fff;
+  font-size: 32px;
+  position: absolute;
+  left: 16px;
+  top: 46px
+}
+
+blockquote p {
+  font-size: 17px;
+  color: #fff
+}
+
+.blockquote-footer {
+  color: #fff
+}
+/*==============login================*/
+/* Apply gradient to login layout’s body class */
+body.bg-100 {
+  min-height: 100vh;
+  // Previous subtle gradient kept for reference:
+  // background-image: linear-gradient(135deg, #eaf2ff 0%, #e2ecff 55%, #f6fbff 100%);
+  // More visible Apple-style multi-layer gradient (intensified):
+  background:
+    radial-gradient(1400px 900px at 20% -10%, rgba(142, 197, 255, 1.0) 0%, rgba(142, 197, 255, 0.00) 62%),
+    radial-gradient(1200px 840px at 100% 0%, rgba(224, 195, 252, 1.0) 0%, rgba(224, 195, 252, 0.00) 57%),
+    radial-gradient(1400px 1000px at -10% 100%, rgba(94, 231, 223, 0.92) 0%, rgba(94, 231, 223, 0.00) 52%),
+    radial-gradient(1300px 900px at 80% 100%, rgba(255, 183, 197, 0.90) 0%, rgba(255, 183, 197, 0.00) 57%),
+    radial-gradient(900px 700px at 50% 50%, rgba(160, 220, 255, 0.35) 0%, rgba(160, 220, 255, 0.00) 60%),
+  linear-gradient(135deg, #eaf2ff 0%, #f6fbff 100%) !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+body.bg-100 #wrapwrap {
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+/* Hide website header on login page to show only card logo */
+body.bg-100 header#top,
+body.dodger-login-grad header#top,
+body:has(.o_database_list) header#top {
+  display: none !important;
+}
+
+/* Dedicated login class to ensure gradient applies even with bg-100 color */
+body.dodger-login-grad {
+  min-height: 100vh;
+  // More visible Apple-style gradient (intensified):
+  background:
+    radial-gradient(1400px 900px at 20% -10%, rgba(142, 197, 255, 1.0) 0%, rgba(142, 197, 255, 0.00) 62%),
+    radial-gradient(1200px 840px at 100% 0%, rgba(224, 195, 252, 1.0) 0%, rgba(224, 195, 252, 0.00) 57%),
+    radial-gradient(1400px 1000px at -10% 100%, rgba(94, 231, 223, 0.92) 0%, rgba(94, 231, 223, 0.00) 52%),
+    radial-gradient(1300px 900px at 80% 100%, rgba(255, 183, 197, 0.90) 0%, rgba(255, 183, 197, 0.00) 57%),
+    radial-gradient(900px 700px at 50% 50%, rgba(160, 220, 255, 0.35) 0%, rgba(160, 220, 255, 0.00) 60%),
+  linear-gradient(135deg, #eaf2ff 0%, #f6fbff 100%) !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+// Docstring:
+// Previously hid the login card’s logo block and image to remove duplicates.
+// Those rules are commented out to show the logo inside the card as requested.
+// The commented rules are kept below for reference.
+// .bg-100 .o_database_list .card-body .border-bottom,
+// body.bg-100 .o_database_list .card-body .border-bottom,
+// body.dodger-login-grad .o_database_list .card-body .border-bottom {
+//   display: none !important;
+// }
+// body.bg-100 .o_database_list .card-body img[alt="Logo"],
+// body.dodger-login-grad .o_database_list .card-body img[alt="Logo"] {
+//   display: none !important;
+// }
+body.bg-100 .o_database_list .card-body img[alt="Logo"],
+body.dodger-login-grad .o_database_list .card-body img[alt="Logo"] {
+  max-height: 80px;
+  max-width: 100%;
+  width: auto;
+  display: block !important;
+  margin: 0 auto 6px;
+}
+
+.oe_website_login_container {
+    padding: 1rem 5rem 5rem;
+    min-height: 100vh;
+    // Previous container gradient kept for reference:
+    // background: linear-gradient(135deg, #eaf2ff 0%, #e2ecff 55%, #f6fbff 100%) !important;
+    // Intensified Apple-style layered gradient for the container:
+    background:
+      radial-gradient(1400px 900px at 20% -10%, rgba(142, 197, 255, 1.0) 0%, rgba(142, 197, 255, 0.00) 62%),
+      radial-gradient(1200px 840px at 100% 0%, rgba(224, 195, 252, 1.0) 0%, rgba(224, 195, 252, 0.00) 57%),
+      radial-gradient(1400px 1000px at -10% 100%, rgba(94, 231, 223, 0.92) 0%, rgba(94, 231, 223, 0.00) 52%),
+      radial-gradient(1300px 900px at 80% 100%, rgba(255, 183, 197, 0.90) 0%, rgba(255, 183, 197, 0.00) 57%),
+      radial-gradient(900px 700px at 50% 50%, rgba(160, 220, 255, 0.35) 0%, rgba(160, 220, 255, 0.00) 60%),
+      linear-gradient(135deg, #eaf2ff 0%, #f6fbff 100%) !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    /* Center content when header is hidden */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#wrapwrap .container    .o_database_list{
+max-width: unset !important;
+}
+
+.oe_login_form{
+    width: max-content;
+    }
+
+.oe_login_form, .oe_signup_form, .oe_reset_password_form {
+  color: #fff !important;
+}
+.oe_login_form, .oe_signup_form, .oe_reset_password_form {
+    /* Restore login card (not the big wrapper) */
+    /* Glassmorphism card */
+    max-width: 420px;
+    position: relative;
+    margin: 48px auto;
+    border-radius: 22px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    backdrop-filter: saturate(180%) blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.40);
+    box-shadow: 0 30px 80px rgba(62, 141, 247, 0.38);
+}
+
+.oe_login_form input {
+    height: 44px !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.65) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.6);
+    color: #1f2937;
+}
+
+.oe_login_form i.fa.fa-database {
+  margin-left: 6px;
+}
+
+.oe_login_form a.btn.btn-secondary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 !important;
+}
+.cybro-login-btn {
+    height: 48px;
+    border-radius: 14px;
+    /* Previous flat color kept for reference */
+    /* background: #3e8df7; */
+    background-image: linear-gradient(180deg, #4ea1ff 0%, #3e8df7 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: #ffffff !important;
+    font-size: 16px;
+    box-shadow: 0 10px 24px rgba(62, 141, 247, 0.24), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.cybro-super-btn {
+    color: #fff;
+    font-size: 14px;
+  text-decoration: none;
+}
+.cybro-super-btn:hover {
+    color: black !important;
+    text-decoration: none;
+}
+.cybro-bg footer{
+    background: #303641 !important;
+    color: #fff;
+    padding-top: 2rem;
+}
+.cybro-bg .navbar {
+    background: #303641 !important;
+    color: #fff;
+}
+.cybro-bg footer a,.cybro-bg footer p,.cybro-bg header a,.cybro-bg header p {
+    color: #fff;
+}
+.cybro-bg .navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+.homepage .dropdown-menu.js_usermenu.dropdown-menu-right.show {
+    background: #303641;
+}
+.oe_website_login_container .btn-secondary {
+    color: #FFFFFF;
+    background-color: #afafaf;
+    border-color: #afafae;
+}
+/* Card container from web.login_layout */
+body.dodger-login-grad .container .card.o_database_list {
+  /* Previous card style kept for reference */
+  /* background: rgba(255, 255, 255, 0.45); */
+  /* Remove white card wrapper per request */
+  max-width: 440px !important;
+  border-radius: 22px;
+  background: transparent !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  /* Ensure bg-100 class doesn’t reintroduce white */
+  color: inherit;
+}
+body.dodger-login-grad .container .card.o_database_list .card-body {
+  padding: 0;
+}
+body.dodger-login-grad .container .card.o_database_list .border-bottom {
+  border-color: transparent !important;
+}
+
+.dodger-login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dodger-login-logo img {
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.08));
+}
+.dodger-login-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+input {
+    border: 1px solid #e4eaec !important;
+}
+.oe_login_form, .oe_signup_form, .oe_reset_password_form {
+    color: #37474f !important;
+    font-weight: 300 !important;
+}
+form label {
+    font-weight: 300 !important;
+}
+@media (max-width: 400px) {
+  .oe_login_form {
+       max-width: 300px;
+  }
+  }
+
+.card-body {
+    background-color: rgba(255, 255, 255, 0%) !important;
+    color: #000000;
+}
+
+body.bg-100 .o_database_list .card-body .text-center.pb-3.border-bottom.mb-4 img,
+body.dodger-login-grad .card-body .text-center.pb-3.border-bottom.mb-4 img {
+    display: none !important;
+}
+/*==============//login================*/

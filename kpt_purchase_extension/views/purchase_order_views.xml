@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Show rounding on Purchase Order totals -->
+        <record id="view_purchase_order_form_rounding" model="ir.ui.view">
+            <field name="name">purchase.order.form.kpt.rounding</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@class='oe_subtotal_footer']/field[@name='tax_totals']" position="after">
+                    <div class="oe_subtotal_footer_separator" style="display:flex; align-items:center; justify-content:flex-end; column-gap:6px; font-size:12px; line-height:16px; flex-wrap:nowrap; white-space:nowrap;">
+                        <span>Round Off (+/-)</span>
+                        <span style="display:inline-flex; align-items:center;">
+                            <field name="kpt_rounding_amount" nolabel="1" readonly="1" widget="monetary"/>
+                        </span>
+                        <span style="padding-left:10px;">Total (Rounded)</span>
+                        <span style="display:inline-flex; align-items:center;">
+                            <field name="kpt_amount_total_rounded" nolabel="1" readonly="1" widget="monetary"/>
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

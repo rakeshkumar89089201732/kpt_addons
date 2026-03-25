@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_inventory_dashboard" 
+              name="Dashboard" 
+              parent="stock.menu_stock_root" 
+              action="action_inventory_dashboard_client" 
+              sequence="1"/>
+</odoo>

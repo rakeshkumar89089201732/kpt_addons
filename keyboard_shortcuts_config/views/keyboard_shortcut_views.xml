@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Keyboard Shortcut Tree View -->
+    <record id="view_keyboard_shortcut_tree" model="ir.ui.view">
+        <field name="name">keyboard.shortcut.tree</field>
+        <field name="model">keyboard.shortcut</field>
+        <field name="arch" type="xml">
+            <tree string="Keyboard Shortcuts" decoration-muted="not active" decoration-warning="has_conflicts">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="shortcut_display"/>
+                <field name="action_id"/>
+                <field name="scope"/>
+                <field name="user_id" optional="show"/>
+                <field name="apply_on_view"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="has_conflicts" invisible="1"/>
+                <field name="is_system" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Keyboard Shortcut Form View -->
+    <record id="view_keyboard_shortcut_form" model="ir.ui.view">
+        <field name="name">keyboard.shortcut.form</field>
+        <field name="model">keyboard.shortcut</field>
+        <field name="arch" type="xml">
+            <form string="Keyboard Shortcut">
+                <header>
+                    <button name="action_test_shortcut" string="Test Shortcut" type="object" class="btn-primary"/>
+                    <button name="action_duplicate_for_user" string="Duplicate for Me" type="object" 
+                            invisible="scope != 'global'" class="btn-secondary"/>
+                    <button name="action_view_conflicts" string="View Conflicts" type="object" 
+                            invisible="not has_conflicts" class="btn-warning"/>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'active'}"/>
+                </header>
+                <sheet>
+                    <field name="has_conflicts" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_conflicts" type="object" class="oe_stat_button" 
+                                icon="fa-exclamation-triangle" invisible="not has_conflicts">
+                            <field name="conflict_count" widget="statinfo" string="Conflicts"/>
+                        </button>
+                    </div>
+                    
+                    <widget name="web_ribbon" title="System" bg_color="bg-info" invisible="not is_system"/>
+                    <widget name="web_ribbon" title="Conflicts!" bg_color="bg-danger" invisible="not has_conflicts"/>
+                    
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g., Save Record"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Shortcut Configuration">
+                            <field name="sequence"/>
+                            <field name="shortcut_display" readonly="1"/>
+                            <field name="key_code" placeholder="e.g., Enter, s, F1" required="1"/>
+                            <label for="ctrl_key" string="Modifier Keys"/>
+                            <div>
+                                <field name="ctrl_key" widget="boolean_toggle" string="Ctrl"/>
+                                <field name="alt_key" widget="boolean_toggle" string="Alt"/>
+                                <field name="shift_key" widget="boolean_toggle" string="Shift"/>
+                                <field name="meta_key" widget="boolean_toggle" string="Meta/Cmd"/>
+                            </div>
+                        </group>
+                        
+                        <group string="Action">
+                            <field name="action_id" required="1"/>
+                            <field name="action_type" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Scope">
+                            <field name="scope" widget="radio" required="1"/>
+                            <field name="user_id" invisible="scope == 'global'" 
+                                   required="scope == 'user'"/>
+                        </group>
+                        
+                        <group string="Context">
+                            <field name="apply_on_view" required="1"/>
+                            <field name="model_ids" widget="many2many_tags" 
+                                   placeholder="Leave empty for all models"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <group string="Behavior">
+                            <field name="prevent_default"/>
+                            <field name="stop_propagation"/>
+                        </group>
+                        <group string="System">
+                            <field name="is_system" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Describe what this shortcut does..."/>
+                        </page>
+                        <page string="Conflicts" invisible="not has_conflicts">
+                            <field name="conflict_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="shortcut_display"/>
+                                    <field name="scope"/>
+                                    <field name="user_id"/>
+                                    <field name="apply_on_view"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Keyboard Shortcut Search View -->
+    <record id="view_keyboard_shortcut_search" model="ir.ui.view">
+        <field name="name">keyboard.shortcut.search</field>
+        <field name="model">keyboard.shortcut</field>
+        <field name="arch" type="xml">
+            <search string="Search Shortcuts">
+                <field name="name"/>
+                <field name="key_code"/>
+                <field name="action_id"/>
+                <field name="user_id"/>
+                <separator/>
+                <filter string="My Shortcuts" name="my_shortcuts" 
+                        domain="[('user_id', '=', uid)]"/>
+                <filter string="Global Shortcuts" name="global_shortcuts" 
+                        domain="[('scope', '=', 'global')]"/>
+                <separator/>
+                <filter string="Active" name="active" 
+                        domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" 
+                        domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="With Conflicts" name="has_conflicts" 
+                        domain="[('has_conflicts', '=', True)]"/>
+                <separator/>
+                <filter string="Form View" name="form_view" 
+                        domain="[('apply_on_view', '=', 'form')]"/>
+                <filter string="List View" name="list_view" 
+                        domain="[('apply_on_view', '=', 'list')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Scope" name="group_scope" context="{'group_by': 'scope'}"/>
+                    <filter string="Action" name="group_action" context="{'group_by': 'action_id'}"/>
+                    <filter string="View Type" name="group_view" context="{'group_by': 'apply_on_view'}"/>
+                    <filter string="User" name="group_user" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Keyboard Shortcut Kanban View -->
+    <record id="view_keyboard_shortcut_kanban" model="ir.ui.view">
+        <field name="name">keyboard.shortcut.kanban</field>
+        <field name="model">keyboard.shortcut</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="shortcut_display"/>
+                <field name="action_id"/>
+                <field name="scope"/>
+                <field name="active"/>
+                <field name="has_conflicts"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.has_conflicts.raw_value ? 'border-warning' : ''}">
+                            <div class="o_kanban_record_top">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div class="o_kanban_record_subtitle">
+                                        <span class="badge badge-pill badge-info">
+                                            <field name="shortcut_display"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <field name="action_id"/>
+                                <div>
+                                    <span t-if="record.scope.raw_value == 'global'" class="badge badge-success">Global</span>
+                                    <span t-if="record.scope.raw_value == 'user'" class="badge badge-primary">Personal</span>
+                                    <span t-if="record.has_conflicts.raw_value" class="badge badge-warning">Conflict</span>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <field name="active" widget="boolean_toggle"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Keyboard Shortcut Action -->
+    <record id="action_keyboard_shortcut" model="ir.actions.act_window">
+        <field name="name">Keyboard Shortcuts</field>
+        <field name="res_model">keyboard.shortcut</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first keyboard shortcut
+            </p>
+            <p>
+                Configure custom keyboard shortcuts to improve your productivity.<br/>
+                You can create personal shortcuts or global shortcuts for all users.
+            </p>
+        </field>
+    </record>
+
+    <!-- My Shortcuts Action -->
+    <record id="action_my_shortcuts" model="ir.actions.act_window">
+        <field name="name">My Shortcuts</field>
+        <field name="res_model">keyboard.shortcut</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="context">{'default_user_id': uid, 'default_scope': 'user', 'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your personal keyboard shortcuts
+            </p>
+            <p>
+                These shortcuts will only work for you and won't affect other users.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_quarterly_return_tree" model="ir.ui.view">
+        <field name="name">tds.quarterly.return.tree</field>
+        <field name="model">tds.quarterly.return</field>
+        <field name="arch" type="xml">
+            <tree string="TDS Quarterly Returns">
+                <field name="return_name"/>
+                <field name="financial_year"/>
+                <field name="quarter"/>
+                <field name="period_from"/>
+                <field name="period_to"/>
+                <field name="total_tds_deducted"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tds_quarterly_return_form" model="ir.ui.view">
+        <field name="name">tds.quarterly.return.form</field>
+        <field name="model">tds.quarterly.return</field>
+        <field name="arch" type="xml">
+            <form string="TDS Quarterly Return">
+                <header>
+                    <button name="action_generate_return" type="object" string="Generate Return" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_file_return" type="object" string="Mark as Filed" class="btn-success" invisible="state != 'generated'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,generated,filed,acknowledged"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="return_name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="financial_year"/>
+                            <field name="quarter"/>
+                            <field name="period_from"/>
+                            <field name="period_to"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_pan" readonly="1"/>
+                            <field name="company_tan" readonly="1"/>
+                            <field name="filing_date" invisible="state not in ['filed', 'acknowledged']"/>
+                            <field name="acknowledgment_number" invisible="state != 'acknowledged'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Deduction Lines">
+                            <field name="return_line_ids" readonly="1">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="employee_pan"/>
+                                    <field name="salary_paid"/>
+                                    <field name="tds_deducted"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_salary_paid"/>
+                                <field name="total_tds_deducted"/>
+                                <field name="total_tds_deposited"/>
+                            </group>
+                        </page>
+                        <page string="Challans">
+                            <field name="challan_ids" widget="many2many_tags" domain="[('state', '=', 'reconciled')]"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_quarterly_return" model="ir.actions.act_window">
+        <field name="name">Quarterly Returns (24Q)</field>
+        <field name="res_model">tds.quarterly.return</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_allow_unlock_orders" model="res.groups">
+            <field name="name">Unlock / Revoke Orders</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+            <field name="comment">Allows the user to revoke confirmed orders to draft state.</field>
+        </record>
+    </data>
+</odoo>

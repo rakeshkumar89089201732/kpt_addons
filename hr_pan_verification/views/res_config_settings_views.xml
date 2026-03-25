@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_hr_pan_verification" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.hr.pan.verification</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='hr']" position="inside">
+                <block title="HR PAN Verification" name="hr_pan_verification_setting_container">
+                    <setting id="hr_pan_verification_mode" string="Validation Mode" help="Choose between offline validation (format check only) or API validation (with government database).">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="hr_pan_verification_use_offline" string="Use Offline Validation" class="col-lg-3 o_light_label"/>
+                                <field name="hr_pan_verification_use_offline"/>
+                                <div class="text-muted col-lg-9">
+                                    <small>Enable this to validate PAN format and structure without external API calls. Disable to use API validation with government database.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="hr_pan_verification_api" 
+                             string="PAN Verification API" 
+                             help="Configure the PAN verification API endpoint and credentials."
+                             invisible="hr_pan_verification_use_offline">
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label for="hr_pan_verification_api_url" string="API URL" class="col-lg-3 o_light_label"/>
+                                <field name="hr_pan_verification_api_url" placeholder="https://..."/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="hr_pan_verification_api_host" string="API Host" class="col-lg-3 o_light_label"/>
+                                <field name="hr_pan_verification_api_host" placeholder="...rapidapi.com"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="hr_pan_verification_api_key" string="API Key" class="col-lg-3 o_light_label"/>
+                                <field name="hr_pan_verification_api_key" password="True"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="hr_pan_verification_auto_verify" string="Auto-Verify PAN" help="Verify PAN automatically when PAN Number is changed.">
+                        <field name="hr_pan_verification_auto_verify"/>
+                    </setting>
+                    <setting id="hr_pan_verification_allow_employee_create" string="Allow Employee Creation" help="Allow creating employee from PAN from Contract form.">
+                        <field name="hr_pan_verification_allow_employee_create"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

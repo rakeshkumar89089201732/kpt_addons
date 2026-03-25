@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="keyboard_shortcuts_config.ShortcutRecorder" owl="1">
+        <div class="shortcut_recorder">
+            <button 
+                type="button" 
+                class="btn btn-secondary"
+                t-att-class="state.recording ? 'btn-warning' : 'btn-secondary'"
+                t-on-click="startRecording"
+                t-on-keydown="onKeyDown">
+                <i class="fa fa-keyboard-o me-1"/>
+                <t t-esc="getDisplayText()"/>
+            </button>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_get_ewaybill,get.ewaybill,model_get_ewaybill,base.group_user,1,1,1,0
+access_get_products_ewaybill,get.products.ewaybill,model_get_products_ewaybill,base.group_user,1,1,1,0
+access_get_ewaybill_vehicles,get.ewaybill.vehicles,model_get_ewaybill_vehicles,base.group_user,1,1,1,0

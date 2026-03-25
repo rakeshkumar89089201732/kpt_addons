@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Invoice/Bill already has built-in invoice_cash_rounding_id field -->
+    <!-- No custom round-off fields needed - using Odoo's standard cash rounding -->
+</odoo>

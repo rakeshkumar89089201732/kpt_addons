@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_extension" model="ir.ui.view">
+        <field name="name">sale.order.view.form.extension</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form" position="attributes">
+<!--                <attribute name="delete">False</attribute>-->
+<!--                <attribute name="create">False</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='pricelist_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@id='send_by_email_primary']" position="attributes">
+                <attribute name="string">Send Quotation</attribute>
+                <attribute name="invisible">state != 'draft'</attribute>
+            </xpath>
+            <xpath expr="//header/button[@id='action_confirm']"
+                   position="before">
+                <button name="action_revert" string="Set To Quotation" type="object" class="btn-warning"
+                        invisible="state != 'sent'"/>
+            </xpath>
+            <xpath expr="//page/field[@name='order_line']/tree/field[@name='product_packaging_id']" position="after">
+                <!--                <field name="product_tmpl_id" invisible="1" />-->
+                <field name="pricelist_item" domain="[('product_tmpl_id', '=', product_template_id)]"/>
+            </xpath>
+            <xpath expr="//header/button[@name='action_preview_sale_order']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+
+                             <field name="sale_order_reference" placeholder="Add the Order Reference" readonly="state != 'draft'"/>
+
+
+            </xpath>
+            <xpath expr="//field[@name='name']" position="replace">
+                <div class="oe_title">
+                    <h5>
+                        <field name="name" readonly="1"/>
+                    </h5>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='product_template_id']" position="attributes">
+                <attribute name="options">{'no_open': True, 'no_create': True}</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='payment_action_void']" position="after">
+                <field name="is_send_products" invisible="1" />
+                <button name="action_send_products" string="Send Products" type="object" invisible="not is_send_products" class="btn btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_order_tree_view_extension" model="ir.ui.view">
+        <field name="name">view.order.tree.view.extension</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+<!--                <attribute name="delete">False</attribute>-->
+<!--                <attribute name="create">False</attribute>-->
+            </xpath>
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="sale_order_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!--Hiding Unnessary print menu in sale module-->
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+    <record id="sale_pdf_quote_builder.action_report_saleorder_raw" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+    <record id="sale.action_report_pro_forma_invoice" model="ir.actions.report">
+        <field name="binding_model_id" eval="False"/>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_24q_template_xlsx_wizard_form" model="ir.ui.view">
+        <field name="name">tds.24q.template.xlsx.wizard.form</field>
+        <field name="model">tds.24q.template.xlsx.wizard</field>
+        <field name="arch" type="xml">
+            <form string="TDS 24Q Report (XLSX)">
+                <sheet>
+                    <group>
+                        <group string="Period">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group string="Employees">
+                            <field name="employee_filter"/>
+                            <field name="employee_ids" widget="many2many_tags" invisible="employee_filter != 'selected'"/>
+                        </group>
+                        <group string="Template">
+                            <field name="template_path"/>
+                        </group>
+                    </group>
+
+                    <group string="Download" invisible="state != 'done'">
+                        <field name="output_file" filename="output_file_name" readonly="1"/>
+                        <field name="output_file_name" invisible="1"/>
+                    </group>
+
+                    <field name="state" invisible="1"/>
+                </sheet>
+                <footer>
+                    <button string="Generate" name="action_generate" type="object" class="btn-primary"/>
+                    <button string="Download" name="action_download" type="object" class="btn-primary" invisible="state != 'done'"/>
+                    <button string="Generate Another" name="action_new" type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_24q_template_xlsx_wizard" model="ir.actions.act_window">
+        <field name="name">TDS return 24Q annual report</field>
+        <field name="res_model">tds.24q.template.xlsx.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_tds_24q_template_xlsx_report"
+              name="TDS return 24Q annual report"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="action_tds_24q_template_xlsx_wizard"
+              sequence="120"/>
+</odoo>

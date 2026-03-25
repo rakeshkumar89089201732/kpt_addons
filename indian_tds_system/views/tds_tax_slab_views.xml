@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_tax_slab_tree" model="ir.ui.view">
+        <field name="name">tds.tax.slab.tree</field>
+        <field name="model">tds.tax.slab</field>
+        <field name="arch" type="xml">
+            <tree string="TDS Tax Slabs">
+                <field name="name"/>
+                <field name="financial_year"/>
+                <field name="regime_type"/>
+                <field name="age_category"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tds_tax_slab_form" model="ir.ui.view">
+        <field name="name">tds.tax.slab.form</field>
+        <field name="model">tds.tax.slab</field>
+        <field name="arch" type="xml">
+            <form string="TDS Tax Slab">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="financial_year"/>
+                            <field name="regime_type"/>
+                            <field name="age_category"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="enable_rebate_87a"/>
+                            <field name="rebate_87a_income_limit" invisible="not enable_rebate_87a"/>
+                            <field name="rebate_87a_max_amount" invisible="not enable_rebate_87a"/>
+                            <field name="standard_deduction_amount"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Slab Lines">
+                            <field name="slab_line_ids">
+                                <tree editable="bottom">
+                                    <field name="income_from"/>
+                                    <field name="income_to"/>
+                                    <field name="tax_rate"/>
+                                    <field name="description"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_tax_slab" model="ir.actions.act_window">
+        <field name="name">Tax Slabs</field>
+        <field name="res_model">tds.tax.slab</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+      <record id="action_active_eway_bill_pdf" model="ir.actions.report">
+         <field name="name">Active E-Way Bill</field>
+         <field name="model">get.ewaybill</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">consolidate_eway_bill_addons.report_active_eway_bill_pdf</field>
+         <field name="report_file">consolidate_eway_bill_addons.report_active_eway_bill_pdf</field>
+         <field name="print_report_name">"E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_get_ewaybill"/>
+         <field name="binding_type">report</field>
+    </record>
+
+
+     <record id="action_cancelled_eway_bill_pdf" model="ir.actions.report">
+         <field name="name">Cancelled E-Way Bill</field>
+         <field name="model">get.ewaybill</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">consolidate_eway_bill_addons.report_cancelled_eway_bill_pdf</field>
+         <field name="report_file">consolidate_eway_bill_addons.report_cancelled_eway_bill_pdf</field>
+         <field name="print_report_name">"Cancelled E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_get_ewaybill"/>
+         <field name="binding_type">report</field>
+    </record>
+</odoo>

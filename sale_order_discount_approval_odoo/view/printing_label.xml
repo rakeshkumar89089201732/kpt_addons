@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_picking_printing_label_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.view.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Print Labels and sticker" name="process_printing_data" type="object" class="oe_highlight" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_open_label_type']" position="attributes">
+                <attribute name="invisible" >1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <template id="report_packing_sticker">
+        <t t-call="web.basic_layout">
+        <style>
+            .boldcss{
+                font_weight:600 !important;
+                font-family: sans-serif !important;
+            }
+            header{
+                height:0;
+            }
+             td {
+                padding: 2px; /* Minimize padding */
+                margin: 0;   /* Remove margin */
+            }
+            @page { margin: 0; } /* Forcing all margins to zero */
+            body { margin: 0; padding: 0; }
+
+        </style>
+            
+            <div class="page" style="margin:0px; padding:0px;">
+                <t t-set="loop" t-value="0"/>
+                <t t-set="line_count" t-value="len(docs.move_ids)"/>
+                <t t-foreach="docs.move_ids" t-as="record">
+                    <t t-set="loop" t-value="loop+1"/>
+                    <div style="width: 50% !important; float: left; border: 1px solid black; padding: 10px;height:531.5px !important;">
+
+                        <table>
+                            <tr>
+                                <td style="width:5%;"><t t-esc="loop"/></td>
+                                <td colspan="2" style="padding-left:20%;font-size:14px;"><strong class="boldcss">Packing Stickers</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%;"></td>
+                                <td colspan="2" style="padding-left:20%;font-size:14px;"><strong class="boldcss">Made in India</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Consigner :</strong></td>
+                                <td style="width: 65%;">
+                                <div t-field="docs.company_id.partner_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;"/>
+                                <span t-if="docs.company_id.partner_id.street" t-field="docs.company_id.partner_id.street" /> 
+                                <span t-if="docs.company_id.partner_id.street2" t-field="docs.company_id.partner_id.street2" />
+                                <span t-if="docs.company_id.partner_id.city" t-field="docs.company_id.partner_id.city" />-
+                                <span t-if="docs.company_id.partner_id.zip" t-field="docs.company_id.partner_id.zip" />,
+                                <span  t-field="docs.company_id.partner_id.state_id.name" />-
+                                <span  t-field="docs.company_id.partner_id.state_id.code" />,
+                                <span t-if="docs.company_id.partner_id.country_id" t-field="docs.company_id.partner_id.country_id.name" />.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Consignee :</strong></td>
+                                <td style="width: 65%;">
+                                <div t-field="docs.partner_id.name" class="fw-bold" style="font_weight:600 !important;font-family: sans-serif !important;"/>
+                                <span t-if="docs.partner_id.street" t-field="docs.partner_id.street" /> 
+                                <span t-if="docs.partner_id.street2" t-field="docs.partner_id.street2" />
+                                <span t-if="docs.partner_id.city" t-field="docs.partner_id.city" />-
+                                <span t-if="docs.partner_id.zip" t-field="docs.partner_id.zip" />,
+                                <span  t-field="docs.partner_id.state_id.name" />-
+                                <span  t-field="docs.partner_id.state_id.code" />,
+                                <span t-if="docs.partner_id.country_id" t-field="docs.partner_id.country_id.name" />.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Invoice No :</strong></td>
+                                <td style="width: 65%;"><div t-field="docs.origin" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Item :</strong></td>
+                                <td style="width: 65%;"><div t-field="record.product_id.name" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">KPT CODE :</strong></td>
+                                <td style="width: 65%;"><div t-field="record.product_id.default_code" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">BRAZIL CODE :</strong></td>
+                                <td style="width: 65%;"><div /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Qty :</strong></td>
+                                <td style="width: 65%;"><div t-field="record.quantity" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Net Weight :</strong></td>
+                                <td style="width: 65%;"><div t-field="record.quantity" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Gross Weight :</strong></td>
+                                <td style="width: 65%;"><div t-field="record.quantity" /></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;"></td>
+                                <td style="width: 30%;"><strong class="boldcss">Lot No :</strong></td>
+                                <td style="width: 65%;"><span><t t-esc="loop"/>/<t t-esc="line_count"/></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- Page break for every 4 records -->
+                    <t t-if="loop % 4 == 0">
+                        <div style="clear: both; page-break-after: always;"></div>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <record id="action_report_product_product" model="ir.actions.report">
+        <field name="name">Product Report</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sale_order_discount_approval_odoo.report_packing_sticker</field>
+        <field name="report_file">sale_order_discount_approval_odoo.report_packing_sticker</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Account Category Views -->
+    <record id="view_global_account_category_tree" model="ir.ui.view">
+        <field name="name">global.account.category.tree</field>
+        <field name="model">global.account.category</field>
+        <field name="arch" type="xml">
+            <tree string="Account Categories" editable="bottom">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_global_account_category" model="ir.actions.act_window">
+        <field name="name">Account Categories</field>
+        <field name="res_model">global.account.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_global_account_category"
+              name="Account Categories"
+              parent="account.account_account_menu"
+              action="action_global_account_category"
+              sequence="4"/>
+
+    <!-- Account Type Views -->
+    <record id="view_global_account_type_tree" model="ir.ui.view">
+        <field name="name">global.account.type.tree</field>
+        <field name="model">global.account.type</field>
+        <field name="arch" type="xml">
+            <tree string="Account Types" editable="bottom">
+                <field name="category_id"/>
+                <field name="name"/>
+                <field name="base_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_global_account_type_form" model="ir.ui.view">
+        <field name="name">global.account.type.form</field>
+        <field name="model">global.account.type</field>
+        <field name="arch" type="xml">
+            <form string="Account Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="category_id"/>
+                            <field name="name"/>
+                            <field name="base_type"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_global_account_type" model="ir.actions.act_window">
+        <field name="name">Account Types</field>
+        <field name="res_model">global.account.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_global_account_type"
+              name="Account Types"
+              parent="account.account_account_menu"
+              action="action_global_account_type"
+              sequence="5"/>
+</odoo>

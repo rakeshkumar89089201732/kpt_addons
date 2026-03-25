@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    This is used to add new fields to sale.order-->
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">
+            sale.order.view.form.inherit.sale.order.discount.approval.odoo
+        </field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='locked']" position="after">
+                <field name="is_discount_approval" invisible="1"/>
+            </xpath>
+            <!--            <xpath expr="//header/button[@name='action_preview_sale_order']" position="attributes">-->
+            <!--                <attribute name="invisible">is_discount_approval == True</attribute>-->
+            <!--            </xpath>-->
+            <xpath expr="//header/button[@id='send_by_email_primary']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@id='send_proforma_primary']" position="attributes">
+                <attribute name="invisible">is_discount_approval == True or state != 'draft'</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm']" position="after">
+                <button name="action_send_discount"
+                        id="action_send_discount"
+                        data-hotkey="v" string="Send For Discount Approve" class="btn-primary"
+                        type="object"
+                        invisible="is_discount_approval == False or state == 'waiting_for_approval'"/>
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm']"
+                   position="after">
+                <button name="action_waiting_approval"
+                        id="action_waiting_approval"
+                        data-hotkey="v" string="Discount Approve" class="btn-primary"
+                        type="object"
+                        groups="sale_order_discount_approval_odoo.sale_order_discount_approval_odoo_group_manager"
+                        invisible="state not in ['waiting_for_approval']"/>
+                <button name="action_reject"
+                        id="action_reject"
+                        string="Discount Reject" class="btn-danger"
+                        type="object"
+                        groups="sale_order_discount_approval_odoo.sale_order_discount_approval_odoo_group_manager"
+                        invisible="state not in ['waiting_for_approval']"/>
+
+            </xpath>
+            <xpath expr="//header/button[@id='action_confirm']"
+                   position="attributes">
+                <attribute name="invisible">is_discount_approval == True or state != 'sent'</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm'][2]"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//header/button[@id='send_proforma']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@id='send_by_email']"
+                   position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_cancel']"
+                   position="replace">
+                <button name="action_cancel" type="object" string="Cancel"
+                        groups="sale_order_discount_approval_odoo.sale_order_discount_approval_odoo_group_manager"
+                        invisible="state not in ['draft', 'sent','sale','waiting_for_approval'] or id == False"
+                        data-hotkey="z"/>
+            </xpath>
+            <xpath
+                    expr="//notebook/page[@name='other_information']/group/group[@name='sales_person']/field[@name='team_id']"
+                    position="after">
+                <field name="approval_user_id"/>
+            </xpath>
+            <xpath
+                    expr="//page[@name='order_lines']/field[@name='order_line']/tree/field[@name='discount']"
+                    position="attributes">
+                <attribute name="readonly">state != 'draft'</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <field name="reject_reason_ids" invisible="1" />
+                <button name="action_view_reject_reasons" type="object" class="oe_stat_button" string="Reject Reasons"
+                        icon="fa-pencil-square-o" invisible="not reject_reason_ids"/>
+            </xpath>
+            <xpath expr="//button[@name='action_open_discount_wizard']" position="attributes">
+                <attribute name="invisible">state != 'draft'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!--    Below is the discount reject reaject action and form-->
+
+    <record model="ir.ui.view" id="view_discount_sale_reject_reason">
+        <field name="name">Discount Reject Reason View</field>
+        <field name="model">discount.reject.reason</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form string="Discount Reject Reason">
+                <sheet>
+                    <group col="4">
+                        <field name="reason" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="submit" type="object" name="submit_reason" class="btn btn-primary"
+                            data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z" class="btn btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="list_discount_sale_reject_reason">
+        <field name="name">Discount Reject Reason List</field>
+        <field name="model">discount.reject.reason</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <tree string="Discount Reject Reason">
+                <field name="reason"/>
+                <field name="sale_order_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_discount_sale_reject_reason" model="ir.actions.act_window">
+        <field name="name">Reject Reason Sale</field>
+        <field name="res_model">discount.reject.reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

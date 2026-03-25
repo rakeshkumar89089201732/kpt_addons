@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inventory_dashboard_template" name="Inventory Dashboard">
+        <t t-call="web.layout">
+            <t t-set="title">Inventory Dashboard</t>
+            <style>
+                html, body { overflow-x: hidden; overflow-y: auto; min-height: 100%; }
+                .inventory-dashboard {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    min-height: 100vh;
+                    padding: 40px 30px;
+                    padding-bottom: 60px;
+                }
+                .dashboard-header {
+                    margin-bottom: 40px;
+                    text-align: center;
+                    color: white;
+                }
+                .dashboard-header h1 {
+                    font-size: 42px;
+                    font-weight: 800;
+                    margin-bottom: 10px;
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    letter-spacing: -0.5px;
+                }
+                .dashboard-header .subtitle {
+                    color: rgba(255,255,255,0.9);
+                    font-size: 18px;
+                    margin: 0;
+                    font-weight: 300;
+                }
+                .summary-cards {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 25px;
+                    margin-bottom: 40px;
+                }
+                .summary-card {
+                    background: white;
+                    border-radius: 16px;
+                    padding: 30px 25px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    position: relative;
+                    overflow: hidden;
+                    border-top: 4px solid;
+                }
+                .summary-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+                    animation: shimmer 2s infinite;
+                }
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+                .summary-card:hover {
+                    transform: translateY(-8px) scale(1.02);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                }
+                .summary-card.primary {
+                    border-top-color: #3498db;
+                    background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
+                }
+                .summary-card.success {
+                    border-top-color: #27ae60;
+                    background: linear-gradient(135deg, #ffffff 0%, #e8f8f0 100%);
+                }
+                .summary-card.warning {
+                    border-top-color: #f39c12;
+                    background: linear-gradient(135deg, #ffffff 0%, #fff8e8 100%);
+                }
+                .summary-card.info {
+                    border-top-color: #9b59b6;
+                    background: linear-gradient(135deg, #ffffff 0%, #f4e8f8 100%);
+                }
+                .summary-card .card-content-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+                .summary-card .card-icon-wrapper {
+                    width: 70px;
+                    height: 70px;
+                    border-radius: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 32px;
+                    flex-shrink: 0;
+                }
+                .summary-card.primary .card-icon-wrapper {
+                    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+                }
+                .summary-card.success .card-icon-wrapper {
+                    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+                }
+                .summary-card.warning .card-icon-wrapper {
+                    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+                }
+                .summary-card.info .card-icon-wrapper {
+                    background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+                    color: white;
+                    box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
+                }
+                .summary-card .card-content {
+                    flex: 1;
+                    margin-left: 20px;
+                }
+                .summary-card h3 {
+                    font-size: 36px;
+                    font-weight: 800;
+                    margin: 0 0 8px 0;
+                    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    line-height: 1.2;
+                }
+                .summary-card p {
+                    color: #7f8c8d;
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .dashboard-section {
+                    background: white;
+                    border-radius: 16px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 25px;
+                    overflow: hidden;
+                    transition: box-shadow 0.3s;
+                }
+                .dashboard-section:hover {
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+                }
+                .dashboard-section .card-header {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    padding: 20px 25px;
+                    border-bottom: 3px solid rgba(255,255,255,0.2);
+                }
+                .dashboard-section .card-header h4 {
+                    margin: 0;
+                    font-size: 20px;
+                    font-weight: 700;
+                    display: flex;
+                    align-items: center;
+                }
+                .dashboard-section .card-header i {
+                    margin-right: 12px;
+                    font-size: 22px;
+                }
+                .dashboard-section .card-body {
+                    padding: 25px;
+                }
+                .table {
+                    margin-bottom: 0;
+                }
+                .table thead th {
+                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                    font-weight: 700;
+                    color: #2c3e50;
+                    border-bottom: 2px solid #dee2e6;
+                    padding: 15px;
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    letter-spacing: 0.5px;
+                }
+                .table tbody td {
+                    padding: 15px;
+                    vertical-align: middle;
+                    border-bottom: 1px solid #f0f0f0;
+                }
+                .table tbody tr:hover {
+                    background-color: #f8f9fa;
+                    transform: scale(1.01);
+                    transition: all 0.2s;
+                }
+                .table tbody tr:last-child td {
+                    border-bottom: none;
+                }
+                .badge {
+                    padding: 6px 12px;
+                    border-radius: 20px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .badge-warning {
+                    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+                    color: white;
+                    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+                }
+                .top-product-item, .warehouse-item, .category-item {
+                    padding: 15px;
+                    margin-bottom: 12px;
+                    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+                    border-radius: 10px;
+                    border-left: 4px solid;
+                    transition: all 0.2s;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                }
+                .top-product-item:hover, .warehouse-item:hover, .category-item:hover {
+                    transform: translateX(5px);
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                }
+                .top-product-item {
+                    border-left-color: #3498db;
+                }
+                .warehouse-item {
+                    border-left-color: #27ae60;
+                }
+                .category-item {
+                    border-left-color: #9b59b6;
+                }
+                .top-product-item h5, .warehouse-item h5, .category-item h5 {
+                    margin: 0 0 8px 0;
+                    font-size: 15px;
+                    font-weight: 700;
+                }
+                .top-product-item a, .warehouse-item a, .category-item a {
+                    color: #2c3e50;
+                    text-decoration: none;
+                    transition: color 0.2s;
+                }
+                .top-product-item a:hover, .warehouse-item a:hover, .category-item a:hover {
+                    color: #3498db;
+                }
+                .top-product-item p, .warehouse-item p, .category-item p {
+                    margin: 5px 0 0 0;
+                    color: #7f8c8d;
+                    font-size: 13px;
+                }
+                .top-product-item strong {
+                    color: #3498db;
+                    font-size: 18px;
+                    margin-right: 8px;
+                }
+                .section-title {
+                    margin: 40px 0 25px 0;
+                    text-align: center;
+                }
+                .section-title h2 {
+                    color: white;
+                    font-size: 28px;
+                    font-weight: 700;
+                    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    margin: 0;
+                }
+                .section-title i {
+                    margin-right: 10px;
+                }
+                canvas {
+                    max-height: 300px;
+                }
+                @media (max-width: 768px) {
+                    .inventory-dashboard {
+                        padding: 20px 15px;
+                    }
+                    .dashboard-header h1 {
+                        font-size: 32px;
+                    }
+                    .summary-cards {
+                        grid-template-columns: 1fr;
+                        gap: 15px;
+                    }
+                    .summary-card {
+                        padding: 20px;
+                    }
+                    .summary-card h3 {
+                        font-size: 28px;
+                    }
+                }
+            </style>
+            <div class="inventory-dashboard">
+                <div class="dashboard-header">
+                    <h1>Inventory Dashboard</h1>
+                    <p class="subtitle">Real-time overview of inventory metrics and stock levels</p>
+                </div>
+
+                <!-- Executive View Cards -->
+                <div class="section-title">
+                    <h2><i class="fa fa-line-chart"></i> Executive View</h2>
+                </div>
+                <div class="summary-cards">
+                    <div class="summary-card primary">
+                        <div class="card-content-wrapper">
+                            <div class="card-content">
+                                <h3 id="total-value-exec">$0</h3>
+                                <p>Total Inventory Value</p>
+                            </div>
+                            <div class="card-icon-wrapper">
+                                <i class="fa fa-dollar"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-card success">
+                        <div class="card-content-wrapper">
+                            <div class="card-content">
+                                <h3 id="inventory-turnover">0</h3>
+                                <p>Inventory Turnover</p>
+                                <small style="font-size: 11px; color: #95a5a6;">Annualized</small>
+                            </div>
+                            <div class="card-icon-wrapper">
+                                <i class="fa fa-refresh"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-card warning">
+                        <div class="card-content-wrapper">
+                            <div class="card-content">
+                                <h3 id="stock-aging-count">0</h3>
+                                <p>Stock Aging 90+ Days</p>
+                                <small id="stock-aging-value" style="font-size: 11px; color: #95a5a6;">$0</small>
+                            </div>
+                            <div class="card-icon-wrapper">
+                                <i class="fa fa-clock-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="summary-card info">
+                        <div class="card-content-wrapper">
+                            <div class="card-content">
+                                <h3 id="low-stock-count-exec">0</h3>
+                                <p>Low Stock Count</p>
+                            </div>
+                            <div class="card-icon-wrapper">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top 10 Moving Products -->
+                <div class="dashboard-section" style="margin-top: 30px;">
+                    <div class="card-header">
+                        <h4><i class="fa fa-trophy"></i> Top 10 Moving Products (Last 30 Days)</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="top-moving-products-list">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Analytical View -->
+                <div class="section-title" style="margin-top: 40px;">
+                    <h2><i class="fa fa-bar-chart"></i> Analytical View</h2>
+                </div>
+
+                <!-- Inbound vs Outbound Chart -->
+                <div class="dashboard-section">
+                    <div class="card-header">
+                        <h4><i class="fa fa-line-chart"></i> Inbound vs Outbound (Monthly)</h4>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="inbound-outbound-chart" height="80"></canvas>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-md-8">
+                        <!-- Low Stock Alerts -->
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-exclamation-triangle"></i> Low Stock Alerts</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Current Stock</th>
+                                                <th>Min. Reorder</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="low-stock-body">
+                                            <tr><td colspan="4" class="text-center">Loading...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Stock Movements -->
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-exchange"></i> Recent Stock Movements</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Reference</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-moves-body">
+                                            <tr><td colspan="6" class="text-center">Loading...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <!-- Top Products -->
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-star"></i> Top Products</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="top-products-list">Loading...</div>
+                            </div>
+                        </div>
+
+                        <!-- Warehouse Summary -->
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-warehouse"></i> Warehouse Summary</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="warehouse-summary">Loading...</div>
+                            </div>
+                        </div>
+
+                        <!-- Category Summary -->
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-tags"></i> Category Summary</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="category-summary">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stock by Warehouse Chart -->
+                <div class="row" style="margin-top: 25px;">
+                    <div class="col-md-6">
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-warehouse"></i> Stock by Warehouse</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="warehouse-chart" height="60"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="dashboard-section">
+                            <div class="card-header">
+                                <h4><i class="fa fa-pie-chart"></i> Category-wise Stock Value</h4>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="category-value-chart" height="60"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slow Moving Items -->
+                <div class="dashboard-section" style="margin-top: 25px;">
+                    <div class="card-header">
+                        <h4><i class="fa fa-hourglass-half"></i> Slow Moving Items (No Movement in 90 Days)</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Stock Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="slow-moving-body">
+                                    <tr><td colspan="3" class="text-center">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+            <script>
+                <![CDATA[
+                (function() {
+                    var inboundOutboundChart = null;
+                    var warehouseChart = null;
+                    var categoryValueChart = null;
+
+                    function formatCurrency(value) {
+                        return new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD'
+                        }).format(value);
+                    }
+
+                    function loadDashboardData() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/inventory_dashboard/data', true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                try {
+                                    var data = JSON.parse(xhr.responseText);
+                                    updateDashboard(data);
+                                } catch (e) {
+                                    console.error('Error parsing dashboard data:', e);
+                                }
+                            }
+                        };
+                        xhr.send(JSON.stringify({}));
+                    }
+
+                    function updateDashboard(data) {
+                        // Update Executive View cards
+                        document.getElementById('total-value-exec').textContent = formatCurrency(data.total_stock_value || 0);
+                        document.getElementById('inventory-turnover').textContent = (data.inventory_turnover || 0).toFixed(2);
+                        document.getElementById('stock-aging-count').textContent = data.stock_aging_90_days_count || 0;
+                        document.getElementById('stock-aging-value').textContent = formatCurrency(data.stock_aging_90_days_value || 0);
+                        document.getElementById('low-stock-count-exec').textContent = data.low_stock_count || 0;
+                        
+                        // Update summary cards (keep for backward compatibility)
+                        document.getElementById('total-products').textContent = data.total_products || 0;
+                        document.getElementById('total-value').textContent = formatCurrency(data.total_stock_value || 0);
+                        document.getElementById('low-stock-count').textContent = data.low_stock_products ? data.low_stock_products.length : 0;
+                        document.getElementById('total-locations').textContent = data.total_locations || 0;
+
+                        // Update low stock table
+                        var lowStockBody = document.getElementById('low-stock-body');
+                        if (data.low_stock_products && data.low_stock_products.length > 0) {
+                            lowStockBody.innerHTML = data.low_stock_products.map(function(p) {
+                                return '<tr><td><a href="/web#id=' + p.id + '&model=product.product&view_type=form" style="color: #3498db; font-weight: 600; text-decoration: none;">' + p.name + '</a></td><td><strong>' + p.qty_available + '</strong></td><td>' + p.reordering_min_qty + '</td><td><span class="badge badge-warning">Low Stock</span></td></tr>';
+                            }).join('');
+                        } else {
+                            lowStockBody.innerHTML = '<tr><td colspan="4" class="text-center" style="padding: 30px; color: #7f8c8d;">No low stock items</td></tr>';
+                        }
+
+                        // Update recent moves
+                        var recentMovesBody = document.getElementById('recent-moves-body');
+                        if (data.recent_moves && data.recent_moves.length > 0) {
+                            recentMovesBody.innerHTML = data.recent_moves.map(function(m) {
+                                return '<tr><td style="color: #7f8c8d; font-size: 13px;">' + m.date + '</td><td><strong>' + m.product + '</strong></td><td><span style="color: #27ae60; font-weight: 700;">' + m.quantity + '</span></td><td style="color: #7f8c8d;">' + m.location_from + '</td><td style="color: #7f8c8d;">' + m.location_to + '</td><td style="color: #7f8c8d; font-size: 12px;">' + (m.reference || '-') + '</td></tr>';
+                            }).join('');
+                        } else {
+                            recentMovesBody.innerHTML = '<tr><td colspan="6" class="text-center" style="padding: 30px; color: #7f8c8d;">No recent movements</td></tr>';
+                        }
+
+                        // Update top products
+                        var topProductsList = document.getElementById('top-products-list');
+                        if (data.top_products && data.top_products.length > 0) {
+                            topProductsList.innerHTML = data.top_products.map(function(p, idx) {
+                                return '<div class="top-product-item"><strong>' + (idx + 1) + '</strong> <a href="/web#id=' + p.id + '&model=product.product&view_type=form">' + p.name + '</a><p>Quantity: <strong>' + p.qty_available + '</strong></p></div>';
+                            }).join('');
+                        } else {
+                            topProductsList.innerHTML = '<p class="text-center" style="color: #7f8c8d; padding: 20px;">No products found</p>';
+                        }
+
+                        // Update warehouses
+                        var warehouseSummary = document.getElementById('warehouse-summary');
+                        if (data.warehouses && data.warehouses.length > 0) {
+                            warehouseSummary.innerHTML = data.warehouses.map(function(w) {
+                                return '<div class="warehouse-item"><h5><a href="/web#id=' + w.id + '&model=stock.warehouse&view_type=form">' + w.name + '</a></h5><p>Quantity: <strong>' + w.total_qty + '</strong> | Value: <strong>' + formatCurrency(w.total_value) + '</strong></p></div>';
+                            }).join('');
+                        } else {
+                            warehouseSummary.innerHTML = '<p class="text-center" style="color: #7f8c8d; padding: 20px;">No warehouses found</p>';
+                        }
+
+                        // Update categories
+                        var categorySummary = document.getElementById('category-summary');
+                        if (data.categories && data.categories.length > 0) {
+                            categorySummary.innerHTML = data.categories.map(function(c) {
+                                return '<div class="category-item"><h5><a href="/web#id=' + c.id + '&model=product.category&view_type=form">' + c.name + '</a></h5><p>Products: <strong>' + c.product_count + '</strong> | Quantity: <strong>' + c.total_qty + '</strong></p></div>';
+                            }).join('');
+                        } else {
+                            categorySummary.innerHTML = '<p class="text-center" style="color: #7f8c8d; padding: 20px;">No categories found</p>';
+                        }
+
+                        // Update Top Moving Products
+                        var topMovingList = document.getElementById('top-moving-products-list');
+                        if (data.top_moving_products && data.top_moving_products.length > 0) {
+                            topMovingList.innerHTML = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">' + 
+                                data.top_moving_products.map(function(p, idx) {
+                                    return '<div class="top-product-item"><strong>' + (idx + 1) + '</strong> <a href="/web#id=' + p.id + '&model=product.product&view_type=form">' + p.name + '</a><p>Moved: <strong>' + Math.round(p.quantity_moved) + '</strong> units</p></div>';
+                                }).join('') + '</div>';
+                        } else {
+                            topMovingList.innerHTML = '<p class="text-center" style="color: #7f8c8d; padding: 20px;">No moving products found</p>';
+                        }
+
+                        // Update Slow Moving Items
+                        var slowMovingBody = document.getElementById('slow-moving-body');
+                        if (data.slow_moving_items && data.slow_moving_items.length > 0) {
+                            slowMovingBody.innerHTML = data.slow_moving_items.map(function(p) {
+                                return '<tr><td><a href="/web#id=' + p.id + '&model=product.product&view_type=form" style="color: #3498db; font-weight: 600; text-decoration: none;">' + p.name + '</a></td><td><strong>' + p.qty_available + '</strong></td><td><strong>' + formatCurrency(p.value) + '</strong></td></tr>';
+                            }).join('');
+                        } else {
+                            slowMovingBody.innerHTML = '<tr><td colspan="3" class="text-center" style="padding: 30px; color: #7f8c8d;">No slow moving items</td></tr>';
+                        }
+
+                        // Create Inbound vs Outbound Chart
+                        if (data.monthly_inbound_outbound && typeof Chart !== 'undefined') {
+                            var ctx1 = document.getElementById('inbound-outbound-chart');
+                            if (ctx1) {
+                                if (inboundOutboundChart) {
+                                    inboundOutboundChart.destroy();
+                                }
+                                var months = data.monthly_inbound_outbound.map(function(d) { return d.month; });
+                                var inbound = data.monthly_inbound_outbound.map(function(d) { return d.inbound; });
+                                var outbound = data.monthly_inbound_outbound.map(function(d) { return d.outbound; });
+                                inboundOutboundChart = new Chart(ctx1, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: months,
+                                        datasets: [{
+                                            label: 'Inbound',
+                                            data: inbound,
+                                            backgroundColor: 'rgba(39, 174, 96, 0.7)',
+                                            borderColor: 'rgba(39, 174, 96, 1)',
+                                            borderWidth: 2
+                                        }, {
+                                            label: 'Outbound',
+                                            data: outbound,
+                                            backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                                            borderColor: 'rgba(231, 76, 60, 1)',
+                                            borderWidth: 2
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: true,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                        // Create Warehouse Chart
+                        if (data.warehouses && typeof Chart !== 'undefined') {
+                            var ctx2 = document.getElementById('warehouse-chart');
+                            if (ctx2) {
+                                if (warehouseChart) {
+                                    warehouseChart.destroy();
+                                }
+                                var warehouseNames = data.warehouses.map(function(w) { return w.name; });
+                                var warehouseValues = data.warehouses.map(function(w) { return w.total_value; });
+                                warehouseChart = new Chart(ctx2, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: warehouseNames,
+                                        datasets: [{
+                                            label: 'Stock Value',
+                                            data: warehouseValues,
+                                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                                            borderColor: 'rgba(52, 152, 219, 1)',
+                                            borderWidth: 2
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: true,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                ticks: {
+                                                    callback: function(value) {
+                                                        return formatCurrency(value);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                        // Create Category Value Chart
+                        if (data.category_stock_value && typeof Chart !== 'undefined') {
+                            var ctx3 = document.getElementById('category-value-chart');
+                            if (ctx3) {
+                                if (categoryValueChart) {
+                                    categoryValueChart.destroy();
+                                }
+                                var categoryNames = data.category_stock_value.map(function(c) { return c.name.length > 15 ? c.name.substring(0, 15) + '...' : c.name; });
+                                var categoryValues = data.category_stock_value.map(function(c) { return c.value; });
+                                categoryValueChart = new Chart(ctx3, {
+                                    type: 'doughnut',
+                                    data: {
+                                        labels: categoryNames,
+                                        datasets: [{
+                                            data: categoryValues,
+                                            backgroundColor: [
+                                                'rgba(52, 152, 219, 0.8)',
+                                                'rgba(39, 174, 96, 0.8)',
+                                                'rgba(243, 156, 18, 0.8)',
+                                                'rgba(155, 89, 182, 0.8)',
+                                                'rgba(231, 76, 60, 0.8)',
+                                                'rgba(26, 188, 156, 0.8)',
+                                                'rgba(241, 196, 15, 0.8)',
+                                                'rgba(230, 126, 34, 0.8)',
+                                                'rgba(46, 204, 113, 0.8)',
+                                                'rgba(142, 68, 173, 0.8)'
+                                            ]
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: true,
+                                        plugins: {
+                                            legend: {
+                                                position: 'right'
+                                            },
+                                            tooltip: {
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        return context.label + ': ' + formatCurrency(context.parsed);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    // Load data when page loads
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', loadDashboardData);
+                    } else {
+                        loadDashboardData();
+                    }
+                })();
+                ]]>
+            </script>
+        </t>
+    </template>
+</odoo>

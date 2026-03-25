@@ -1,0 +1,17 @@
+/* Fix dropdown overflow in kanban cards */
+.o_kanban_view .o_kanban_record {
+    overflow: visible !important;
+}
+
+.o_kanban_view .oe_kanban_card {
+    overflow: visible !important;
+}
+
+.o_kanban_view .o_kanban_record .dropdown-menu {
+    z-index: 1050 !important;
+}
+
+/* Ensure dropdown menus appear above kanban cards */
+.o_kanban_view .dropdown.show {
+    position: static !important;
+}

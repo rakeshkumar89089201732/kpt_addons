@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//table[hasclass('o_main_table')]/thead/tr/th[@name='th_priceunit']" position="replace">
+        </xpath>
+        <xpath expr="//t[@t-if='not line.display_type']/td[@name='td_priceunit']" position="replace">
+        </xpath>
+        <xpath expr="//table[hasclass('o_main_table')]/thead/tr/th[@name='th_discount']" position="replace">
+        </xpath>
+        <xpath expr="//t[@t-if='not line.display_type']/td[@t-if='display_discount']" position="replace">
+        </xpath>
+        <xpath expr="//table[hasclass('o_main_table')]/thead/tr/th[@name='th_subtotal']" position="replace">
+            <th name="th_subtotal" class="text-end">
+                <span>Unit Price</span>
+            </th>
+        </xpath>
+    </template>
+</odoo>

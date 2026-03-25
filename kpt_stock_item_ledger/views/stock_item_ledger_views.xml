@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Wizard form -->
+    <record id="view_stock_item_ledger_wizard_form" model="ir.ui.view">
+        <field name="name">stock.item.ledger.wizard.form</field>
+        <field name="model">stock.item.ledger.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Stock Item Ledger">
+                <group>
+                    <field name="company_id"/>
+                    <field name="product_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <group>
+                    <field name="opening_qty" readonly="1"/>
+                    <field name="opening_value" readonly="1"/>
+                </group>
+                <footer>
+                    <button string="Analyze" type="object" name="action_compute_ledger" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Lines tree view -->
+    <record id="view_stock_item_ledger_line_tree" model="ir.ui.view">
+        <field name="name">stock.item.ledger.wizard.line.tree</field>
+        <field name="model">stock.item.ledger.wizard.line</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Item Ledger" create="0" delete="0">
+                <field name="date"/>
+                <field name="partner_id"/>
+                <field name="reference"/>
+                <field name="move_type"/>
+                <field name="in_qty"/>
+                <field name="in_value"/>
+                <field name="out_qty"/>
+                <field name="out_value"/>
+                <field name="balance_qty"/>
+                <field name="balance_value"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for lines -->
+    <record id="action_stock_item_ledger_lines" model="ir.actions.act_window">
+        <field name="name">Stock Item Ledger</field>
+        <field name="res_model">stock.item.ledger.wizard.line</field>
+        <field name="view_mode">tree</field>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Wizard action -->
+    <record id="action_stock_item_ledger_wizard" model="ir.actions.act_window">
+        <field name="name">Stock Item Ledger</field>
+        <field name="res_model">stock.item.ledger.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Legacy wizard menu (hidden, kept for backward compatibility) -->
+    <!-- 
+    <menuitem id="menu_stock_item_ledger_root"
+              name="Stock Item Ledger (Legacy)"
+              parent="stock.menu_warehouse_report"
+              action="action_stock_item_ledger_wizard"
+              sequence="51"
+              groups="base.group_no_one"/>
+    -->
+
+</odoo>
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_contract_form_tds_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.tds.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="TDS &amp; Salary Breakdown" groups="indian_tds_system.group_tds_user">
+                    <group>
+                        <group string="TDS Settings">
+                            <field name="tds_applicable"/>
+                            <field name="tax_regime"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Totals">
+                            <field name="gross_salary" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="ctc" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="net_salary" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Earnings (Taxable)">
+                            <field name="basic_salary" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="hra" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="special_allowance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="transport_allowance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="medical_allowance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="other_allowances" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        <group string="Employer Contributions &amp; Deductions">
+                            <field name="pf_employer" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="esi_employer" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="gratuity" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <separator string="Employee Deductions"/>
+                            <field name="pf_employee" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="esi_employee" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="professional_tax" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

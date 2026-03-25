@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_tds_root" 
+              name="TDS" 
+              web_icon="indian_tds_system,static/description/icon.png"
+              sequence="30"
+              groups="indian_tds_system.group_tds_user"/>
+
+    <!-- Calculations Menu -->
+    <menuitem id="menu_tds_calculation_root" 
+              name="Calculations" 
+              parent="menu_tds_root" 
+              sequence="10"/>
+
+    <menuitem id="menu_tds_calculation" 
+              name="TDS Calculations" 
+              parent="menu_tds_calculation_root" 
+              action="action_tds_calculation" 
+              sequence="10"/>
+
+    <!-- HR Management Menu -->
+    <menuitem id="menu_tds_hr_management_root" 
+              name="HR Management" 
+              parent="menu_tds_root" 
+              sequence="15"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_hr_career_update" 
+              name="Career Updates" 
+              parent="menu_tds_hr_management_root" 
+              action="action_hr_career_update" 
+              sequence="10"/>
+
+    <!-- Certificates Menu -->
+    <menuitem id="menu_tds_certificate_root" 
+              name="Certificates" 
+              parent="menu_tds_root" 
+              sequence="20"/>
+
+    <menuitem id="menu_tds_certificate" 
+              name="TDS Certificates" 
+              parent="menu_tds_certificate_root" 
+              action="action_tds_certificate" 
+              sequence="10"/>
+
+    <!-- Compliance Menu -->
+    <menuitem id="menu_tds_compliance_root" 
+              name="Compliance" 
+              parent="menu_tds_root" 
+              sequence="30"
+              groups="indian_tds_system.group_tds_manager"/>
+
+    <menuitem id="menu_tds_challan" 
+              name="TDS Challans" 
+              parent="menu_tds_compliance_root" 
+              action="action_tds_challan" 
+              sequence="10"/>
+
+    <menuitem id="menu_tds_quarterly_return" 
+              name="Quarterly Returns (24Q)" 
+              parent="menu_tds_compliance_root" 
+              action="action_tds_quarterly_return" 
+              sequence="20"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_tds_config_root" 
+              name="Configuration" 
+              parent="menu_tds_root" 
+              sequence="100" 
+              groups="indian_tds_system.group_tds_manager"/>
+
+    <menuitem id="menu_tds_tax_slab" 
+              name="Tax Slabs" 
+              parent="menu_tds_config_root" 
+              action="action_tds_tax_slab" 
+              sequence="10"/>
+
+    <menuitem id="menu_tds_section" 
+              name="TDS Sections" 
+              parent="menu_tds_config_root" 
+              action="action_tds_section" 
+              sequence="20"/>
+</odoo>

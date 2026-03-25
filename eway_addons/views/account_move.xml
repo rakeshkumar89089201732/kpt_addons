@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="ewaybill_addons_inherit_form" model="ir.ui.view">
+        <field name="name">ewaybill.addons.inherit.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="l10n_in_edi_ewaybill.invoice_form_inherit_l10n_in_edi_ewaybill"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//field[@name='l10n_in_type_id']"
+                   position="replace">
+                <field name="l10n_in_type_id"
+                       domain="[('allowed_supply_type', 'in', ('in', 'both'))] if move_type in ('in_invoice', 'in_refund', 'in_receipt') else [('allowed_supply_type', 'in', ('out', 'both'))]"
+                       invisible="1"
+                />
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//field[@name='l10n_in_mode']"
+                   position="replace">
+                <field name="l10n_in_mode" invisible="1"/>
+            </xpath>
+            <!-- Hide the existing cancel reason and cancel remarks fields -->
+            <xpath expr="//field[@name='l10n_in_edi_cancel_reason']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='l10n_in_edi_cancel_remarks']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Replace old cancel reason field with the new one -->
+            <xpath expr="//field[@name='l10n_in_edi_cancel_reason']" position="replace">
+                <field name="l10n_in_eway_cancel_reason"/>
+            </xpath>
+            <!-- Replace old cancel remarks field with the new one -->
+            <xpath expr="//field[@name='l10n_in_edi_cancel_remarks']" position="replace">
+                <field name="l10n_in_eway_cancel_remarks"/>
+            </xpath>
+            <!--             Eway bill creation new Process fields-->
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//group[@name='Transaction_group']"
+                   position="before">
+                <group name="part_a" string="E-Way Bill(PART-A)">
+                    <field name="enable_parta_slip"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//group[@name='part_a']" position="after">
+                <group name="with_transporter" string="E-Way Bill(With Vehicle No)">
+                    <field name="enable_with_transport_based_eway_bill"/>
+                    <field name="enable_without_transport_based_eway_bill"/>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="transaction_type"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//group[@name='Transaction_group']"
+                   position="inside">
+                <field name="supply_type"/>
+                <field name="sub_type"/>
+                <field name="others_remarks" invisible="sub_type != '8'"/>
+                <field name="document_type"/>
+                <field name="transaction_type"/>
+                <field name="document_no"/>
+                <field name="document_date"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//label[@for='l10n_in_distance']"
+                   position="before">
+                <field name="transport_id" invisible="enable_without_transport_based_eway_bill == True"/>
+                <field name="transporter_name" invisible="enable_without_transport_based_eway_bill == True"/>
+                <field name="transport_mode" invisible="enable_parta_slip == False"/>
+                <field name="transport_mode2" invisible="enable_with_transport_based_eway_bill == False"/>
+                <field name="transport_mode3" invisible="enable_without_transport_based_eway_bill == False"/>
+                <field name="vehicle_type"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//group[@name='transportation_group']"
+                   position="after">
+                <group name="Vehicle_Details" string="Vehicle Details" invisible="enable_parta_slip == True">
+                    <field name="transport_vehicle_no"/>
+                    <field name="transportation_doc"/>
+                    <field name="transportation_doc_date"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook/page[@name='l10n_in_edi_ewaybill_page']//group[@name='Vehicle_Details']"
+                   position="after">
+                <notebook>
+                    <page string="E-Way Bill Details" name="eway_bill_details">
+                        <group>
+                            <group string="Generated Info">
+                                        <field name="eway_no" readonly="1"/>
+                                        <field name="genrated_by" readonly="1"/>
+                                        <field name="eway_date" readonly="1"/>
+                                        <field name="valid_upto" readonly="1"/>
+                                        <field name="qr_code" widget='image' options="{'size': [100, 100]}"
+                                               readonly="1"/>
+                                        <field name="barcode" widget='image' options="{'size': [100, 100]}"
+                                               readonly="1"/>
+                                       <button name="download_with_transporter_pdf" string="Download PDF" class="btn-primary" type="object" invisible="enable_parta_slip == True or state in['draft', 'cancel']"/>
+                                       <button name="download_parta_slip" string="Part-A PDF" class="btn-primary" type="object"  invisible="enable_parta_slip == False or state in['draft', 'cancel']"/>
+                            </group>
+                                     <group string="Cancelled Info">
+                                         <field name="cancel_ewayno" readonly="1"/>
+                                         <field name="eway_cancel_date" readonly="1"/>
+                                         <button name="download_cancelled_transporter_pdf" string="Cancelled PDF" class="btn-primary" type="object"  invisible="state in ['draft', 'posted'] or enable_parta_slip == True"/>
+                                         <button name="download_cancelled_parta_slip" string="Cancelled Part-A" class="btn-primary" type="object"  invisible="state in ['draft' , 'posted'] or enable_parta_slip == False"/>
+                                </group>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

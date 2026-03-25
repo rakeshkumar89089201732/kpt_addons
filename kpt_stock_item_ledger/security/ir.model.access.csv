@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_item_ledger_wizard,access_stock_item_ledger_wizard,model_stock_item_ledger_wizard,base.group_user,1,1,1,1
+access_stock_item_ledger_wizard_line,access_stock_item_ledger_wizard_line,model_stock_item_ledger_wizard_line,base.group_user,1,1,1,1
+access_stock_item_ledger_product_wizard,access_stock_item_ledger_product_wizard,model_stock_item_ledger_product_wizard,base.group_user,1,1,1,1
+

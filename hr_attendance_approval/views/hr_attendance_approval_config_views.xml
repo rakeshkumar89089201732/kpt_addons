@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Approval Level Form View -->
+    <record id="hr_attendance_approval_level_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.approval.level.form</field>
+        <field name="model">hr.attendance.approval.level</field>
+        <field name="arch" type="xml">
+            <form string="Approval Level">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="approver_type"/>
+                        </group>
+                        <group>
+                            <field name="user_id" invisible="approver_type != 'specific_user'" required="approver_type == 'specific_user'"/>
+                            <field name="approver_user_ids" widget="many2many_tags" invisible="approver_type != 'specific_users'" required="approver_type == 'specific_users'"/>
+                            <field name="group_id" invisible="approver_type != 'group'" required="approver_type == 'group'"/>
+                            <field name="can_reject"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approval Level Tree View -->
+    <record id="hr_attendance_approval_level_tree_view" model="ir.ui.view">
+        <field name="name">hr.attendance.approval.level.tree</field>
+        <field name="model">hr.attendance.approval.level</field>
+        <field name="arch" type="xml">
+            <tree string="Approval Levels" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="approver_type"/>
+                <field name="user_id" invisible="approver_type != 'specific_user'"/>
+                <field name="approver_user_ids" widget="many2many_tags" invisible="approver_type != 'specific_users'"/>
+                <field name="group_id" invisible="approver_type != 'group'"/>
+                <field name="can_reject"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Approval Configuration Form View -->
+    <record id="hr_attendance_approval_config_form_view" model="ir.ui.view">
+        <field name="name">hr.attendance.approval.config.form</field>
+        <field name="model">hr.attendance.approval.config</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Approval Configuration">
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Configuration Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="department_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Approval Levels" name="approval_levels">
+                            <field name="approval_level_ids">
+                                <tree string="Approval Levels" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="approver_type"/>
+                                    <field name="user_id" invisible="approver_type != 'specific_user'" optional="show"/>
+                                    <field name="approver_user_ids" widget="many2many_tags" invisible="approver_type != 'specific_users'" optional="show"/>
+                                    <field name="group_id" invisible="approver_type != 'group'" optional="show"/>
+                                    <field name="can_reject"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Approval Configuration Tree View -->
+    <record id="hr_attendance_approval_config_tree_view" model="ir.ui.view">
+        <field name="name">hr.attendance.approval.config.tree</field>
+        <field name="model">hr.attendance.approval.config</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Approval Configurations">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="department_ids" widget="many2many_tags"/>
+                <field name="active" column_invisible="True"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Approval Configuration Action -->
+    <record id="hr_attendance_approval_config_action" model="ir.actions.act_window">
+        <field name="name">Approval Configuration</field>
+        <field name="res_model">hr.attendance.approval.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first approval configuration
+            </p>
+            <p>
+                Define multi-level approval workflows for attendance records.
+            </p>
+        </field>
+    </record>
+
+</odoo>

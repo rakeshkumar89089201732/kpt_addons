@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_career_update_tree" model="ir.ui.view">
+        <field name="name">hr.career.update.tree</field>
+        <field name="model">hr.career.update</field>
+        <field name="arch" type="xml">
+            <tree string="Career Updates">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="effective_date"/>
+                <field name="is_promotion" widget="boolean_toggle"/>
+                <field name="is_increment" widget="boolean_toggle"/>
+                <field name="new_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'applied'"/>
+                <field name="currency_id" column_invisible="True"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_career_update_form" model="ir.ui.view">
+        <field name="name">hr.career.update.form</field>
+        <field name="model">hr.career.update</field>
+        <field name="arch" type="xml">
+            <form string="Career Update">
+                <header>
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_apply" type="object" string="Apply" class="btn-success" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,applied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="contract_id" domain="[('employee_id', '=', employee_id)]"/>
+                            <field name="effective_date"/>
+                        </group>
+                        <group>
+                            <field name="is_promotion"/>
+                            <field name="is_increment"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Promotion Details" invisible="not is_promotion">
+                            <group>
+                                <group string="Current">
+                                    <field name="current_job_id"/>
+                                    <field name="current_department_id"/>
+                                </group>
+                                <group string="New">
+                                    <field name="new_job_id" required="is_promotion"/>
+                                    <field name="new_department_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Salary Increment" invisible="not is_increment">
+                            <group>
+                                <group string="Current">
+                                    <field name="current_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <group string="Update">
+                                    <field name="increment_type" required="is_increment"/>
+                                    <field name="increment_amount" required="is_increment"/>
+                                    <field name="new_wage" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_career_update" model="ir.actions.act_window">
+        <field name="name">Career Updates</field>
+        <field name="res_model">hr.career.update</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Career Update
+            </p>
+            <p>
+                Manage employee promotions and salary increments in a single place.
+            </p>
+        </field>
+    </record>
+</odoo>

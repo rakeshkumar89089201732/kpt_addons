@@ -1,0 +1,20 @@
+/* Inventory Dashboard Iframe Container */
+.o_inventory_dashboard_iframe_wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.o_inventory_dashboard_iframe_container {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.o_inventory_dashboard_iframe_container iframe {
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 140px);
+    border: none;
+}

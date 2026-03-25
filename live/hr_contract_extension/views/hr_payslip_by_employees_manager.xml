@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hr_payslip_by_employees_manager" model="ir.ui.view">
+        <field name="name">hr.payslip.employees.form.manager.filter</field>
+        <field name="model">hr.payslip.employees</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_by_employees"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']/ancestor::div[contains(@class,'o_row')][1]" position="after">
+                <separator string="Manager" colspan="2"/>
+                <div class="o_row">
+                    <p class="text-muted w-50">Select a manager to filter employees reporting to them.</p>
+                    <field name="manager_id"
+                           nolabel="1"
+                           domain="[('child_ids', '!=', False)]"
+                           options="{'no_create': True}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

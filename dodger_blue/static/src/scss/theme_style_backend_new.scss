@@ -1,0 +1,22 @@
+// Dodger Blue Theme - Backend Styles (Modular)
+// Optimized for faster compilation
+
+// 1. Variables (colors, sizes, transitions)
+@import 'variables';
+
+// 2. Base styles (typography, links, basic elements)
+@import 'base';
+
+// 3. All remaining styles (to be further modularized)
+// This section contains the existing styles that will be split into modules
+// For now, keeping them here to ensure no breaking changes
+
+// TODO: Split into these modules:
+// @import 'navbar';
+// @import 'sidebar';
+// @import 'forms';
+// @import 'buttons';
+// @import 'cards';
+// @import 'attendance';
+// @import 'dropdowns';
+// @import 'utilities';

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+     <record id="action_part_b_eway_bill" model="ir.actions.report">
+         <field name="name">E-Way Bill - Part B</field>
+         <field name="model">account.move</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">mastergst_addons.report_eway_bill_partb</field>
+         <field name="report_file">mastergst_addons.report_eway_bill_partb</field>
+         <field name="print_report_name">"E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_account_move"/>
+         <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_cancel_part_b_eway_bill" model="ir.actions.report">
+         <field name="name">Cancel E-Way Bill - Part B</field>
+         <field name="model">account.move</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">mastergst_addons.report_cancel_eway_bill_partb</field>
+         <field name="report_file">mastergst_addons.report_cancel_eway_bill_partb</field>
+         <field name="print_report_name">"Cancelled E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_account_move"/>
+         <field name="binding_type">report</field>
+    </record>
+
+     <record id="action_multivehicle_eway_bill" model="ir.actions.report">
+         <field name="name">E-Way Bill - Multivehicle</field>
+         <field name="model">account.move</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">mastergst_addons.report_eway_bill_multivehicle</field>
+         <field name="report_file">mastergst_addons.report_eway_bill_multivehicle</field>
+         <field name="print_report_name">"E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_account_move"/>
+         <field name="binding_type">report</field>
+    </record>
+
+     <record id="action_cancel_multivehicle_eway_bill" model="ir.actions.report">
+         <field name="name">Cancel - E-Way Bill - Multivehicle</field>
+         <field name="model">account.move</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_name">mastergst_addons.report_cancel_eway_bill_multivehicle</field>
+         <field name="report_file">mastergst_addons.report_cancel_eway_bill_multivehicle</field>
+         <field name="print_report_name">"Cancel E-way Bill - %s" % (object.name if object.name else 'Order - %s' % (object.name))</field>
+         <field name="binding_model_id" ref="model_account_move"/>
+         <field name="binding_type">report</field>
+    </record>
+</odoo>

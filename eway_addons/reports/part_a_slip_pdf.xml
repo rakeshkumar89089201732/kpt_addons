@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_parta_slip_document">
+        <t t-call="web.basic_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <table width="100%"
+                   style="text-align: center; border: 1px solid #0000;">
+                <thead>
+                    <tr>
+                        <th width="100%" style="padding: 10px;font-size: 20px;font-family:arial;">
+                            <span>Part - A Slip</span>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <br/>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Unique No.</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.eway_no"
+                              style="font-family: arial;font-size: 12px; font-weight: bold; padding-top: 5px; padding-bottom: 5px;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Entered Date</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.eway_date"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;padding-top: 5px; padding-bottom: 5px;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Entered By</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.genrated_by"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;padding-top: 5px; padding-bottom: 5px;"/>
+                        <span>-</span>
+                        <span t-field="doc.company_id.name" style="font-family:arial;font-size:12px;font-weight:bold"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Valid From:</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px; font-weight: bold;">
+                            Not Valid for Movement as Part B is not entered
+                        </span>
+                        <span t-field="doc.l10n_in_distance"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;padding-top: 5px; padding-bottom: 5px;"/>
+                        <span style="font-family: arial;font-size: 12px;font-weight: bold;">
+                            KMS
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%"
+                   style="text-align: center; border: 1px solid #0000;">
+                <thead>
+                    <tr>
+                        <th width="100%" style="padding: 10px;">
+                            <span style="font-family: arial;font-size: 14px; font-weight: bold;">Part A</span>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">GSTIN of Supplier</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.genrated_by"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.company_id"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Place of Dispatch</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.company_id.city"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.company_id.state_id"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.company_id.zip"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">GSTIN of Recipient</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.partner_id.vat"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.partner_id"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Place of Delivery</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.partner_shipping_id.city"
+                              style="font-family: arial;font-size: 12px;font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.partner_shipping_id.state_id"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>,</span>
+                        <span t-field="doc.partner_shipping_id.zip"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Document No.</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.document_no"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Document Date</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.document_date"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Transaction Type:</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.transaction_type"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Value of Goods</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.amount_total_vals"
+                              style="font-family: arial;font-size: 12px;font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px; font-weight: normal;">HSN Code</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px; font-weight: bold;">
+                            <t t-esc="' , '.join(['%s %s' % (line.product_id.l10n_in_hsn_code or '', line.product_id.name or '') for line in doc.invoice_line_ids])"/>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Reason for
+                            Transportation
+                        </span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.supply_type"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>-</span>
+                        <span t-field="doc.sub_type"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="50%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 12px;font-weight: normal;">Transporter</span>
+                    </td>
+                    <td width="50%" style="padding: 10px;">
+                        <span t-field="doc.transport_id"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                        <span>&amp;</span>
+                        <span t-field="doc.transporter_name"
+                              style="font-family: arial;font-size: 12px; font-weight: bold;"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: center; border: 1px solid #0000;">
+                <tr>
+                    <td width="100%" style="padding: 10px;">
+                        <img t-attf-src="data:image/*;base64,{{doc.barcode}}" style="height:50px;width:150px;"/>
+                        <br/>
+                        <span t-field="doc.eway_no"/>
+                    </td>
+                </tr>
+            </table>
+            <table width="100%" style="text-align: left; border: 1px solid #0000;">
+                <tr>
+                    <td width="100%" style="padding: 10px;">
+                        <span style="font-family: arial;font-size: 10px;font-weight: normal;">Note*: If any discrepancy
+                            in information please try after sometime.
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </t>
+    </template>
+
+
+    <template id="report_parta_slip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="eway_addons.report_parta_slip_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_net_purchase_report,net.purchase.report,model_net_purchase_report,,1,1,1,1
+access_gross_purchase_report,gross.purchase.report,model_gross_purchase_report,,1,1,1,1

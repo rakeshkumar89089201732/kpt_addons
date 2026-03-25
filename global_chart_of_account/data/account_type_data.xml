@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ========================================================= -->
+        <!-- CATEGORIES -->
+        <record id="cat_assets_current" model="global.account.category">
+            <field name="name">Current Assets</field>
+        </record>
+        <record id="cat_assets_non_current" model="global.account.category">
+            <field name="name">Non-Current Assets</field>
+        </record>
+        <record id="cat_assets_ppe" model="global.account.category">
+            <field name="name">Property, Plant &amp; Equipment</field>
+        </record>
+        <record id="cat_assets_intangible" model="global.account.category">
+            <field name="name">Intangible Assets</field>
+        </record>
+        <record id="cat_liabilities_current" model="global.account.category">
+            <field name="name">Current Liabilities</field>
+        </record>
+        <record id="cat_liabilities_non_current" model="global.account.category">
+            <field name="name">Non-Current Liabilities</field>
+        </record>
+        <record id="cat_equity" model="global.account.category">
+            <field name="name">Equity</field>
+        </record>
+        <record id="cat_income" model="global.account.category">
+            <field name="name">Revenue / Income</field>
+        </record>
+        <record id="cat_cogs" model="global.account.category">
+            <field name="name">Cost of Goods Sold</field>
+        </record>
+        <record id="cat_expenses_operating" model="global.account.category">
+            <field name="name">Operating Expenses</field>
+        </record>
+        <record id="cat_expenses_financial" model="global.account.category">
+            <field name="name">Financial Expenses</field>
+        </record>
+        <record id="cat_expenses_tax" model="global.account.category">
+            <field name="name">Tax Expenses</field>
+        </record>
+        <record id="cat_expenses_other" model="global.account.category">
+            <field name="name">Other Expenses</field>
+        </record>
+        <record id="cat_off_balance" model="global.account.category">
+            <field name="name">Off-Balance Sheet</field>
+        </record>
+        <record id="cat_statistical" model="global.account.category">
+            <field name="name">Statistical / Memorandum</field>
+        </record>
+
+        <!-- ACCOUNT TYPES -->
+        <record id="type_cash_equivalents" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Cash Equivalents</field>
+            <field name="base_type">asset_cash</field>
+        </record>
+        <record id="type_short_term_investments" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Short-term Investments / Marketable Securities</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_petty_cash" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Petty Cash</field>
+            <field name="base_type">asset_cash</field>
+        </record>
+        <record id="type_ar_trade" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Accounts Receivable - Trade</field>
+            <field name="base_type">asset_receivable</field>
+        </record>
+        <record id="type_ar_other" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Accounts Receivable - Other</field>
+            <field name="base_type">asset_receivable</field>
+        </record>
+        <record id="type_allowance_doubtful" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Allowance for Doubtful Accounts (Contra)</field>
+            <field name="base_type">asset_receivable</field>
+        </record>
+        <record id="type_notes_receivable_short" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Notes Receivable - Short-term</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_employee_advances" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Employee Advances</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_loans_to_employees" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Loans to Employees</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_intercompany_receivables" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Intercompany Receivables</field>
+            <field name="base_type">asset_receivable</field>
+        </record>
+         <record id="type_vat_receivable" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">VAT/GST Receivable / Input Tax</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_tax_refunds_receivable" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Tax Refunds Receivable</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_interest_receivable" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Interest Receivable</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_dividends_receivable" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Dividends Receivable</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_unbilled_revenue" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Unbilled Revenue / Work in Progress</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_inventory_raw" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Inventory - Raw Materials</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_inventory_wip" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Inventory - Work in Progress</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_inventory_finished" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Inventory - Finished Goods</field>
+            <field name="base_type">asset_current</field>
+        </record>
+        <record id="type_inventory_valuation_reserve" model="global.account.type">
+            <field name="category_id" ref="cat_assets_current"/>
+            <field name="name">Inventory Valuation Reserve (Contra)</field>
+            <field name="base_type">asset_current</field>
+        </record>
+
+        <!-- NON-CURRENT ASSETS -->
+        <record id="type_long_term_investments" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Long-term Investments</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+         <record id="type_investment_subsidiaries" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Investment in Subsidiaries</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_investment_associates" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Investment in Associates/Joint Ventures</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_equity_method_investments" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Equity Method Investments</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_available_for_sale" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Available-for-Sale Securities</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_held_to_maturity" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Held-to-Maturity Securities</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_notes_receivable_long" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Notes Receivable - Long-term</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+         <record id="type_loans_receivable_long" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Loans Receivable - Long-term</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        
+        <!-- PPE -->
+        <record id="type_ppe_land" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Land</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_buildings" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Buildings</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_improvements" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Leasehold Improvements</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_machinery" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Machinery &amp; Equipment</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_furniture" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Furniture &amp; Fixtures</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_vehicles" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Vehicles</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_computer" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Computer Equipment</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_ppe_construction" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Construction in Progress</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_accum_depr_buildings" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Accumulated Depreciation - Buildings</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_accum_depr_equipment" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Accumulated Depreciation - Equipment</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_accum_depr_vehicles" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Accumulated Depreciation - Vehicles</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        <record id="type_accum_depr_furniture" model="global.account.type">
+            <field name="category_id" ref="cat_assets_ppe"/>
+            <field name="name">Accumulated Depreciation - Furniture</field>
+            <field name="base_type">asset_fixed</field>
+        </record>
+        
+        <!-- INTANGIBLE ASSETS -->
+        <record id="type_intangible_goodwill" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Goodwill</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_intangible_patents" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Patents</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_intangible_trademarks" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Trademarks</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_intangible_copyrights" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Copyrights</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+         <record id="type_intangible_licenses" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Licenses</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_intangible_software" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Software/Technology</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_intangible_development_costs" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Development Costs</field>
+            <field name="base_type">asset_development</field>
+        </record>
+        <record id="type_intangible_accum_amortization" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Accumulated Amortization - Intangibles</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_rou_assets" model="global.account.type">
+            <field name="category_id" ref="cat_assets_intangible"/>
+            <field name="name">Right-of-Use Assets (Leases)</field>
+            <field name="base_type">asset_non_current</field>
+        </record>
+        <record id="type_deferred_tax_assets" model="global.account.type">
+            <field name="category_id" ref="cat_assets_non_current"/>
+            <field name="name">Deferred Tax Assets</field>
+            <field name="base_type">asset_deferred_non_current</field>
+        </record>
+
+        <!-- CURRENT LIABILITIES -->
+        <record id="type_ap_trade" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Accounts Payable - Trade</field>
+            <field name="base_type">liability_payable</field>
+        </record>
+        <record id="type_ap_other" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Accounts Payable - Other</field>
+            <field name="base_type">liability_payable</field>
+        </record>
+        <record id="type_loans_short_term" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Short-term Loans / Bank Overdraft</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_current_portion_debt" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Current Portion of Long-term Debt</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_notes_payable_short" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Notes Payable - Short-term</field>
+            <field name="base_type">liability_current</field>
+        </record>
+         <record id="type_lines_of_credit" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Lines of Credit</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_accrued_liabilities" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Accrued Liabilities</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_accrued_payroll" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Accrued Salaries &amp; Wages</field>
+            <field name="base_type">liability_current</field>
+        </record>
+         <record id="type_taxes_payable" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Income Tax Payable</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_vat_payable" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Sales Tax Payable / VAT Payable / GST Payable</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_payroll_taxes_payable" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Payroll Taxes Payable</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_dividends_payable" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Dividends Payable</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_customer_deposits" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Customer Deposits</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_unearned_revenue" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Unearned Revenue</field>
+            <field name="base_type">liability_deferred_current</field>
+        </record>
+        <record id="type_warranty_liability_current" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Warranty Liability - Current</field>
+            <field name="base_type">liability_provision</field>
+        </record>
+        <record id="type_intercompany_payables" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Intercompany Payables</field>
+            <field name="base_type">liability_current</field>
+        </record>
+        <record id="type_lease_liability_current" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_current"/>
+            <field name="name">Lease Liability - Current Portion</field>
+            <field name="base_type">liability_current</field>
+        </record>
+
+        <!-- NON-CURRENT LIABILITIES -->
+        <record id="type_long_term_debt" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_non_current"/>
+            <field name="name">Long-term Debt / Loans Payable</field>
+            <field name="base_type">liability_non_current</field>
+        </record>
+        <record id="type_bonds_payable" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_non_current"/>
+            <field name="name">Bonds Payable</field>
+            <field name="base_type">liability_non_current</field>
+        </record>
+         <record id="type_lease_liability_non_current" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_non_current"/>
+            <field name="name">Lease Liability - Non-current</field>
+            <field name="base_type">liability_non_current</field>
+        </record>
+        <record id="type_pension_obligations" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_non_current"/>
+            <field name="name">Pension Obligations</field>
+            <field name="base_type">liability_non_current</field>
+        </record>
+        <record id="type_deferred_tax_liabilities" model="global.account.type">
+            <field name="category_id" ref="cat_liabilities_non_current"/>
+            <field name="name">Deferred Tax Liabilities</field>
+            <field name="base_type">liability_deferred_non_current</field>
+        </record>
+
+        <!-- EQUITY -->
+        <record id="type_common_stock" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Common Stock / Ordinary Shares</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_preferred_stock" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Preferred Stock / Preference Shares</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_paid_in_capital" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Additional Paid-in Capital</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_treasury_stock" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Treasury Stock (Contra)</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_retained_earnings_approp" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Retained Earnings - Appropriated</field>
+            <field name="base_type">equity_retained</field>
+        </record>
+        <record id="type_retained_earnings_unapprop" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Retained Earnings - Unappropriated</field>
+            <field name="base_type">equity_retained</field>
+        </record>
+        <record id="type_dividends_declared" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Dividends Declared</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_oci_fx" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Foreign Currency Translation Reserve</field>
+            <field name="base_type">equity</field>
+        </record>
+        <record id="type_oci_unrealized" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Unrealized Gains/Losses on Investments</field>
+            <field name="base_type">equity</field>
+        </record>
+         <record id="type_minority_interest" model="global.account.type">
+            <field name="category_id" ref="cat_equity"/>
+            <field name="name">Non-controlling Interest / Minority Interest</field>
+            <field name="base_type">equity</field>
+        </record>
+        
+        <!-- REVENUE -->
+        <record id="type_sales_product" model="global.account.type">
+            <field name="category_id" ref="cat_income"/>
+            <field name="name">Sales Revenue - Product</field>
+            <field name="base_type">income</field>
+        </record>
+        <record id="type_service_revenue" model="global.account.type">
+            <field name="category_id" ref="cat_income"/>
+            <field name="name">Service Revenue</field>
+            <field name="base_type">income</field>
+        </record>
+        <record id="type_subscription_revenue" model="global.account.type">
+            <field name="category_id" ref="cat_income"/>
+            <field name="name">Subscription Revenue</field>
+            <field name="base_type">income</field>
+        </record>
+        <record id="type_rental_income" model="global.account.type">
+            <field name="category_id" ref="cat_income"/>
+            <field name="name">Rental Income</field>
+            <field name="base_type">income</field>
+        </record>
+        <record id="type_sales_returns" model="global.account.type">
+            <field name="category_id" ref="cat_income"/>
+            <field name="name">Sales Returns and Allowances (Contra)</field>
+            <field name="base_type">income</field>
+        </record>
+        <record id="type_interest_income" model="global.account.type">
+             <field name="category_id" ref="cat_income"/>
+            <field name="name">Interest Income</field>
+            <field name="base_type">income_other</field>
+        </record>
+        <record id="type_fx_gains" model="global.account.type">
+             <field name="category_id" ref="cat_income"/>
+            <field name="name">Foreign Exchange Gains</field>
+            <field name="base_type">income_other</field>
+        </record>
+        
+        <!-- EXPENSES -->
+        <!-- COGS -->
+        <record id="type_cogs_materials" model="global.account.type">
+            <field name="category_id" ref="cat_cogs"/>
+            <field name="name">Cost of Goods Sold - Materials</field>
+            <field name="base_type">expense_direct_cost</field>
+        </record>
+        <record id="type_cogs_labor" model="global.account.type">
+            <field name="category_id" ref="cat_cogs"/>
+            <field name="name">Cost of Goods Sold - Labor</field>
+            <field name="base_type">expense_direct_cost</field>
+        </record>
+        <record id="type_cogs_overhead" model="global.account.type">
+            <field name="category_id" ref="cat_cogs"/>
+            <field name="name">Cost of Goods Sold - Overhead</field>
+            <field name="base_type">expense_direct_cost</field>
+        </record>
+        
+        <!-- Operating Expenses -->
+        <record id="type_exp_salaries" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_operating"/>
+            <field name="name">Salaries &amp; Wages</field>
+            <field name="base_type">expense</field>
+        </record>
+         <record id="type_exp_marketing" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_operating"/>
+            <field name="name">Advertising &amp; Marketing</field>
+            <field name="base_type">expense</field>
+        </record>
+         <record id="type_exp_rent" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_operating"/>
+            <field name="name">Rent &amp; Lease</field>
+            <field name="base_type">expense</field>
+        </record>
+         <record id="type_exp_utilities" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_operating"/>
+            <field name="name">Utilities</field>
+            <field name="base_type">expense</field>
+        </record>
+         <record id="type_exp_professional" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_operating"/>
+            <field name="name">Professional Fees</field>
+            <field name="base_type">expense</field>
+        </record>
+        
+         <!-- Financial Expenses -->
+        <record id="type_exp_interest" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_financial"/>
+            <field name="name">Interest Expense</field>
+            <field name="base_type">expense</field>
+        </record>
+        <record id="type_exp_fx_loss" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_financial"/>
+            <field name="name">Foreign Exchange Loss</field>
+            <field name="base_type">expense</field>
+        </record>
+        <record id="type_exp_bank_fees" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_financial"/>
+            <field name="name">Bank Fees</field>
+            <field name="base_type">expense</field>
+        </record>
+        
+        <!-- Tax Expenses -->
+        <record id="type_exp_tax_current" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_tax"/>
+            <field name="name">Income Tax Expense - Current</field>
+            <field name="base_type">expense</field>
+        </record>
+         <record id="type_exp_tax_deferred" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_tax"/>
+            <field name="name">Income Tax Expense - Deferred</field>
+            <field name="base_type">expense</field>
+        </record>
+
+        <!-- Other -->
+       <record id="type_exp_depreciation" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_other"/>
+            <field name="name">Depreciation Expense</field>
+            <field name="base_type">expense_depreciation</field>
+        </record>
+        <record id="type_exp_amortization" model="global.account.type">
+            <field name="category_id" ref="cat_expenses_other"/>
+            <field name="name">Amortization Expense</field>
+            <field name="base_type">expense_depreciation</field>
+        </record>
+        
+        <!-- OFF BALANCE -->
+        <record id="type_commitments" model="global.account.type">
+            <field name="category_id" ref="cat_off_balance"/>
+            <field name="name">Commitments &amp; Contingencies</field>
+            <field name="base_type">off_balance_commitment</field>
+        </record>
+        
+         <!-- STATISTICAL -->
+         <record id="type_stats_headcount" model="global.account.type">
+            <field name="category_id" ref="cat_statistical"/>
+            <field name="name">Headcount / FTEs</field>
+            <field name="base_type">off_balance</field>
+        </record>
+         <record id="type_stats_units" model="global.account.type">
+            <field name="category_id" ref="cat_statistical"/>
+            <field name="name">Units Sold</field>
+            <field name="base_type">off_balance</field>
+        </record>
+
+    </data>
+</odoo>

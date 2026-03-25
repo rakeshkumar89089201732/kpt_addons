@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Settings / Technical Menu -->
+    <menuitem id="menu_keyboard_shortcuts_root"
+              name="Keyboard Shortcuts"
+              parent="base.menu_custom"
+              sequence="100"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_keyboard_shortcuts_user"
+              name="Shortcuts"
+              parent="menu_keyboard_shortcuts_root"
+              action="action_my_shortcuts"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_keyboard_shortcuts_config"
+              name="Configuration"
+              parent="menu_keyboard_shortcuts_root"
+              sequence="100"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_keyboard_shortcuts_all"
+              name="All Shortcuts"
+              parent="menu_keyboard_shortcuts_config"
+              action="action_keyboard_shortcut"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_shortcut_actions"
+              name="Shortcut Actions"
+              parent="menu_keyboard_shortcuts_config"
+              action="action_shortcut_action"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_shortcut_import_export"
+              name="Import/Export"
+              parent="menu_keyboard_shortcuts_config"
+              action="action_shortcut_import_export"
+              sequence="30"
+              groups="base.group_system"/>
+
+</odoo>

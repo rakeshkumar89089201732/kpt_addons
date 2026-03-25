@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Offer Letter Template Form View -->
+    <record id="view_offer_letter_template_form" model="ir.ui.view">
+        <field name="name">offer.letter.template.form</field>
+        <field name="model">offer.letter.template</field>
+        <field name="arch" type="xml">
+            <form string="Offer Letter Template">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options="{'terminology': 'archive'}"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g., Software Developer - Standard Template"/>
+                        </h1>
+                    </div>
+                    <!-- Core Configuration -->
+                    <group>
+                        <group string="Job Configuration">
+                            <field name="job_id" options="{'no_create': True}"/>
+                            <field name="department_id" readonly="1"/>
+                            <field name="sequence"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="PDF Settings">
+                            <field name="letter_title" placeholder="e.g., OFFER OF APPOINTMENT"/>
+                            <field name="is_default" widget="boolean_toggle"/>
+                            <field name="show_salary_table" widget="boolean_toggle"/>
+                            <field name="show_acceptance_block" widget="boolean_toggle"/>
+                            <field name="custom_footer_text" placeholder="Leave blank for default footer"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Introduction" name="introduction">
+                            <group>
+                                <field name="introduction_text" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Introduction paragraph. Use placeholders: [CANDIDATE_NAME], [POSITION], [DEPARTMENT], [COMPANY]"/>
+                            </group>
+                        </page>
+                        <page string="Roles &amp; Responsibilities" name="roles">
+                            <group>
+                                <field name="roles_responsibilities" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Define key roles and responsibilities for this position..."/>
+                            </group>
+                        </page>
+                        <page string="Work Details" name="work_details">
+                            <group>
+                                <group string="Location &amp; Hours">
+                                    <field name="work_location" placeholder="e.g., Head Office, Mumbai"/>
+                                    <field name="work_hours" placeholder="e.g., 9:00 AM - 6:00 PM (Monday to Friday)"/>
+                                </group>
+                                <group string="Periods">
+                                    <field name="probation_period"/>
+                                    <field name="notice_period"/>
+                                </group>
+                            </group>
+                            <group string="Reporting Structure">
+                                <field name="reporting_structure" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Define reporting hierarchy and team structure..."/>
+                            </group>
+                        </page>
+                        <page string="Benefits &amp; Perks" name="benefits">
+                            <group>
+                                <field name="benefits" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="List benefits and perks offered..."/>
+                            </group>
+                        </page>
+                        <page string="Terms &amp; Conditions" name="terms">
+                            <group>
+                                <field name="additional_terms" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Additional terms specific to this position..."/>
+                            </group>
+                            <separator string="General Terms &amp; Conditions"/>
+                            <group>
+                                <field name="terms_conditions" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"/>
+                            </group>
+                        </page>
+                        <page string="Closing" name="closing">
+                            <group>
+                                <field name="closing_text" widget="html"
+                                       options="{'style-inline': true, 'resizable': true, 'collaborative': false, 'fontNames': ['Arial', 'Calibri', 'Comic Sans MS', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Lucida Console', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana']}"
+                                       placeholder="Closing paragraph for the offer letter..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Offer Letter Template Tree View -->
+    <record id="view_offer_letter_template_tree" model="ir.ui.view">
+        <field name="name">offer.letter.template.tree</field>
+        <field name="model">offer.letter.template</field>
+        <field name="arch" type="xml">
+            <tree string="Offer Letter Templates" decoration-muted="not active" decoration-info="is_default">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="department_id"/>
+                <field name="letter_title"/>
+                <field name="work_location"/>
+                <field name="probation_period"/>
+                <field name="notice_period"/>
+                <field name="is_default" widget="boolean_toggle"/>
+                <field name="show_salary_table" widget="boolean_toggle"/>
+                <field name="show_acceptance_block" widget="boolean_toggle"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Offer Letter Template Search View -->
+    <record id="view_offer_letter_template_search" model="ir.ui.view">
+        <field name="name">offer.letter.template.search</field>
+        <field name="model">offer.letter.template</field>
+        <field name="arch" type="xml">
+            <search string="Offer Letter Templates">
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="department_id"/>
+                <field name="letter_title"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Defaults Only" name="defaults" domain="[('is_default', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Job Position" name="group_job" context="{'group_by': 'job_id'}"/>
+                    <filter string="Department" name="group_department" context="{'group_by': 'department_id'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Offer Letter Template Action -->
+    <record id="action_offer_letter_template" model="ir.actions.act_window">
+        <field name="name">Offer Letter Templates</field>
+        <field name="res_model">offer.letter.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first offer letter template
+            </p>
+            <p>
+                Define templates for different job positions with roles, responsibilities, and terms.
+                Templates marked as <strong>Default</strong> will be auto-selected when creating offers for their job position.
+                You can have multiple templates per job position.
+            </p>
+        </field>
+    </record>
+</odoo>

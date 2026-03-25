@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Shortcut Action Tree View -->
+    <record id="view_shortcut_action_tree" model="ir.ui.view">
+        <field name="name">shortcut.action.tree</field>
+        <field name="model">shortcut.action</field>
+        <field name="arch" type="xml">
+            <tree string="Shortcut Actions" decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="action_code"/>
+                <field name="action_type"/>
+                <field name="shortcut_count"/>
+                <field name="active" widget="boolean_toggle"/>
+                <field name="is_system" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Shortcut Action Form View -->
+    <record id="view_shortcut_action_form" model="ir.ui.view">
+        <field name="name">shortcut.action.form</field>
+        <field name="model">shortcut.action</field>
+        <field name="arch" type="xml">
+            <form string="Shortcut Action">
+                <header>
+                    <field name="active" widget="boolean_button" options="{'terminology': 'active'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_shortcuts" type="object" class="oe_stat_button" icon="fa-keyboard-o">
+                            <field name="shortcut_count" widget="statinfo" string="Shortcuts"/>
+                        </button>
+                    </div>
+                    
+                    <widget name="web_ribbon" title="System" bg_color="bg-info" invisible="not is_system"/>
+                    
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g., Save Record"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="action_code" placeholder="e.g., save_record"/>
+                            <field name="action_type" required="1"/>
+                        </group>
+                        <group>
+                            <field name="is_system" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Action Parameters (JSON)">
+                        <field name="action_params" widget="ace" options="{'mode': 'json'}" 
+                               placeholder='{"param1": "value1", "param2": "value2"}'/>
+                    </group>
+                    
+                    <group string="Description">
+                        <field name="description" nolabel="1" placeholder="Describe what this action does..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Shortcut Action Search View -->
+    <record id="view_shortcut_action_search" model="ir.ui.view">
+        <field name="name">shortcut.action.search</field>
+        <field name="model">shortcut.action</field>
+        <field name="arch" type="xml">
+            <search string="Search Actions">
+                <field name="name"/>
+                <field name="action_code"/>
+                <separator/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Action Type" name="group_type" context="{'group_by': 'action_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Shortcut Action Action -->
+    <record id="action_shortcut_action" model="ir.actions.act_window">
+        <field name="name">Shortcut Actions</field>
+        <field name="res_model">shortcut.action</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new shortcut action
+            </p>
+            <p>
+                Actions define what happens when a keyboard shortcut is triggered.
+            </p>
+        </field>
+    </record>
+
+</odoo>

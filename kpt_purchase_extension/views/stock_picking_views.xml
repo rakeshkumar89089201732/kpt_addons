@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form_inherit_kpt_purchase" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.kpt.purchase</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//header/button[@name='button_validate']" position="after">
+                <button name="action_create_vendor_bill" 
+                        string="Create Bill" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="picking_type_code != 'incoming' or state != 'done' or vendor_bill_count > 0"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_vendor_bills" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-pencil-square-o"
+                        invisible="vendor_bill_count == 0">
+                    <field name="vendor_bill_count" widget="statinfo" string="Bills"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="vendor_bill_ids" invisible="1"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

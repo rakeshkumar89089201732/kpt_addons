@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_section_tree" model="ir.ui.view">
+        <field name="name">tds.section.tree</field>
+        <field name="model">tds.section</field>
+        <field name="arch" type="xml">
+            <tree string="TDS Sections">
+                <field name="section_code"/>
+                <field name="name"/>
+                <field name="applicable_regime"/>
+                <field name="max_deduction_limit"/>
+                <field name="is_unlimited"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_tds_section_form" model="ir.ui.view">
+        <field name="name">tds.section.form</field>
+        <field name="model">tds.section</field>
+        <field name="arch" type="xml">
+            <form string="TDS Section">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="section_code"/>
+                            <field name="description" widget="html"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="applicable_regime"/>
+                            <field name="max_deduction_limit"/>
+                            <field name="is_unlimited"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Sub-sections">
+                            <field name="subsection_ids">
+                                <tree editable="bottom">
+                                    <field name="subsection_code"/>
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="max_limit"/>
+                                    <field name="is_percentage_based"/>
+                                    <field name="percentage_of_income" invisible="not is_percentage_based"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_section" model="ir.actions.act_window">
+        <field name="name">TDS Sections</field>
+        <field name="res_model">tds.section</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

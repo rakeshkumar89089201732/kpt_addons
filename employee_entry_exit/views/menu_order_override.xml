@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Put "Employee Offers" before "Reporting" in Payroll top menu -->
+    <record id="hr_payroll.menu_hr_payroll_report" model="ir.ui.menu">
+        <field name="sequence">80</field>
+    </record>
+</odoo>

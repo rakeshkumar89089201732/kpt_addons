@@ -1,0 +1,741 @@
+.o_frontdesk_wrap {
+    .o_kpt_welcome_stage {
+        min-height: 100vh;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at 16% 18%, rgba(124, 58, 237, 0.16), transparent 28%),
+            radial-gradient(circle at 82% 24%, rgba(56, 189, 248, 0.1), transparent 22%),
+            linear-gradient(135deg, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.55));
+    }
+
+    .o_kpt_welcome_stage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(115deg, rgba(15, 23, 42, 0.14) 0%, rgba(15, 23, 42, 0.04) 30%, rgba(15, 23, 42, 0.55) 100%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+        pointer-events: none;
+    }
+
+    .o_kpt_welcome_content,
+    .o_kpt_welcome_overlay,
+    .o_kpt_reception_showcase {
+        position: relative;
+        z-index: 2;
+    }
+
+    .o_kpt_welcome_content {
+        width: 56vw;
+        max-width: 46rem;
+    }
+
+    .o_kpt_welcome_badge,
+    .o_kpt_feature_chip,
+    .o_kpt_toolbar_chip,
+    .o_kpt_showcase_stat {
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    .o_kpt_welcome_badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.55rem 0.95rem;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+
+    .o_kpt_welcome_title_wrap {
+        margin-top: 1.35rem;
+    }
+
+    .o_kpt_welcome_eyebrow {
+        margin-bottom: 0.55rem;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 1rem;
+        letter-spacing: 0.04em;
+    }
+
+    .o_kpt_welcome_title {
+        max-width: 40rem;
+        line-height: 1.03;
+        color: #fff;
+        text-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+    }
+
+    .o_kpt_welcome_company {
+        margin-top: 0.55rem;
+        font-size: clamp(1.85rem, 3vw, 3rem);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.86);
+    }
+
+    .o_kpt_welcome_subtitle {
+        max-width: 34rem;
+        margin-top: 1.35rem;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 1.08rem;
+        line-height: 1.75;
+    }
+
+    .o_kpt_welcome_actions {
+        margin-top: 2rem;
+    }
+
+    .o_kpt_checkin_btn {
+        min-width: 13rem;
+        padding: 0.95rem 1.8rem;
+        border: 0;
+        border-radius: 1rem;
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        box-shadow: 0 18px 45px rgba(109, 40, 217, 0.35);
+        font-size: 1.05rem;
+        font-weight: 700;
+        transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .o_kpt_checkin_btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 24px 55px rgba(109, 40, 217, 0.42);
+    }
+
+    .o_kpt_welcome_feature_row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 1.65rem;
+    }
+
+    .o_kpt_feature_chip {
+        padding: 0.7rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 0.9rem;
+        font-weight: 600;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    .o_kpt_welcome_overlay {
+        padding-right: clamp(4rem, 32vw, 30rem);
+    }
+
+    .o_kpt_toolbar_chip,
+    .o_kpt_time_card,
+    .o_kpt_qr_card {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(7, 14, 28, 0.42);
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    .o_kpt_toolbar_chip {
+        border-radius: 999px;
+        padding: 0.15rem 0.35rem;
+    }
+
+    .o_kpt_time_card,
+    .o_kpt_qr_card {
+        border-radius: 1.35rem;
+        padding: 1rem 1.2rem;
+        color: #fff;
+    }
+
+    .o_kpt_time_card {
+        min-width: 14rem;
+    }
+
+    .o_kpt_card_label {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .o_kpt_time_value {
+        margin-top: 0.35rem;
+        font-size: clamp(2rem, 3vw, 3rem);
+        line-height: 1;
+        font-weight: 300;
+    }
+
+    .o_kpt_qr_card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        max-width: 20rem;
+    }
+
+    .o_kpt_qr_text {
+        margin-top: 0.25rem;
+        color: rgba(255, 255, 255, 0.76);
+        line-height: 1.5;
+    }
+
+    .o_kpt_qrcode {
+        width: 5.4rem;
+        height: 5.4rem;
+        padding: 0.45rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.98);
+    }
+
+    .o_kpt_reception_showcase {
+        position: absolute;
+        top: 2.3rem;
+        right: 2.8rem;
+        bottom: 2.3rem;
+        width: 36vw;
+        max-width: 34rem;
+        align-items: stretch;
+        pointer-events: none;
+    }
+
+    .o_kpt_showcase_panel {
+        position: relative;
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 2rem;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)),
+            linear-gradient(180deg, rgba(9, 15, 28, 0.34), rgba(9, 15, 28, 0.58));
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 32px 90px rgba(15, 23, 42, 0.26);
+        overflow: hidden;
+    }
+
+    .o_kpt_reception_glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(16px);
+        animation: kptReceptionGlow 5s ease-in-out infinite;
+    }
+
+    .o_kpt_reception_glow_main {
+        right: 1rem;
+        top: 2.5rem;
+        width: 17rem;
+        height: 17rem;
+        background: radial-gradient(circle, rgba(124, 58, 237, 0.4), rgba(124, 58, 237, 0));
+    }
+
+    .o_kpt_reception_glow_secondary {
+        left: 1rem;
+        bottom: 4rem;
+        width: 10rem;
+        height: 10rem;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.25), rgba(56, 189, 248, 0));
+        animation-delay: 1.3s;
+    }
+
+    .o_kpt_showcase_stat {
+        position: absolute;
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+    }
+
+    .o_kpt_showcase_stat:first-of-type {
+        top: 1.4rem;
+        right: 1.4rem;
+    }
+
+    .o_kpt_showcase_stat_secondary {
+        top: 11rem;
+        left: 1.2rem;
+    }
+
+    .o_kpt_reception_bubble {
+        position: absolute;
+        top: 5.2rem;
+        left: 1.6rem;
+        right: 3.8rem;
+        padding: 1.3rem 1.35rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 1.5rem;
+        background: rgba(255, 255, 255, 0.92);
+        color: #1f2937;
+        font-size: 1.02rem;
+        line-height: 1.6;
+        box-shadow: 0 22px 55px rgba(15, 23, 42, 0.18);
+    }
+
+    .o_kpt_reception_bubble::after {
+        content: "";
+        position: absolute;
+        right: 4.4rem;
+        bottom: -0.7rem;
+        width: 1.3rem;
+        height: 1.3rem;
+        border-radius: 0.24rem;
+        background: inherit;
+        transform: rotate(45deg);
+        border-right: 1px solid rgba(255, 255, 255, 0.12);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .o_kpt_reception_bubble_label {
+        margin-bottom: 0.35rem;
+        color: #7c3aed;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .o_kpt_reception_character {
+        position: absolute;
+        left: 50%;
+        bottom: 1.1rem;
+        width: 22rem;
+        height: 26rem;
+        transform: translateX(-50%);
+        animation: kptReceptionFloat 5s ease-in-out infinite;
+    }
+
+    .o_kpt_reception_shadow {
+        position: absolute;
+        bottom: 0.2rem;
+        left: 50%;
+        width: 13rem;
+        height: 1.2rem;
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.22);
+        transform: translateX(-50%);
+    }
+
+    .o_kpt_reception_body {
+        position: absolute;
+        right: 2.35rem;
+        bottom: 5.1rem;
+        width: 9rem;
+        height: 14.2rem;
+    }
+
+    .o_kpt_reception_hair {
+        position: absolute;
+        top: 0.2rem;
+        left: 1.15rem;
+        width: 6.6rem;
+        height: 5.5rem;
+        border-radius: 3.4rem 3.4rem 2.6rem 2.6rem;
+        background: linear-gradient(180deg, #312e81 0%, #4338ca 70%, #5b21b6 100%);
+        box-shadow: 0 16px 30px rgba(67, 56, 202, 0.2);
+    }
+
+    .o_kpt_reception_face {
+        position: absolute;
+        top: 1.15rem;
+        left: 2rem;
+        width: 4.8rem;
+        height: 5.2rem;
+        border-radius: 2.8rem;
+        background: linear-gradient(180deg, #ffd8c6 0%, #ffc0a6 100%);
+        box-shadow: inset 0 -0.45rem 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .o_kpt_eye {
+        position: absolute;
+        top: 1.95rem;
+        width: 0.55rem;
+        height: 0.72rem;
+        border-radius: 50%;
+        background: #1f2937;
+        animation: kptReceptionBlink 5.4s infinite;
+    }
+
+    .o_kpt_eye_left {
+        left: 1.2rem;
+    }
+
+    .o_kpt_eye_right {
+        right: 1.2rem;
+    }
+
+    .o_kpt_smile {
+        position: absolute;
+        left: 50%;
+        bottom: 1rem;
+        width: 1.45rem;
+        height: 0.7rem;
+        border-bottom: 0.2rem solid #b45309;
+        border-radius: 0 0 1rem 1rem;
+        transform: translateX(-50%);
+    }
+
+    .o_kpt_reception_neck {
+        position: absolute;
+        top: 6rem;
+        left: 4rem;
+        width: 1rem;
+        height: 0.95rem;
+        border-radius: 0.4rem;
+        background: #ffc2a6;
+    }
+
+    .o_kpt_reception_torso {
+        position: absolute;
+        top: 6.45rem;
+        left: 1.45rem;
+        width: 6.2rem;
+        height: 4.9rem;
+        border-radius: 2rem 2rem 1rem 1rem;
+        background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 55%, #5b21b6 100%);
+        box-shadow: 0 18px 34px rgba(124, 58, 237, 0.18);
+    }
+
+    .o_kpt_reception_arm {
+        position: absolute;
+        top: 6.8rem;
+        width: 3.9rem;
+        height: 1.15rem;
+        border-radius: 1rem;
+        background: #ffc2a6;
+        transform-origin: center right;
+    }
+
+    .o_kpt_reception_arm_left {
+        left: -0.4rem;
+        transform: rotate(18deg);
+    }
+
+    .o_kpt_reception_arm_right {
+        right: -1.85rem;
+        top: 6.55rem;
+        animation: kptReceptionWave 2.4s ease-in-out infinite;
+    }
+
+    .o_kpt_reception_skirt {
+        position: absolute;
+        top: 10.65rem;
+        left: 1.9rem;
+        width: 5.4rem;
+        height: 3.4rem;
+        border-radius: 0 0 1.4rem 1.4rem;
+        background: linear-gradient(180deg, #0f172a 0%, #334155 100%);
+    }
+
+    .o_kpt_reception_desk {
+        position: absolute;
+        left: 0.4rem;
+        right: 0.4rem;
+        bottom: 1.1rem;
+        height: 6.25rem;
+        border-radius: 1.7rem 1.7rem 1.2rem 1.2rem;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(226, 232, 240, 0.96));
+        box-shadow: 0 26px 60px rgba(15, 23, 42, 0.16);
+    }
+
+    .o_kpt_reception_desk::before {
+        content: "";
+        position: absolute;
+        inset: 0.45rem 0.6rem auto;
+        height: 0.3rem;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(124, 58, 237, 0.18), rgba(56, 189, 248, 0.1));
+    }
+
+    .o_kpt_reception_monitor {
+        position: absolute;
+        top: -3.4rem;
+        left: 2rem;
+        width: 6rem;
+        height: 3.7rem;
+        border-radius: 1rem;
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        box-shadow: inset 0 0 0 0.16rem rgba(255, 255, 255, 0.08);
+    }
+
+    .o_kpt_reception_monitor::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -1.05rem;
+        width: 0.85rem;
+        height: 1.05rem;
+        background: #475569;
+        transform: translateX(-50%);
+        border-radius: 0 0 0.35rem 0.35rem;
+    }
+
+    .o_kpt_reception_badge {
+        position: absolute;
+        top: 1.65rem;
+        right: 1.35rem;
+        padding: 0.45rem 0.95rem;
+        border-radius: 999px;
+        background: rgba(124, 58, 237, 0.12);
+        color: #6d28d9;
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+    }
+
+    .o_kpt_selfie_card {
+        padding: 1.1rem;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 1.25rem;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        backdrop-filter: blur(8px);
+    }
+
+    .o_kpt_selfie_title {
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .o_kpt_selfie_hint {
+        align-self: start;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(124, 58, 237, 0.1);
+        color: #6d28d9;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .o_kpt_selfie_stage {
+        position: relative;
+        overflow: hidden;
+        min-height: 17rem;
+        border-radius: 1.1rem;
+        background: linear-gradient(135deg, #e0e7ff 0%, #f5f3ff 100%);
+        border: 1px dashed rgba(99, 102, 241, 0.35);
+    }
+
+    .o_kpt_selfie_stage video,
+    .o_kpt_selfie_stage img {
+        width: 100%;
+        height: 100%;
+        min-height: 17rem;
+        object-fit: cover;
+        display: block;
+    }
+
+    .o_kpt_selfie_placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.55rem;
+        text-align: center;
+        color: #312e81;
+        padding: 1.5rem;
+    }
+
+    .o_kpt_selfie_placeholder_icon {
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 10px 24px rgba(79, 70, 229, 0.12);
+        font-weight: 700;
+    }
+
+    .o_kpt_selfie_actions {
+        display: grid;
+        gap: 0.75rem;
+    }
+}
+
+.o_dark .o_frontdesk_wrap {
+    .o_kpt_welcome_title,
+    .o_kpt_time_card,
+    .o_kpt_qr_card,
+    .o_kpt_welcome_badge,
+    .o_kpt_feature_chip,
+    .o_kpt_showcase_stat {
+        color: #fff;
+    }
+
+    .o_kpt_toolbar_chip,
+    .o_kpt_time_card,
+    .o_kpt_qr_card {
+        background: rgba(7, 14, 28, 0.48);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .o_kpt_reception_bubble {
+        background: rgba(15, 23, 42, 0.92);
+        color: #f8fafc;
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .o_kpt_reception_bubble::after {
+        background: rgba(15, 23, 42, 0.92);
+        border-right-color: rgba(255, 255, 255, 0.08);
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .o_kpt_showcase_panel {
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+            linear-gradient(180deg, rgba(9, 15, 28, 0.48), rgba(9, 15, 28, 0.72));
+    }
+
+    .o_kpt_selfie_card {
+        background: rgba(15, 23, 42, 0.78);
+        border-color: rgba(148, 163, 184, 0.18);
+        color: #f8fafc;
+    }
+
+    .o_kpt_selfie_hint {
+        background: rgba(167, 139, 250, 0.18);
+        color: #ddd6fe;
+    }
+
+    .o_kpt_selfie_stage {
+        background: linear-gradient(135deg, #1e1b4b 0%, #111827 100%);
+        border-color: rgba(167, 139, 250, 0.35);
+    }
+
+    .o_kpt_selfie_placeholder {
+        color: #ddd6fe;
+    }
+}
+
+.o_light .o_frontdesk_wrap {
+    .o_kpt_welcome_stage::before {
+        background:
+            linear-gradient(115deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.14) 100%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
+    }
+
+    .o_kpt_welcome_badge,
+    .o_kpt_feature_chip,
+    .o_kpt_toolbar_chip,
+    .o_kpt_time_card,
+    .o_kpt_qr_card,
+    .o_kpt_showcase_stat {
+        background: rgba(255, 255, 255, 0.72);
+        border-color: rgba(148, 163, 184, 0.22);
+        color: #0f172a;
+    }
+
+    .o_kpt_welcome_title,
+    .o_kpt_welcome_company {
+        color: #0f172a;
+        text-shadow: none;
+    }
+
+    .o_kpt_welcome_eyebrow,
+    .o_kpt_welcome_subtitle,
+    .o_kpt_card_label,
+    .o_kpt_qr_text {
+        color: rgba(15, 23, 42, 0.72);
+    }
+
+    .o_kpt_reception_bubble {
+        background: rgba(255, 255, 255, 0.95);
+        color: #1f2937;
+    }
+}
+
+@media (max-width: 1199.98px) {
+    .o_frontdesk_wrap {
+        .o_kpt_welcome_overlay {
+            padding-right: 1.5rem;
+        }
+
+        .o_kpt_welcome_content {
+            max-width: 42rem;
+        }
+
+        .o_kpt_time_card,
+        .o_kpt_qr_card {
+            width: 100%;
+            max-width: 28rem;
+        }
+    }
+}
+
+@media (max-width: 991.98px) {
+    .o_frontdesk_wrap {
+        .o_kpt_welcome_stage {
+            min-height: auto;
+        }
+
+        .o_kpt_welcome_content {
+            align-items: center;
+            max-width: none;
+        }
+
+        .o_kpt_welcome_title,
+        .o_kpt_welcome_subtitle {
+            max-width: 100%;
+        }
+
+        .o_kpt_welcome_overlay {
+            padding-right: 1rem;
+        }
+
+        .o_kpt_time_card,
+        .o_kpt_qr_card {
+            width: 100%;
+            max-width: none;
+        }
+    }
+}
+
+@keyframes kptReceptionFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes kptReceptionWave {
+    0%,
+    100% {
+        transform: rotate(12deg);
+    }
+    50% {
+        transform: rotate(30deg);
+    }
+}
+
+@keyframes kptReceptionGlow {
+    0%,
+    100% {
+        transform: scale(0.95);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+@keyframes kptReceptionBlink {
+    0%,
+    46%,
+    52%,
+    100% {
+        transform: scaleY(1);
+    }
+    48%,
+    50% {
+        transform: scaleY(0.12);
+    }
+}

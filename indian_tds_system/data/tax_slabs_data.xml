@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- New Tax Regime 2024-25 -->
+        <record id="tax_slab_new_2024_25_below_60" model="tds.tax.slab">
+            <field name="name">New Tax Regime 2024-25 (Below 60 years)</field>
+            <field name="financial_year">2024-25</field>
+            <field name="date_start">2024-04-01</field>
+            <field name="date_end">2025-03-31</field>
+            <field name="regime_type">new</field>
+            <field name="age_category">below_60</field>
+            <field name="enable_rebate_87a">True</field>
+            <field name="rebate_87a_income_limit">700000</field>
+            <field name="rebate_87a_max_amount">25000</field>
+            <field name="standard_deduction_amount">75000</field>
+        </record>
+        
+        <!-- New Tax Regime Slab Lines 2024-25 -->
+        <record id="tax_slab_line_new_2024_25_0_3" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">0</field>
+            <field name="income_to">300000</field>
+            <field name="tax_rate">0</field>
+            <field name="description">Up to ₹3,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_new_2024_25_3_7" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">300000</field>
+            <field name="income_to">700000</field>
+            <field name="tax_rate">5</field>
+            <field name="description">₹3,00,001 to ₹7,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_new_2024_25_7_10" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">700000</field>
+            <field name="income_to">1000000</field>
+            <field name="tax_rate">10</field>
+            <field name="description">₹7,00,001 to ₹10,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_new_2024_25_10_12" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">1000000</field>
+            <field name="income_to">1200000</field>
+            <field name="tax_rate">15</field>
+            <field name="description">₹10,00,001 to ₹12,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_new_2024_25_12_15" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">1200000</field>
+            <field name="income_to">1500000</field>
+            <field name="tax_rate">20</field>
+            <field name="description">₹12,00,001 to ₹15,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_new_2024_25_15_above" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_new_2024_25_below_60"/>
+            <field name="income_from">1500000</field>
+            <field name="income_to">0</field>
+            <field name="tax_rate">30</field>
+            <field name="description">Above ₹15,00,000</field>
+        </record>
+        
+        <!-- Old Tax Regime 2024-25 -->
+        <record id="tax_slab_old_2024_25_below_60" model="tds.tax.slab">
+            <field name="name">Old Tax Regime 2024-25 (Below 60 years)</field>
+            <field name="financial_year">2024-25</field>
+            <field name="date_start">2024-04-01</field>
+            <field name="date_end">2025-03-31</field>
+            <field name="regime_type">old</field>
+            <field name="age_category">below_60</field>
+            <field name="enable_rebate_87a">True</field>
+            <field name="rebate_87a_income_limit">500000</field>
+            <field name="rebate_87a_max_amount">12500</field>
+            <field name="standard_deduction_amount">50000</field>
+        </record>
+        
+        <!-- Old Tax Regime Slab Lines 2024-25 -->
+        <record id="tax_slab_line_old_2024_25_0_25" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_below_60"/>
+            <field name="income_from">0</field>
+            <field name="income_to">250000</field>
+            <field name="tax_rate">0</field>
+            <field name="description">Up to ₹2,50,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_25_5" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_below_60"/>
+            <field name="income_from">250000</field>
+            <field name="income_to">500000</field>
+            <field name="tax_rate">5</field>
+            <field name="description">₹2,50,001 to ₹5,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_5_10" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_below_60"/>
+            <field name="income_from">500000</field>
+            <field name="income_to">1000000</field>
+            <field name="tax_rate">20</field>
+            <field name="description">₹5,00,001 to ₹10,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_10_above" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_below_60"/>
+            <field name="income_from">1000000</field>
+            <field name="income_to">0</field>
+            <field name="tax_rate">30</field>
+            <field name="description">Above ₹10,00,000</field>
+        </record>
+        
+        <!-- Senior Citizen Tax Slabs (60-80 years) -->
+        <record id="tax_slab_old_2024_25_senior" model="tds.tax.slab">
+            <field name="name">Old Tax Regime 2024-25 (Senior Citizen 60-80 years)</field>
+            <field name="financial_year">2024-25</field>
+            <field name="date_start">2024-04-01</field>
+            <field name="date_end">2025-03-31</field>
+            <field name="regime_type">old</field>
+            <field name="age_category">senior_60_80</field>
+            <field name="enable_rebate_87a">False</field>
+            <field name="standard_deduction_amount">50000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_senior_0_3" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_senior"/>
+            <field name="income_from">0</field>
+            <field name="income_to">300000</field>
+            <field name="tax_rate">0</field>
+            <field name="description">Up to ₹3,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_senior_3_5" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_senior"/>
+            <field name="income_from">300000</field>
+            <field name="income_to">500000</field>
+            <field name="tax_rate">5</field>
+            <field name="description">₹3,00,001 to ₹5,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_senior_5_10" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_senior"/>
+            <field name="income_from">500000</field>
+            <field name="income_to">1000000</field>
+            <field name="tax_rate">20</field>
+            <field name="description">₹5,00,001 to ₹10,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_senior_10_above" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_senior"/>
+            <field name="income_from">1000000</field>
+            <field name="income_to">0</field>
+            <field name="tax_rate">30</field>
+            <field name="description">Above ₹10,00,000</field>
+        </record>
+        
+        <!-- Super Senior Citizen Tax Slabs (80+ years) -->
+        <record id="tax_slab_old_2024_25_super_senior" model="tds.tax.slab">
+            <field name="name">Old Tax Regime 2024-25 (Super Senior Citizen 80+ years)</field>
+            <field name="financial_year">2024-25</field>
+            <field name="date_start">2024-04-01</field>
+            <field name="date_end">2025-03-31</field>
+            <field name="regime_type">old</field>
+            <field name="age_category">super_senior_80</field>
+            <field name="enable_rebate_87a">False</field>
+            <field name="standard_deduction_amount">50000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_super_senior_0_5" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_super_senior"/>
+            <field name="income_from">0</field>
+            <field name="income_to">500000</field>
+            <field name="tax_rate">0</field>
+            <field name="description">Up to ₹5,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_super_senior_5_10" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_super_senior"/>
+            <field name="income_from">500000</field>
+            <field name="income_to">1000000</field>
+            <field name="tax_rate">20</field>
+            <field name="description">₹5,00,001 to ₹10,00,000</field>
+        </record>
+        
+        <record id="tax_slab_line_old_2024_25_super_senior_10_above" model="tds.tax.slab.line">
+            <field name="slab_id" ref="tax_slab_old_2024_25_super_senior"/>
+            <field name="income_from">1000000</field>
+            <field name="income_to">0</field>
+            <field name="tax_rate">30</field>
+            <field name="description">Above ₹10,00,000</field>
+        </record>
+        
+    </data>
+</odoo>

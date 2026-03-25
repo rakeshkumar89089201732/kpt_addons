@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="mrp_production_form_view_sale_extension" model="ir.ui.view">
+            <field name="name">mrp.production.inherited.form.sale.extension</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='bom_div']" position="after">
+                    <field name="man_power_cost"/>
+                    <field name="raw_material_cost"/>
+                    <field name="additional_cost"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="mrp_workcenter_form_view_extension" model="ir.ui.view">
+            <field name="name">mrp.workcenter.form_view.extension</field>
+            <field name="model">mrp.workcenter</field>
+            <field name="inherit_id" ref="mrp.mrp_workcenter_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='costing']" position="inside">
+                    <label for="man_power_cost_hour" string="Man power per hour"/>
+                    <div id="man_power_cost_hour" >
+                        <field name="man_power_cost_hour" widget="monetary" class="oe_inline" force_save="1"/> per workcenter
+                    </div>
+                    <label for="raw_material_cost_hour" string="Raw material per hour"/>
+                    <div id="raw_material_cost_hour">
+                        <field name="raw_material_cost_hour" widget="monetary" class="oe_inline" force_save="1"/> per workcenter
+                    </div>
+                    <label for="additional_cost_hour" string="Additional per hour"/>
+                    <div id="additional_cost_hour">
+                        <field name="additional_cost_hour" widget="monetary" class="oe_inline" force_save="1"/> per workcenter
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

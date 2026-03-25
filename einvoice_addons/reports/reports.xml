@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="account_nano_einvoice_report" model="ir.actions.report">
+        <field name="name">E-Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">einvoice_addons.report_nano_einvoice</field>
+        <field name="report_file">einvoice_addons.report_nano_einvoice</field>
+        <field name="print_report_name">(object._get_report_base_filename())</field>
+        <field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="account_nano_cancelled_einvoice_report" model="ir.actions.report">
+        <field name="name">Cancelled E-Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">einvoice_addons.report_nano_cancelled_einvoice</field>
+        <field name="report_file">einvoice_addons.report_nano_cancelled_einvoice</field>
+        <field name="print_report_name">('Cancelled E-Invoice - %s' % (object.name)) or 'Order - %s' % (object.name)</field>
+        <field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

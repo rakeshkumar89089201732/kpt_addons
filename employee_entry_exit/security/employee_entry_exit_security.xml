@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Record Rules -->
+        <record id="employee_offer_rule_user" model="ir.rule">
+            <field name="name">Employee Offer: User Access</field>
+            <field name="model_id" ref="model_employee_offer"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="employee_offer_rule_manager" model="ir.rule">
+            <field name="name">Employee Offer: Manager Access</field>
+            <field name="model_id" ref="model_employee_offer"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        </record>
+    </data>
+</odoo>

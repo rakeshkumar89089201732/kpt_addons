@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- TDS Regime Comparison Wizard Form View -->
+    <record id="view_tds_regime_comparison_wizard_form" model="ir.ui.view">
+        <field name="name">tds.regime.comparison.wizard.form</field>
+        <field name="model">tds.regime.comparison.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Tax Regime Comparison">
+                <sheet>
+                    <field name="hr_tds_id" invisible="1"/>
+                    <field name="current_regime" invisible="1"/>
+                    <field name="old_regime_slab_id" invisible="1"/>
+                    <field name="new_regime_slab_id" invisible="1"/>
+                    
+                    <div class="oe_title mb-3">
+                        <h1>Tax Regime Comparison</h1>
+                        <h3>Compare Old vs New tax regime to choose the best option</h3>
+                    </div>
+                    
+                    <!-- Recommendation Banner -->
+                    <group class="mb-3">
+                        <group string="💡 Recommendation" class="oe_subtotal_footer border p-3 bg-light">
+                            <field name="recommended_regime" widget="badge" 
+                                   decoration-success="recommended_regime == 'new'"
+                                   decoration-info="recommended_regime == 'old'"
+                                   string="Recommended Regime"/>
+                            <field name="tax_difference" 
+                                   string="Annual Savings" 
+                                   widget="monetary"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Summary -->
+                    <field name="comparison_summary" nolabel="1" class="mb-3"/>
+                    
+                    <separator string="Detailed Comparison"/>
+                    
+                    <!-- Side-by-Side Comparison -->
+                    <div class="row">
+                        <!-- Old Regime Column -->
+                        <div class="col-md-6">
+                            <div class="card shadow-sm" style="border-left: 4px solid #17a2b8;">
+                                <div class="card-header bg-info text-white">
+                                    <h4 class="mb-0">
+                                        🏛️ Old Tax Regime
+                                        <span class="badge badge-light float-right" invisible="current_regime != 'old'">Current</span>
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <group>
+                                        <group string="Income">
+                                            <field name="old_annual_salary" widget="monetary" string="Gross Income"/>
+                                        </group>
+                                        <group string="Deductions &amp; Exemptions">
+                                            <field name="old_total_exemptions" widget="monetary" string="Exemptions (Sec 10, HRA)"/>
+                                            <field name="old_total_deductions" widget="monetary" string="Deductions (80C, 80D, etc.)"/>
+                                        </group>
+                                    </group>
+                                    
+                                    <separator string="Deduction Breakdown"/>
+                                    <field name="old_deduction_breakdown" nolabel="1"/>
+                                    
+                                    <group class="mt-3">
+                                        <group string="Tax Calculation">
+                                            <field name="old_taxable_amount" widget="monetary" string="Taxable Income" class="font-weight-bold"/>
+                                            <field name="old_tax_payable" widget="monetary" string="Tax Payable (incl. Cess)" 
+                                                   class="font-weight-bold text-primary" style="font-size: 1.2em;"/>
+                                        </group>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- New Regime Column -->
+                        <div class="col-md-6">
+                            <div class="card shadow-sm" style="border-left: 4px solid #28a745;">
+                                <div class="card-header bg-success text-white">
+                                    <h4 class="mb-0">
+                                        ✨ New Tax Regime (u/s 115BAC)
+                                        <span class="badge badge-light float-right" invisible="current_regime != 'new'">Current</span>
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <group>
+                                        <group string="Income">
+                                            <field name="new_annual_salary" widget="monetary" string="Gross Income"/>
+                                        </group>
+                                        <group string="Deductions &amp; Exemptions">
+                                            <field name="new_total_exemptions" widget="monetary" string="Exemptions (Limited)"/>
+                                            <field name="new_total_deductions" widget="monetary" string="Deductions (Limited)"/>
+                                        </group>
+                                    </group>
+                                    
+                                    <separator string="Deduction Breakdown"/>
+                                    <field name="new_deduction_breakdown" nolabel="1"/>
+                                    
+                                    <group class="mt-3">
+                                        <group string="Tax Calculation">
+                                            <field name="new_taxable_amount" widget="monetary" string="Taxable Income" class="font-weight-bold"/>
+                                            <field name="new_tax_payable" widget="monetary" string="Tax Payable (incl. Cess)" 
+                                                   class="font-weight-bold text-success" style="font-size: 1.2em;"/>
+                                        </group>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Comparison Table -->
+                    <separator string="Quick Comparison" class="mt-4"/>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th class="text-center">Old Regime</th>
+                                        <th class="text-center">New Regime</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Gross Income</strong></td>
+                                        <td class="text-right"><field name="old_annual_salary" readonly="1" nolabel="1" widget="monetary"/></td>
+                                        <td class="text-right"><field name="new_annual_salary" readonly="1" nolabel="1" widget="monetary"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Deductions &amp; Exemptions</strong></td>
+                                        <td class="text-right"><span class="text-success"><field name="old_total_deductions" readonly="1" nolabel="1" widget="monetary"/> + <field name="old_total_exemptions" readonly="1" nolabel="1" widget="monetary"/></span></td>
+                                        <td class="text-right"><field name="new_total_deductions" readonly="1" nolabel="1" widget="monetary"/></td>
+                                    </tr>
+                                    <tr class="table-warning">
+                                        <td><strong>Taxable Income</strong></td>
+                                        <td class="text-right font-weight-bold"><field name="old_taxable_amount" readonly="1" nolabel="1" widget="monetary"/></td>
+                                        <td class="text-right font-weight-bold"><field name="new_taxable_amount" readonly="1" nolabel="1" widget="monetary"/></td>
+                                    </tr>
+                                    <tr class="table-info">
+                                        <td><strong>Tax Payable (with Cess)</strong></td>
+                                        <td class="text-right font-weight-bold" style="font-size: 1.1em;"><field name="old_tax_payable" readonly="1" nolabel="1" widget="monetary"/></td>
+                                        <td class="text-right font-weight-bold" style="font-size: 1.1em;"><field name="new_tax_payable" readonly="1" nolabel="1" widget="monetary"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </sheet>
+                
+                <footer>
+                    <button string="✓ Select Old Regime" 
+                            name="action_select_old_regime" 
+                            type="object" 
+                            class="btn-info"
+                            help="Apply Old Tax Regime to this TDS calculation"/>
+                    <button string="✓ Select New Regime" 
+                            name="action_select_new_regime" 
+                            type="object" 
+                            class="btn-success"
+                            help="Apply New Tax Regime to this TDS calculation"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Action to open the wizard -->
+    <record id="action_tds_regime_comparison_wizard" model="ir.actions.act_window">
+        <field name="name">Tax Regime Comparison</field>
+        <field name="res_model">tds.regime.comparison.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

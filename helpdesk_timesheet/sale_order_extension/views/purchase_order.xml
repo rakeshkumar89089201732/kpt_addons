@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_purchsase_order_form_extension" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.extension</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="replace">
+                    <field name="purchase_order_reference" placeholder="Add the Vendor Reference" string="Vendor Reference" readonly="state != 'draft'"/>
+            </xpath>
+
+            <xpath expr="//h1[@class='d-flex']" position="replace">
+                <div class="oe_title">
+                    <h5 class="d-flex">
+                        <field name="priority" widget="priority" class="me-3"/>
+                        <field name="name" readonly="1"/>
+                    </h5>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_purchsase_order_tree_extension" model="ir.ui.view">
+        <field name="name">purchase.order.view.tree.extension</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="purchase_order_reference"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Sale Order Form View to add Currency Field -->
+        <record id="view_order_form_currency" model="ir.ui.view">
+            <field name="name">sale.order.form.currency</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Add currency field after pricelist -->
+                <xpath expr="//field[@name='pricelist_id']" position="after">
+                    <field name="currency_id" 
+                           options="{'no_create': True, 'no_open': True}"
+                           readonly="state in ['done', 'cancel']"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Sale Order Tree View to show Currency -->
+        <record id="view_order_tree_currency" model="ir.ui.view">
+            <field name="name">sale.order.tree.currency</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total']" position="before">
+                    <field name="currency_id" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Add Currency field to Sale Order Search View -->
+        <record id="view_sales_order_filter_currency" model="ir.ui.view">
+            <field name="name">sale.order.search.currency</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='order_month']" position="after">
+                    <filter string="Currency" name="currency_groupby" context="{'group_by': 'currency_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

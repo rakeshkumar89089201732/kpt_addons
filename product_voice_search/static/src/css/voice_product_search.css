@@ -1,0 +1,64 @@
+.o_product_voice_search {
+    padding: 16px;
+}
+.o_pvs_header h2 {
+    margin: 0 0 4px 0;
+}
+.o_pvs_header p {
+    margin: 0 0 12px 0;
+    color: #666;
+}
+.o_pvs_controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.o_pvs_mic_btn i {
+    margin-right: 6px;
+}
+.o_pvs_search_box {
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    outline: none;
+}
+.o_pvs_search_box:focus {
+    border-color: #875a7b;
+    box-shadow: 0 0 0 2px rgba(135, 90, 123, 0.1);
+}
+.o_pvs_results .panel-heading {
+    font-weight: bold;
+}
+.o_pvs_results_list {
+    max-height: 320px;
+    overflow: auto;
+    margin: 0;
+}
+.o_pvs_results_list li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+}
+.o_pvs_results_list li:last-child {
+    border-bottom: none;
+}
+.o_pvs_hint {
+    margin-top: 10px;
+}
+
+/* Mic button for product many2one */
+.o_voice_m2o_btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 2px 6px;
+    line-height: 1.2;
+    z-index: 5;
+}
+
+.o_voice_m2o_btn i {
+    margin: 0;
+}

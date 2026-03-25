@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="offer_letter_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page" style="padding: 40px 50px; font-family: 'Calibri', 'Arial', sans-serif; font-size: 11pt; line-height: 1.6; color: #1a1a1a;">
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         COMPANY LETTERHEAD HEADER
+                         Shows: logo (if available) + company name + address + contacts
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="border-bottom: 3px solid #2c3e50; padding-bottom: 16px; margin-bottom: 28px;">
+                        <table style="width: 100%; border: none;">
+                            <tr>
+                                <!-- Company Logo (left side, only if logo exists) -->
+                                <td style="width: 120px; border: none; vertical-align: middle;" t-if="doc.company_id.logo">
+                                    <img t-att-src="'data:image/png;base64,%s' % doc.company_id.logo.decode('utf-8')"
+                                         style="max-height: 80px; max-width: 120px; object-fit: contain;" alt="Company Logo"/>
+                                </td>
+                                <!-- Company Name + Address (right side / center) -->
+                                <td style="border: none; vertical-align: middle; text-align: center; padding-left: 10px;">
+                                    <div style="font-size: 18pt; font-weight: bold; color: #2c3e50; letter-spacing: 0.5px;">
+                                        <span t-field="doc.company_id.name"/>
+                                    </div>
+                                    <div style="font-size: 9pt; color: #555; margin-top: 4px;">
+                                        <span t-if="doc.company_id.street" t-field="doc.company_id.street"/>
+                                        <span t-if="doc.company_id.street2">, <span t-field="doc.company_id.street2"/></span>
+                                        <t t-if="doc.company_id.city or doc.company_id.state_id or doc.company_id.zip">
+                                            <br/>
+                                            <span t-if="doc.company_id.city" t-field="doc.company_id.city"/>
+                                            <span t-if="doc.company_id.state_id">, <span t-field="doc.company_id.state_id.name"/></span>
+                                            <span t-if="doc.company_id.zip"> - <span t-field="doc.company_id.zip"/></span>
+                                        </t>
+                                        <span t-if="doc.company_id.country_id">, <span t-field="doc.company_id.country_id.name"/></span>
+                                        <t t-if="doc.company_id.phone or doc.company_id.email or doc.company_id.website">
+                                            <br/>
+                                            <span t-if="doc.company_id.phone">Tel: <span t-field="doc.company_id.phone"/></span>
+                                            <span t-if="doc.company_id.email"> | Email: <span t-field="doc.company_id.email"/></span>
+                                            <span t-if="doc.company_id.website"> | <span t-field="doc.company_id.website"/></span>
+                                        </t>
+                                    </div>
+                                </td>
+                                <!-- Offer Reference (top right corner) -->
+                                <td style="width: 140px; border: none; vertical-align: top; text-align: right; font-size: 9pt; color: #555;">
+                                    <div><strong>Ref:</strong> <span t-field="doc.name"/></div>
+                                    <div><strong>Date:</strong> <span t-field="doc.offer_date" t-options="{'widget': 'date'}"/></div>
+                                    <t t-if="doc.offer_valid_till">
+                                        <div><strong>Valid Till:</strong> <span t-field="doc.offer_valid_till" t-options="{'widget': 'date'}"/></div>
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         LETTER TITLE / SUBJECT LINE
+                         Customizable via doc.letter_title — defaults to "OFFER OF APPOINTMENT"
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <span style="font-size: 14pt; font-weight: bold; text-decoration: underline; letter-spacing: 1px; color: #2c3e50;">
+                            <t t-esc="doc.letter_title or 'OFFER OF APPOINTMENT'"/>
+                        </span>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SUBJECT LINE (Department + Location)
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 0; font-weight: bold;">
+                            <t t-if="doc.department_id">
+                                SUBJECT: Your Appointment in <u><span t-field="doc.department_id.name"/></u>
+                                <t t-if="doc.work_location"> (<span t-field="doc.work_location"/>)</t>
+                            </t>
+                            <t t-else="">
+                                SUBJECT: Offer of Appointment — <span t-field="doc.position_id.name"/>
+                                <t t-if="doc.work_location"> (<span t-field="doc.work_location"/>)</t>
+                            </t>
+                        </p>
+                    </div>
+
+                    <!-- Salutation -->
+                    <div style="margin-bottom: 18px;">
+                        <p style="margin: 0;">Dear <strong><span t-field="doc.candidate_name"/></strong>,</p>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         INTRODUCTION
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px; text-align: justify;">
+                        <t t-if="doc.introduction_text">
+                            <div t-out="doc.get_processed_content('introduction_text')" style="text-align: justify;"/>
+                        </t>
+                        <t t-else="">
+                            <p style="text-align: justify;">
+                                With reference to our negotiations on a possible employment with
+                                <strong><span t-field="doc.company_id.name"/></strong>,
+                                we are pleased to offer you the <strong>position of <span t-field="doc.position_id.name"/></strong>
+                                <t t-if="doc.work_location">(<span t-field="doc.work_location"/>)</t>
+                                on the following terms and conditions:
+                            </p>
+                        </t>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 1: DESIGNATION AND ROLES
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px;" t-if="doc.roles_responsibilities">
+                        <p style="margin: 0 0 6px 0; text-align: justify;">
+                            <strong>1) Designation and Division</strong>
+                        </p>
+                        <div t-out="doc.get_processed_content('roles_responsibilities')" style="text-align: justify; margin-left: 20px;"/>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 2: PROBATIONARY PERIOD
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px;" t-if="doc.probation_period">
+                        <p style="margin: 0 0 6px 0; text-align: justify;">
+                            <strong>2) Probationary Period</strong>
+                        </p>
+                        <p style="text-align: justify; margin-left: 20px;">
+                            Initially you will be on probation for a period of
+                            <strong><span t-field="doc.probation_period"/> months</strong>
+                            from the date of joining, which may be extended at the discretion of the Company.
+                            Your work will be reviewed during this period and if you are considered suitable,
+                            you will be absorbed in our Company as a regular employee.
+                        </p>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 3: REPORTING STRUCTURE
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px;" t-if="doc.reporting_structure">
+                        <p style="margin: 0 0 6px 0; text-align: justify;">
+                            <strong>3) Reporting Structure</strong>
+                        </p>
+                        <div t-out="doc.get_processed_content('reporting_structure')" style="text-align: justify; margin-left: 20px;"/>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 4: WORK DETAILS (Hours + Notice Period)
+                         ═══════════════════════════════════════════════════════ -->
+                    <t t-if="doc.work_hours or doc.notice_period">
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin: 0 0 6px 0;"><strong>4) Work Details</strong></p>
+                            <table style="margin-left: 20px; border: none; font-size: 10.5pt;">
+                                <t t-if="doc.work_hours">
+                                    <tr>
+                                        <td style="border: none; width: 180px; font-weight: bold; vertical-align: top; padding: 3px 10px 3px 0;">Work Hours:</td>
+                                        <td style="border: none; vertical-align: top; padding: 3px 0;"><span t-field="doc.work_hours"/></td>
+                                    </tr>
+                                </t>
+                                <t t-if="doc.notice_period">
+                                    <tr>
+                                        <td style="border: none; font-weight: bold; vertical-align: top; padding: 3px 10px 3px 0;">Notice Period:</td>
+                                        <td style="border: none; vertical-align: top; padding: 3px 0;"><span t-field="doc.notice_period"/> days</td>
+                                    </tr>
+                                </t>
+                                <t t-if="doc.joining_date">
+                                    <tr>
+                                        <td style="border: none; font-weight: bold; vertical-align: top; padding: 3px 10px 3px 0;">Date of Joining:</td>
+                                        <td style="border: none; vertical-align: top; padding: 3px 0;"><span t-field="doc.joining_date" t-options="{'widget': 'date'}"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                    </t>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 5: REMUNERATION / SALARY TABLE
+                         Conditionally shown based on doc.show_salary_table
+                         ═══════════════════════════════════════════════════════ -->
+                    <t t-if="doc.show_salary_table">
+                        <div style="margin-bottom: 20px;">
+                            <p style="margin: 0 0 6px 0; text-align: justify;">
+                                <strong>5) Remuneration (Annexure - I)</strong>
+                            </p>
+                            <p style="text-align: justify; margin-left: 20px; margin-bottom: 10px;">
+                                Your monthly remuneration package shall be as follows:
+                            </p>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 10.5pt; margin-left: 20px; width: calc(100% - 20px);">
+                                <thead>
+                                    <tr>
+                                        <th style="padding: 8px 10px; background-color: #2c3e50; color: #fff; border: 1px solid #2c3e50; text-align: left;">Salary Component</th>
+                                        <th style="padding: 8px 10px; background-color: #2c3e50; color: #fff; border: 1px solid #2c3e50; text-align: right; width: 160px;">Amount (Monthly)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;"><strong>Basic Salary</strong></td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.basic_salary" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.hra > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">HRA (House Rent Allowance)</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.hra" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.conveyance_allowance > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Conveyance Allowance</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.conveyance_allowance" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.medical_allowance > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Medical Allowance</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.medical_allowance" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.vehicle_allowance > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Vehicle Allowance</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.vehicle_allowance" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.washing_allowance > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Washing Allowance</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.washing_allowance" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.tour_expenses > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Tour Expenses</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.tour_expenses" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="doc.other_allowance > 0">
+                                        <td style="padding: 6px 10px; border: 1px solid #ccc;">Other Allowance</td>
+                                        <td style="padding: 6px 10px; text-align: right; border: 1px solid #ccc;">
+                                            <span t-field="doc.other_allowance" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Gross Salary row -->
+                                    <tr style="background-color: #ecf0f1;">
+                                        <td style="padding: 8px 10px; border: 1px solid #2c3e50; font-weight: bold;"><strong>Gross Salary (Monthly)</strong></td>
+                                        <td style="padding: 8px 10px; text-align: right; border: 1px solid #2c3e50; font-weight: bold;">
+                                            <strong><span t-field="doc.gross_salary" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></strong>
+                                        </td>
+                                    </tr>
+                                    <!-- CTC Annual row -->
+                                    <tr style="background-color: #ecf0f1;">
+                                        <td style="padding: 8px 10px; border: 1px solid #2c3e50; font-weight: bold;"><strong>Annual CTC</strong></td>
+                                        <td style="padding: 8px 10px; text-align: right; border: 1px solid #2c3e50; font-weight: bold;">
+                                            <strong><span t-field="doc.ctc_annual" t-options="{'widget': 'monetary', 'display_currency': doc.currency_id}"/></strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SECTION 6: OBLIGATIONS / BENEFITS
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-bottom: 20px;" t-if="doc.benefits">
+                        <p style="margin: 0 0 6px 0; text-align: justify;">
+                            <strong>6) Benefits &amp; Obligations</strong>
+                        </p>
+                        <div t-out="doc.get_processed_content('benefits')" style="text-align: justify; margin-left: 20px;"/>
+                    </div>
+
+                    <!-- Additional Terms -->
+                    <div style="margin-bottom: 20px;" t-if="doc.additional_terms">
+                        <p style="margin: 0 0 6px 0; font-weight: bold;">Additional Terms &amp; Conditions:</p>
+                        <div t-out="doc.get_processed_content('additional_terms')" style="text-align: justify;"/>
+                    </div>
+
+                    <!-- General Terms & Conditions -->
+                    <div style="margin-bottom: 20px;" t-if="doc.terms_conditions">
+                        <div t-out="doc.get_processed_content('terms_conditions')" style="text-align: justify;"/>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         CLOSING PARAGRAPH
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-top: 24px;">
+                        <t t-if="doc.closing_text">
+                            <div t-out="doc.get_processed_content('closing_text')" style="text-align: justify;"/>
+                        </t>
+                        <t t-else="">
+                            <p style="text-align: justify;">
+                                We look forward to welcoming you to our team and are confident that you will make significant contributions to our organization.
+                            </p>
+                            <p style="text-align: justify;">
+                                Please confirm your acceptance of this offer by signing and returning a copy of this letter.
+                            </p>
+                        </t>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         SIGNATURE BLOCK (Company / Authorized Signatory)
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-top: 40px;">
+                        <p style="margin: 0;"><strong>For <span t-field="doc.company_id.name"/></strong></p>
+                        <div style="margin-top: 55px; margin-bottom: 6px;">
+                            <span style="display: inline-block; border-top: 1.5px solid #000; width: 220px;"/>
+                        </div>
+                        <p style="margin: 0;" t-if="doc.user_id"><strong><span t-field="doc.user_id.name"/></strong></p>
+                        <p style="margin: 0; font-size: 9pt; color: #555;">Authorized Signatory</p>
+                    </div>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         ACCEPTANCE BLOCK
+                         Conditionally shown based on doc.show_acceptance_block
+                         ═══════════════════════════════════════════════════════ -->
+                    <t t-if="doc.show_acceptance_block">
+                        <div style="margin-top: 50px; border-top: 2px solid #2c3e50; padding-top: 18px;">
+                            <p style="margin: 0 0 10px; font-weight: bold; font-size: 11pt;">ACCEPTANCE</p>
+                            <p style="margin: 0 0 14px; text-align: justify;">
+                                I, <strong><span t-field="doc.candidate_name"/></strong>,
+                                hereby accept the above offer and agree to abide by all the terms and conditions mentioned herein.
+                            </p>
+                            <table style="width: 100%; border: none; margin-top: 36px;">
+                                <tr>
+                                    <td style="width: 45%; border: none;">
+                                        <div style="border-top: 1px solid #000; padding-top: 4px;">
+                                            <span style="font-size: 9pt; color: #555;">Signature of Candidate</span>
+                                        </div>
+                                    </td>
+                                    <td style="width: 10%; border: none;"/>
+                                    <td style="width: 45%; border: none;">
+                                        <div style="border-top: 1px solid #000; padding-top: 4px;">
+                                            <span style="font-size: 9pt; color: #555;">Date of Acceptance</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+
+                    <!-- ═══════════════════════════════════════════════════════
+                         FOOTER
+                         Uses doc.custom_footer_text if set, else default footer
+                         ═══════════════════════════════════════════════════════ -->
+                    <div style="margin-top: 40px; padding-top: 12px; border-top: 1px solid #ddd; text-align: center; color: #888; font-size: 9pt;">
+                        <t t-if="doc.custom_footer_text">
+                            <p style="margin: 0;"><t t-esc="doc.custom_footer_text"/></p>
+                        </t>
+                        <t t-else="">
+                            <p style="margin: 3px 0;">
+                                <span t-field="doc.company_id.name"/>
+                                <t t-if="doc.company_id.website"> | <span t-field="doc.company_id.website"/></t>
+                                <t t-if="doc.company_id.email"> | <span t-field="doc.company_id.email"/></t>
+                            </p>
+                            <p style="margin: 3px 0; font-size: 8pt; color: #aaa;">
+                                This document is confidential and intended solely for the named recipient.
+                                Ref: <span t-field="doc.name"/>
+                            </p>
+                        </t>
+                    </div>
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

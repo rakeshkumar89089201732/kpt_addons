@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Stock Ledger Report Tree View -->
+    <record id="view_stock_ledger_report_tree" model="ir.ui.view">
+        <field name="name">stock.ledger.report.tree</field>
+        <field name="model">stock.ledger.report</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Ledger" create="false" edit="false" delete="false" 
+                  decoration-info="vch_type == 'Purchase'" 
+                  decoration-success="vch_type == 'Sales'"
+                  decoration-warning="vch_type == 'Internal Transfer'">
+                <field name="date" string="Date"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="product_id" string="Product" optional="hide"/>
+                <field name="particulars" string="Particulars" optional="hide"/>
+                <field name="vch_type" string="Vch Type" optional="hide"/>
+                <field name="vch_no" string="Vch No" optional="hide"/>
+                <field name="inward_qty" string="Inward Qty" sum="Total Inward" widget="float" decoration-bf="1"/>
+                <field name="inward_value" string="Inward Value" sum="Total Inward Value" widget="monetary" decoration-bf="1"/>
+                <field name="outward_qty" string="Outward Qty" sum="Total Outward" widget="float" decoration-bf="1"/>
+                <field name="outward_value" string="Outward Value" sum="Total Outward Value" widget="monetary" decoration-bf="1"/>
+                <field name="balance_qty" string="Balance Qty" widget="float" decoration-bf="1"/>
+                <field name="balance_value" string="Balance Value" widget="monetary" decoration-bf="1"/>
+                <field name="uom_id" optional="show"/>
+                <field name="reference" optional="hide"/>
+                <field name="location_id" optional="hide"/>
+                <field name="location_dest_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Stock Ledger Report Pivot View -->
+    <record id="view_stock_ledger_report_pivot" model="ir.ui.view">
+        <field name="name">stock.ledger.report.pivot</field>
+        <field name="model">stock.ledger.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Stock Ledger Analysis">
+                <field name="product_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="inward_qty" type="measure"/>
+                <field name="outward_qty" type="measure"/>
+                <field name="inward_value" type="measure"/>
+                <field name="outward_value" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Stock Ledger Report Graph View -->
+    <record id="view_stock_ledger_report_graph" model="ir.ui.view">
+        <field name="name">stock.ledger.report.graph</field>
+        <field name="model">stock.ledger.report</field>
+        <field name="arch" type="xml">
+            <graph string="Stock Ledger Analysis" type="bar">
+                <field name="product_id"/>
+                <field name="inward_qty" type="measure"/>
+                <field name="outward_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Stock Ledger Report Search View -->
+    <record id="view_stock_ledger_report_search" model="ir.ui.view">
+        <field name="name">stock.ledger.report.search</field>
+        <field name="model">stock.ledger.report</field>
+        <field name="arch" type="xml">
+            <search string="Stock Ledger Report">
+                <field name="product_id"/>
+                <field name="product_tmpl_id"/>
+                <field name="particulars"/>
+                <field name="partner_id"/>
+                <field name="vch_no"/>
+                <field name="date"/>
+                <field name="vch_type"/>
+                <separator/>
+                <filter string="Sales" name="sales" domain="[('vch_type', '=', 'Sales')]"/>
+                <filter string="Purchase" name="purchase" domain="[('vch_type', '=', 'Purchase')]"/>
+                <filter string="Sales Return" name="sales_return" domain="[('vch_type', '=', 'Sales Return')]"/>
+                <filter string="Purchase Return" name="purchase_return" domain="[('vch_type', '=', 'Purchase Return')]"/>
+                <filter string="Internal Transfer" name="internal" domain="[('vch_type', '=', 'Internal Transfer')]"/>
+                <filter string="Manufacturing" name="manufacturing" domain="[('vch_type', '=', 'Manufacturing')]"/>
+                <separator/>
+                <filter string="Today" name="today" 
+                        domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" 
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" 
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;=', (context_today() + relativedelta(day=31)).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Year" name="this_year" 
+                        domain="[('date', '&gt;=', (context_today() - relativedelta(month=1, day=1)).strftime('%Y-%m-%d')),
+                                 ('date', '&lt;=', (context_today() + relativedelta(month=12, day=31)).strftime('%Y-%m-%d'))]"/>
+                <separator/>
+                <filter string="Has Inward" name="has_inward" domain="[('inward_qty', '&gt;', 0)]"/>
+                <filter string="Has Outward" name="has_outward" domain="[('outward_qty', '&gt;', 0)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Product Template" name="group_product_tmpl" context="{'group_by': 'product_tmpl_id'}"/>
+                    <filter string="Partner" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Voucher Type" name="group_vch_type" context="{'group_by': 'vch_type'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                    <filter string="Month" name="group_month" context="{'group_by': 'date:month'}"/>
+                    <filter string="Year" name="group_year" context="{'group_by': 'date:year'}"/>
+                    <filter string="Source Location" name="group_location" context="{'group_by': 'location_id'}"/>
+                    <filter string="Dest Location" name="group_location_dest" context="{'group_by': 'location_dest_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Stock Ledger Report Action -->
+    <record id="action_stock_ledger_report" model="ir.actions.act_window">
+        <field name="name">Stock Ledger</field>
+        <field name="res_model">stock.ledger.report</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="search_view_id" ref="view_stock_ledger_report_search"/>
+        <field name="context">{
+            'search_default_this_month': 1,
+            'search_default_group_product': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock movements found
+            </p>
+            <p>
+                <b>Stock Ledger Report</b>
+            </p>
+            <p>
+                This report displays all stock movements with inward/outward quantities and values.
+                <br/>
+                • Use filters to search by product, partner, voucher type, or date range
+                <br/>
+                • Group by product to see consolidated movements
+                <br/>
+                • Switch to Pivot or Graph view for analysis
+            </p>
+        </field>
+    </record>
+</odoo>

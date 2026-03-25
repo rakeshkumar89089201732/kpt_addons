@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_tds_certificate" model="ir.actions.report">
+        <field name="name">TDS Certificate (Form 16)</field>
+        <field name="model">tds.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">indian_tds_system.report_tds_certificate_template</field>
+        <field name="report_file">indian_tds_system.report_tds_certificate_template</field>
+        <field name="print_report_name">'TDS_Certificate_%s' % (object.certificate_number)</field>
+        <field name="binding_model_id" ref="model_tds_certificate"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_tds_certificate_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>FORM NO. 16</h2>
+                            <p>[See rule 31(1)(a)]</p>
+                            <h4>Certificate under section 203 of the Income-tax Act, 1961 for tax deducted at source on salary</h4>
+                        </div>
+                        
+                        <div class="row mt32">
+                            <div class="col-6">
+                                <strong>Name and address of the Employer:</strong><br/>
+                                <span t-field="o.employer_id.name"/><br/>
+                                <span t-field="o.employer_address"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Name and address of the Employee:</strong><br/>
+                                <span t-field="o.employee_id.name"/><br/>
+                                <span t-field="o.employee_address"/>
+                            </div>
+                        </div>
+
+                        <div class="row mt16">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>PAN of the Employer</th>
+                                        <th>TAN of the Employer</th>
+                                        <th>PAN of the Employee</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span t-field="o.employer_pan"/></td>
+                                        <td><span t-field="o.employer_tan"/></td>
+                                        <td><span t-field="o.employee_pan"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt16">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Financial Year</th>
+                                        <th>Assessment Year</th>
+                                        <th>Period From</th>
+                                        <th>Period To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span t-field="o.financial_year"/></td>
+                                        <td><span t-field="o.assessment_year"/></td>
+                                        <td><span t-field="o.period_from"/></td>
+                                        <td><span t-field="o.period_to"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt32">
+                            <h4>Summary of Amount Paid and Tax Deducted</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th class="text-right">Amount (Rs.)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Gross Salary</td>
+                                        <td class="text-right"><span t-field="o.gross_salary" t-options='{"widget": "monetary", "display_currency": o.employer_id.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Deductions</td>
+                                        <td class="text-right"><span t-field="o.total_deductions" t-options='{"widget": "monetary", "display_currency": o.employer_id.currency_id}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Taxable Income</td>
+                                        <td class="text-right"><span t-field="o.income_chargeable" t-options='{"widget": "monetary", "display_currency": o.employer_id.currency_id}'/></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <td><strong>Total Tax Deducted</strong></td>
+                                        <td class="text-right"><strong><span t-field="o.tds_deducted" t-options='{"widget": "monetary", "display_currency": o.employer_id.currency_id}'/></strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

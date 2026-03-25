@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Salary Increment Views -->
+    <record id="view_salary_increment_tree" model="ir.ui.view">
+        <field name="name">salary.increment.tree</field>
+        <field name="model">salary.increment</field>
+        <field name="arch" type="xml">
+            <tree string="Salary Increments">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="contract_id"/>
+                <field name="increment_type"/>
+                <field name="increment_amount"/>
+                <field name="new_wage"/>
+                <field name="effective_date"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'applied'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_salary_increment_form" model="ir.ui.view">
+        <field name="name">salary.increment.form</field>
+        <field name="model">salary.increment</field>
+        <field name="arch" type="xml">
+            <form string="Salary Increment">
+                <header>
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_apply" type="object" string="Apply" class="btn-success" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,applied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="contract_id" domain="[('employee_id', '=', employee_id)]"/>
+                            <field name="effective_date"/>
+                        </group>
+                        <group>
+                            <field name="increment_type"/>
+                            <field name="increment_amount"/>
+                            <field name="current_wage"/>
+                            <field name="new_wage"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_salary_increment" model="ir.actions.act_window">
+        <field name="name">Salary Increments</field>
+        <field name="res_model">salary.increment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Promotion Views -->
+    <record id="view_hr_promotion_tree" model="ir.ui.view">
+        <field name="name">hr.promotion.tree</field>
+        <field name="model">hr.promotion</field>
+        <field name="arch" type="xml">
+            <tree string="Promotions">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="new_job_id"/>
+                <field name="promotion_date"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_promotion_form" model="ir.ui.view">
+        <field name="name">hr.promotion.form</field>
+        <field name="model">hr.promotion</field>
+        <field name="arch" type="xml">
+            <form string="Promotion">
+                <header>
+                    <button name="action_apply" type="object" string="Apply Promotion" class="btn-primary" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,applied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="Employee Info">
+                            <field name="employee_id"/>
+                            <field name="current_job_id"/>
+                            <field name="current_department_id"/>
+                        </group>
+                        <group string="Promotion Info">
+                            <field name="new_job_id"/>
+                            <field name="new_department_id"/>
+                            <field name="promotion_date"/>
+                            <field name="salary_increment_id" domain="[('employee_id', '=', employee_id), ('state', '!=', 'applied')]"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_promotion" model="ir.actions.act_window">
+        <field name="name">Promotions</field>
+        <field name="res_model">hr.promotion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_tds_calculation_wizard_form" model="ir.ui.view">
+        <field name="name">tds.calculation.wizard.form</field>
+        <field name="model">tds.calculation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Calculate TDS">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="financial_year"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="tax_regime"/>
+                            <field name="all_employees"/>
+                            <field name="recalculate_existing"/>
+                            <field name="auto_approve"/>
+                        </group>
+                    </group>
+                    <group invisible="all_employees == True">
+                        <field name="employee_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_calculate_tds" string="Calculate" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_tds_calculation_wizard" model="ir.actions.act_window">
+        <field name="name">Bulk TDS Calculation</field>
+        <field name="res_model">tds.calculation.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Add menu item for wizard -->
+    <menuitem id="menu_tds_calculation_wizard" 
+              name="Bulk Calculation" 
+              parent="menu_tds_calculation_root" 
+              action="action_tds_calculation_wizard" 
+              sequence="20"
+              groups="indian_tds_system.group_tds_manager"/>
+</odoo>

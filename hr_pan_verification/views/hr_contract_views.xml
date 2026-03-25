@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_contract_form_view_hr_pan_verification" model="ir.ui.view">
+        <field name="name">hr.contract.form.hr.pan.verification</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="pan_lookup" placeholder="Enter PAN to find/create employee"/>
+                <button name="action_fetch_employee_by_pan" type="object" string="Fetch/Create Employee by PAN" class="btn-secondary"/>
+                <!-- <button name="action_verify_employee_pan" type="object" string="Verify Employee PAN" class="btn-primary"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

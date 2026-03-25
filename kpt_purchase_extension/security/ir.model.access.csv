@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_picking_purchase_user,stock.picking.purchase.user,stock.model_stock_picking,purchase.group_purchase_user,1,1,1,0
+access_stock_picking_purchase_manager,stock.picking.purchase.manager,stock.model_stock_picking,purchase.group_purchase_manager,1,1,1,1
+access_account_move_stock_user,account.move.stock.user,account.model_account_move,stock.group_stock_user,1,1,1,0
+access_account_move_stock_manager,account.move.stock.manager,account.model_account_move,stock.group_stock_manager,1,1,1,1
+access_apply_tds_wizard_user,apply.tds.wizard.user,model_apply_tds_wizard,account.group_account_invoice,1,1,1,1
+access_apply_tds_wizard_manager,apply.tds.wizard.manager,model_apply_tds_wizard,account.group_account_manager,1,1,1,1

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extend Product Packaging Form View -->
+        <record id="product_packaging_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.packaging.form.inherit.kpt</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_form_view"/>
+            <field name="arch" type="xml">
+                
+                <!-- Add weight details group after the qty group -->
+                <xpath expr="//group[@name='qty']" position="after">
+                    <group name="weight_details" string="Weight Details">
+                        <group>
+                            <field name="weight_per_piece" 
+                                   string="Wt./Pcs"
+                                   widget="float" 
+                                   options="{'digits': [16, 3]}"/>
+                            <field name="pieces_per_packaging"
+                                   string="PCS/Bag"/>
+                        </group>
+                        <group>
+                            <field name="packaging_weight" 
+                                   string="Packaging Weight"
+                                   widget="float" 
+                                   options="{'digits': [16, 3]}"/>
+                            <field name="avg_weight_per_packaging" 
+                                   string="Avg Wt./Bag"
+                                   readonly="1" 
+                                   widget="float" 
+                                   options="{'digits': [16, 3]}"/>
+                        </group>
+                    </group>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <!-- Extend Product Packaging Tree View -->
+        <record id="product_packaging_tree_view_inherit" model="ir.ui.view">
+            <field name="name">product.packaging.tree.inherit.kpt</field>
+            <field name="model">product.packaging</field>
+            <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+            <field name="arch" type="xml">
+                
+                <!-- Add weight columns after qty field -->
+                <xpath expr="//field[@name='qty']" position="after">
+                    <field name="weight_per_piece" string="Wt./Pcs" optional="show"/>
+                    <field name="pieces_per_packaging" string="PCS/Bag" optional="show"/>
+                    <field name="avg_weight_per_packaging" string="Avg Wt./Bag" optional="show"/>
+                </xpath>
+                
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Stock Ledger Wizard Form View -->
+    <record id="view_stock_ledger_wizard_form" model="ir.ui.view">
+        <field name="name">stock.ledger.wizard.form</field>
+        <field name="model">stock.ledger.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Stock Ledger">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="location_id" 
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="company_id" 
+                                   groups="base.group_multi_company"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="show_zero_lines"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Generate Ledger" 
+                            name="action_generate_ledger" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="Cancel" 
+                            class="btn-secondary" 
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Stock Ledger Wizard Action -->
+    <record id="action_stock_ledger_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Stock Ledger</field>
+        <field name="res_model">stock.ledger.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="binding_view_types">form</field>
+    </record>
+</odoo>

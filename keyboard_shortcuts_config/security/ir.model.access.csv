@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_keyboard_shortcut_user,keyboard.shortcut.user,model_keyboard_shortcut,group_shortcut_user,1,1,1,1
+access_keyboard_shortcut_manager,keyboard.shortcut.manager,model_keyboard_shortcut,group_shortcut_manager,1,1,1,1
+access_shortcut_action_user,shortcut.action.user,model_shortcut_action,group_shortcut_user,1,0,0,0
+access_shortcut_action_manager,shortcut.action.manager,model_shortcut_action,group_shortcut_manager,1,1,1,1

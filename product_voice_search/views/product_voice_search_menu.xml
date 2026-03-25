@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Client action to open voice search panel -->
+    <record id="action_product_voice_search" model="ir.actions.client">
+        <field name="name">Product Voice Search</field>
+        <field name="tag">product_voice_search.client_action</field>
+    </record>
+
+    <!-- Menu under Inventory > Products -->
+    <menuitem id="menu_product_voice_search"
+              name="Voice Product Search"
+              parent="stock.menu_stock_root"
+              action="action_product_voice_search"
+              sequence="120"/>
+</odoo>

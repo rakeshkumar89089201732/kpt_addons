@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_kpt_sales_address" model="ir.ui.view">
+        <field name="name">sale.order.form.kpt.sales.address</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert Bill To / Ship To selectors below partner selection -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <group string="Addresses" colspan="2">
+                    <group>
+                        <label for="bill_to_contact_id"/>
+                        <div class="o_row">
+                            <field name="bill_to_contact_id"
+                                   domain="[('is_company', '=', True)] if allow_other_company_bill else ['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
+                                   context="{'default_parent_id': partner_id}"
+                                   invisible="not partner_id"
+                                   class="oe_inline"/>
+                            <field name="allow_other_company_bill" 
+                                   widget="boolean_toggle"
+                                   string="Other Company"
+                                   invisible="not partner_id"
+                                   class="oe_inline ms-2"/>
+                        </div>
+                    </group>
+                    <group>
+                        <label for="ship_to_contact_id"/>
+                        <div class="o_row">
+                            <field name="ship_to_contact_id"
+                                   domain="[('is_company', '=', True)] if allow_other_company_ship else ['|', ('id', '=', partner_id), ('parent_id', '=', partner_id)]"
+                                   context="{'default_parent_id': partner_id}"
+                                   invisible="not partner_id"
+                                   class="oe_inline"/>
+                            <field name="allow_other_company_ship" 
+                                   widget="boolean_toggle"
+                                   string="Other Company"
+                                   invisible="not partner_id"
+                                   class="oe_inline ms-2"/>
+                        </div>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Module Category -->
+        <record id="module_category_attendance_approval" model="ir.module.category">
+            <field name="name">Attendance Approval</field>
+            <field name="description">Manage attendance approval workflow</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- User Group: Employee (Base access) -->
+        <record id="group_attendance_approval_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_category_attendance_approval"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('hr_attendance.group_hr_attendance_own_reader'))]"/>
+            <field name="comment">Can create and view own attendance records, check-in/check-out</field>
+        </record>
+
+        <!-- User Group: Manager (Can approve team attendance) -->
+        <record id="group_attendance_approval_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_category_attendance_approval"/>
+            <field name="implied_ids" eval="[(4, ref('group_attendance_approval_user')), (4, ref('hr_attendance.group_hr_attendance_officer'))]"/>
+            <field name="comment">Can view and approve attendance for direct reports</field>
+        </record>
+
+        <!-- User Group: Super Manager (Can see all managers and employees) -->
+        <record id="group_attendance_approval_super_manager" model="res.groups">
+            <field name="name">Super Manager</field>
+            <field name="category_id" ref="module_category_attendance_approval"/>
+            <field name="implied_ids" eval="[(4, ref('group_attendance_approval_manager'))]"/>
+            <field name="comment">Can view and approve attendance for all managers and employees</field>
+        </record>
+
+        <!-- User Group: Administrator (Full access) -->
+        <record id="group_attendance_approval_admin" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_attendance_approval"/>
+            <field name="implied_ids" eval="[(4, ref('group_attendance_approval_super_manager')), (4, ref('hr_attendance.group_hr_attendance_manager'))]"/>
+            <field name="comment">Full access - can create, edit, delete any attendance record</field>
+        </record>
+
+    </data>
+
+    <data noupdate="1">
+        
+        <!-- Record Rules -->
+
+        <!-- Administrator override for HR Attendance itself -->
+        <record id="hr_attendance_rule_attendance_approval_admin_all" model="ir.rule">
+            <field name="name">HR Attendance: Attendance Approval Admin Full Access</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <record id="hr_attendance_rule_system_admin_all" model="ir.rule">
+            <field name="name">HR Attendance: System Admin Full Access</field>
+            <field name="model_id" ref="hr_attendance.model_hr_attendance"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- User: Can only see own attendance -->
+        <record id="attendance_approval_rule_user_own" model="ir.rule">
+            <field name="name">Attendance Approval: User Own Records</field>
+            <field name="model_id" ref="model_hr_attendance_approval"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Manager: Can see direct reports attendance -->
+        <record id="attendance_approval_rule_manager" model="ir.rule">
+            <field name="name">Attendance Approval: Manager Direct Reports</field>
+            <field name="model_id" ref="model_hr_attendance_approval"/>
+            <field name="domain_force">[
+                '|', '|',
+                ('employee_id.user_id', '=', user.id),
+                ('employee_id.parent_id.user_id', '=', user.id),
+                ('next_approver_ids', 'in', user.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Super Manager: Can see all attendance in their department hierarchy -->
+        <record id="attendance_approval_rule_super_manager" model="ir.rule">
+            <field name="name">Attendance Approval: Super Manager All Records</field>
+            <field name="model_id" ref="model_hr_attendance_approval"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_super_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Administrator: Full access -->
+        <record id="attendance_approval_rule_admin" model="ir.rule">
+            <field name="name">Attendance Approval: Administrator Full Access</field>
+            <field name="model_id" ref="model_hr_attendance_approval"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Approval Line Rules -->
+        <record id="attendance_approval_line_rule_user" model="ir.rule">
+            <field name="name">Attendance Approval Line: User Own Records</field>
+            <field name="model_id" ref="model_hr_attendance_approval_line"/>
+            <field name="domain_force">[('attendance_approval_id.employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="attendance_approval_line_rule_manager" model="ir.rule">
+            <field name="name">Attendance Approval Line: Manager Access</field>
+            <field name="model_id" ref="model_hr_attendance_approval_line"/>
+            <field name="domain_force">[
+                '|',
+                ('attendance_approval_id.employee_id.user_id', '=', user.id),
+                ('attendance_approval_id.employee_id.parent_id.user_id', '=', user.id)
+            ]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="attendance_approval_line_rule_admin" model="ir.rule">
+            <field name="name">Attendance Approval Line: Admin Full Access</field>
+            <field name="model_id" ref="model_hr_attendance_approval_line"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Config Rules - Only Admin can modify -->
+        <record id="attendance_approval_config_rule_read" model="ir.rule">
+            <field name="name">Attendance Approval Config: Read All</field>
+            <field name="model_id" ref="model_hr_attendance_approval_config"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <record id="attendance_approval_config_rule_admin" model="ir.rule">
+            <field name="name">Attendance Approval Config: Admin Full Access</field>
+            <field name="model_id" ref="model_hr_attendance_approval_config"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_attendance_approval_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

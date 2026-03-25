@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Force Attendance Overview default view to List (tree) instead of Gantt -->
+    <record id="hr_attendance.hr_attendance_action" model="ir.actions.act_window">
+        <field name="view_mode">tree,form,gantt</field>
+    </record>
+
+</odoo>

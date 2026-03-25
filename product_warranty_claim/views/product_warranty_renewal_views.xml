@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_warranty_renewal_tree" model="ir.ui.view">
+        <field name="name">product.warranty.renewal.tree</field>
+        <field name="model">product.warranty.renewal</field>
+        <field name="arch" type="xml">
+            <tree string="Warranty Renewals" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="warranty_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="renewal_date"/>
+                <field name="renewal_period"/>
+                <field name="renewal_start_date"/>
+                <field name="renewal_end_date"/>
+                <field name="warranty_type"/>
+                <field name="state" widget="badge" decoration-success="state == 'completed'"/>
+                <field name="renewal_price"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_warranty_renewal_form" model="ir.ui.view">
+        <field name="name">product.warranty.renewal.form</field>
+        <field name="model">product.warranty.renewal</field>
+        <field name="arch" type="xml">
+            <form string="Warranty Renewal">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Complete Renewal" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_create_invoice" string="Create Invoice" type="object" class="oe_highlight" invisible="warranty_type != 'paid' or invoice_id or state != 'completed'"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['completed', 'cancelled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_product_warranty)d" type="action" class="oe_stat_button" icon="fa-shield" invisible="not new_warranty_id" context="{'default_warranty_id': warranty_id}">
+                            <field name="new_warranty_id" widget="statinfo" string="New Warranty"/>
+                        </button>
+                        <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="not invoice_id">
+                            <field name="invoice_id" widget="statinfo" string="Invoice"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="warranty_id" options="{'no_create': True}"/>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="serial_number" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="renewal_date"/>
+                            <field name="warranty_type"/>
+                            <field name="renewal_period"/>
+                            <field name="renewal_start_date"/>
+                            <field name="renewal_end_date"/>
+                            <field name="renewal_price" invisible="warranty_type != 'paid'"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="note" placeholder="Add internal notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_warranty_renewal_search" model="ir.ui.view">
+        <field name="name">product.warranty.renewal.search</field>
+        <field name="model">product.warranty.renewal</field>
+        <field name="arch" type="xml">
+            <search string="Search Warranty Renewals">
+                <field name="name"/>
+                <field name="warranty_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Free Warranty" name="free" domain="[('warranty_type', '=', 'free')]"/>
+                <filter string="Paid Warranty" name="paid" domain="[('warranty_type', '=', 'paid')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Warranty Type" name="group_type" context="{'group_by': 'warranty_type'}"/>
+                    <filter string="Customer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Product" name="group_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_product_warranty_renewal" model="ir.actions.act_window">
+        <field name="name">Warranty Renewals</field>
+        <field name="res_model">product.warranty.renewal</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first warranty renewal!
+            </p>
+            <p>
+                Warranty renewals extend the warranty period for products and can create new warranty records.
+            </p>
+        </field>
+    </record>
+</odoo>

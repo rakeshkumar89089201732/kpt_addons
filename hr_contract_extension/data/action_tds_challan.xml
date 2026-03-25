@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define action early so hr_contract.xml button ref resolves (loads before views). -->
+    <record id="action_tds_challan" model="ir.actions.act_window">
+        <field name="name">TDS Challans</field>
+        <field name="res_model">tds.challan</field>
+        <field name="view_mode">form,tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Create a new TDS Challan</p>
+        </field>
+    </record>
+</odoo>

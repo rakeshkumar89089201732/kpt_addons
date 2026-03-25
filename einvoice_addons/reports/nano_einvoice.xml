@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <template id="report_nano_einvoice_document">
+            <t t-call="web.basic_layout">
+                <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+                <table width="100%"
+                       style="text-align: left; border-collapse: collapse; border: 1px solid #EEEEEE; margin: 0; border-radius: 5px;">
+                    <tr>
+                        <td style="border: none; padding: 10px;">
+                            <table width="100%"
+                                   style="text-align: left; border-collapse: collapse; border: 1px solid #FFFFFF; margin: 0;">
+                                <thead>
+                                    <tr>
+                                        <th width="80%"
+                                            style="text-align: left; border-collapse: collapse; border: 1px solid #FFFFFF; margin: 0;">
+                                            <br></br>
+                                            <span t-field="doc.company_id.name"
+                                                  style="font-family: serif; font-size: 16px; font-weight: bold;"/>
+                                            <br></br>
+                                            <span t-field="doc.company_id.vat"
+                                                  style="font-family: serif; font-size: 16px; font-weight: bold;"/>
+                                        </th>
+                                        <th width="20%"
+                                            style="text-align: left; border-collapse: collapse; border: 1px solid #FFFFFF; margin: 0;">
+                                            <div>
+                                                <img t-attf-src="data:image/*;base64,{{doc.e_qr_code}}"
+                                                     style="height:150px; width:150px;"/>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <br></br>
+                            <!-- 1.e-Invoice Details -->
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <strong style="font-size: 18px;">1.e-Invoice Details</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <span style="font-size: 14px; font-weight: normal;">IRN :</span>
+                                        <span t-field="doc.irn"
+                                              style="font-family: serif; font-size: 14px; font-weight: bold;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="50%">
+                                        <span style="font-size: 14px; font-weight: bold;">Ack. No :</span>
+                                        <span t-field="doc.ack_no"
+                                              style="font-family: serif; font-size: 14px; font-weight: bold;"/>
+                                    </td>
+                                    <td width="50%">
+                                        <span style="font-size: 14px; font-weight: bold;">Ack. Date :</span>
+                                        <span t-field="doc.ack_date"
+                                              style="font-family: serif; font-size: 14px; font-weight: bold;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br></br>
+                            <!--                            2.Transaction Details-->
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <strong style="font-size: 18px;">2.Transaction Details</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="20%">
+                                        <span style="font-size: 14px;font-weight: bold;">
+                                            Supply Type Code :
+                                        </span>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">B2B</span>
+                                    </td>
+                                    <td width="40%">
+                                        <span style="font-size: 14px;font-weight: bold;">
+                                            Document No :
+                                        </span>
+                                        <span t-field="doc.name"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                    <td width="30%">
+                                        <span style="font-size: 14px;font-weight: bold;">
+                                            IGST applicable despite Supplier and Recipient located in same State :
+                                        </span>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">No</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <span style="font-size: 14px;">Place of Supply :</span>
+                                        <span t-field="doc.l10n_in_state_id"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="50%">
+                                        <span style="font-size: 14px;font-weight: bold;">
+                                            Document Type :
+                                        </span>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">Tax
+                                            Invoice
+                                        </span>
+                                    </td>
+                                    <td width="50%">
+                                        <span style="font-size: 14px;font-weight: bold;">
+                                            Document Date :
+                                        </span>
+                                        <span t-field="doc.invoice_date"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br></br>
+                            <!--3.Party Details-->
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <strong style="font-size: 18px;">3.Party Details</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="50%">
+                                        <br></br>
+                                        <strong>Supplier</strong>
+                                        <br></br>
+                                        <span t-field="doc.company_id.name"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">GSTIN :
+                                        </span>
+                                        <span t-field="doc.company_id.vat"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.company_id.street"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.company_id.street2"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.company_id.city"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.company_id.zip"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.company_id.country_id"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                    <td width="50%">
+                                        <br></br>
+                                        <strong>Recipient</strong>
+                                        <br></br>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">GSTIN :
+                                        </span>
+                                        <span t-field="doc.partner_id.vat"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.name"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.street"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.partner_id.street2"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.city"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">Place of
+                                            Supply :
+                                        </span>
+                                        <span t-field="doc.l10n_in_state_id"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.zip"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.partner_id.state_id"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.mobile"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.partner_id.email"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <strong>Ship To</strong>
+                                        <br></br>
+                                        <span style="font-family: serif;font-size: 14px;font-weight: normal;">GSTIN :
+                                        </span>
+                                        <span t-field="doc.partner_id.vat"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.name"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.street"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.partner_id.street2"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.city"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span t-field="doc.partner_id.zip"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <span t-field="doc.partner_id.state_id"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br></br>
+                            <!--4.Details of Goods / Services-->
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="100%">
+                                        <strong style="font-size: 18px;">4.Details of Goods / Services</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br></br>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <thead>
+                                    <tr>
+                                        <th name="th_sm_product_no"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            <strong>SlNo</strong>
+                                        </th>
+                                        <!-- Product details column -->
+                                        <th name="th_label"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Item Description
+                                        </th>
+                                        <th name="th_hsn_code"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            HSN
+                                            Code
+                                        </th>
+                                        <th name="th_quantity"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Qty
+                                        </th>
+                                        <th name="th_unit"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Unit
+                                        </th>
+                                        <th name="th_price"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Unit
+                                            Price
+                                            (Rs)
+                                        </th>
+                                        <th name="th_display_discount"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Discount
+                                            (Rs)
+                                        </th>
+                                        <th name="th_tax"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Tax Rate
+                                        </th>
+                                        <th name="th_taxableamount"
+                                            style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Taxable
+                                            Amount
+                                            (Rs)
+                                        </th>
+                                        <th name="th_total"  style="font-size: 15px; font-weight: bold;text-align: center; padding: 5px; border: 1px solid #EEEEEE;">
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="move_index" t-value="1"/>
+                                    <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <t t-esc="move_index"
+                                                   style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;padding: 5px;"/>
+                                                <t t-set="move_index" t-value="move_index + 1"
+                                                   style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;padding: 5px;"/>
+                                            </td>
+                                            <td name="th_label"
+                                                style="font-family: serif;font-size: 14px;font-weight: normal;padding: 5px;">
+                                                <span t-field="line.name"/>
+                                            </td>
+                                            <td name="th_hsn_code"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border: 1px solid #EEEEEE;">
+                                                <span t-field="line.product_id.l10n_in_hsn_code"/>
+                                            </td>
+                                            <td name="th_quantity"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border: 1px solid #EEEEEE;">
+                                                <span t-field="line.quantity"/>
+                                            </td>
+                                            <td name="th_unit"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.product_uom_id"/>
+                                            </td>
+                                            <td name="th_price"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.price_unit"/>
+                                            </td>
+                                            <td name="th_display_discount" class="text-end"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.discount"/>
+                                            </td>
+                                            <td name="th_tax" class="text-end"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.tax_ids"/>
+                                            </td>
+                                            <td name="th_taxableamount" class="text-end"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.price_subtotal"/>
+                                            </td>
+                                             <td name="th_total" class="text-end"
+                                                style="font-family: serif; font-size: 14px; font-weight: normal; text-align: right; padding: 5px; border:1px solid #EEEEEE;">
+                                                <span t-field="line.price_total"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <br></br>
+                            <table width="100%" style="border: 1px solid #EEEEEE;">
+                                <thead>
+                                    <tr>
+                                        <th id="th_taxable_amt"
+                                            style="font-size: 15px; font-weight: bold; text-align: center;">
+                                            <strong>Tax'ble Amt</strong>
+                                        </th>
+                                        <th id="th_cgst"
+                                            style="font-size: 15px; font-weight: bold; text-align: center;">
+                                            CGST Amt
+                                        </th>
+                                        <th id="th_sgst"
+                                            style="font-size: 15px; font-weight: bold; text-align: center;">
+                                            SGST Amt
+                                        </th>
+                                        <th id="th_igst"
+                                            style="font-size: 15px; font-weight: bold; text-align: center;">
+                                            IGST Amt
+                                        </th>
+                                        <th id="th_total"
+                                            style="font-size: 15px; font-weight: bold; text-align: center;">
+                                            Total Inv. Amt
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="td_taxable_amt"
+                                            style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;">
+                                            <span t-field="doc.amount_untaxed_vals"/>
+                                        </td>
+                                        <td id="td_cgst"
+                                            style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;">
+                                            <span t-field="doc.cgst_amount"/>
+                                        </td>
+                                        <td id="td_sgst"
+                                            style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;">
+                                            <span t-field="doc.sgst_amount"/>
+                                        </td>
+                                        <td id="td_igst"
+                                            style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;">
+                                            <span t-field="doc.igst_amount"/>
+                                        </td>
+                                        <td id="td_total"
+                                            style="font-family: serif;font-size: 14px;font-weight: normal;text-align:right;">
+                                            <span t-field="doc.amount_total_vals"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br></br>
+                            <table width="100%" style="text-align: left; border: 1px solid #EEEEEE;">
+                                <tr>
+                                    <td width="30%">
+                                        <br></br>
+                                        <span style="font-size: 14px; font-weight: normal;">
+                                            Generated By :
+                                        </span>
+                                        <span t-field="doc.company_id.vat"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                        <br></br>
+                                        <span style="font-size: 14px; font-weight: normal;">
+                                            Print Date:
+                                        </span>
+                                        <span t-field="doc.current_date"
+                                              style="font-family: serif;font-size: 14px;font-weight: normal;"/>
+                                    </td>
+                                    <td width="40%" style="font-size: 14px;font-weight: bold;text-align:center">
+                                        <br></br>
+                                        <img t-attf-src="data:image/*;base64,{{doc.e_barcode}}"
+                                             style="height:50px;width:150px;"/>
+                                        <br></br>
+                                        <span t-field="doc.ack_no"/>
+                                    </td>
+                                    <td width="30%" style="font-size: 14px;font-weight: bold;text-align:center">
+                                        <br></br>
+                                        <span>
+                                            Authorised Signatory
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                            <br></br>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </t>
+        </template>
+
+        <template id="report_nano_einvoice">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="einvoice_addons.report_nano_einvoice_document" t-lang="doc.partner_id.lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

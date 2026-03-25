@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- ControlPanel is no longer extended here: Odoo 17 uses OWL ControlPanel with slots.
+         Styling is handled by theme_style_backend.scss only. -->
+</templates>

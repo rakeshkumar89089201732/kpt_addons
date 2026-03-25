@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_form14_register" model="report.paperformat">
+            <field name="name">Form 14 Register</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">6</field>
+            <field name="margin_bottom">8</field>
+            <field name="margin_left">6</field>
+            <field name="margin_right">6</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_hr_contract_form14_register" model="ir.actions.report">
+            <field name="name">Form 14</field>
+            <field name="model">hr.contract.form14</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">hr_contract_extension.report_hr_contract_form14_register</field>
+            <field name="report_file">hr_contract_extension.report_hr_contract_form14_register</field>
+            <field name="paperformat_id" ref="hr_contract_extension.paperformat_form14_register"/>
+            <field name="binding_model_id" ref="model_hr_contract_form14"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <template id="report_hr_contract_form14_register">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            .f14{font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:9px;color:#111;}
+                            .f14 .title{font-size:14px;font-weight:700;text-align:center;}
+                            .f14 .sub{font-size:10px;font-weight:700;text-align:center;margin-top:2px;}
+                            .f14 .sub2{font-size:11px;font-weight:700;text-align:center;margin-top:2px;}
+                            .f14 table{width:100%;border-collapse:collapse;}
+                            .f14 th,.f14 td{border:1px solid #222;padding:3px;vertical-align:top;}
+                            .f14 .nob{border:none !important;}
+                            .f14 .thead th{font-weight:600;text-align:center;}
+                            .f14 .colhead{height:120px;padding:2px;}
+                            .f14 .rotwrap{position:relative;height:115px;overflow:hidden;}
+                            .f14 .rot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);transform-origin:center;white-space:nowrap;line-height:1.1;}
+                            .f14 .num{font-size:10px;font-weight:700;text-align:center;padding:2px 0;}
+                        </style>
+
+                        <div class="f14">
+                            <div class="sub2">कारखाने में काम करने वाले श्रमिकों के अवकाश की पंजिका</div>
+                            <div class="title">LEAVE WITH WAGES REGISTER</div>
+                            <div class="sub">फार्म नं. 14 / Form No. 14</div>
+
+                            <table style="margin-top:6px;">
+                                <tr>
+                                    <td class="nob" style="width:50%;">
+                                        <table>
+                                            <tr><td style="width:40%;">Sl. No.</td><td><t t-esc="o.serial_no or ''"/></td></tr>
+                                            <tr><td>Sl. No. in Register of Adult/Child</td><td><t t-esc="o.register_adult_child_no or ''"/></td></tr>
+                                            <tr><td style="width:40%;">Department</td><td><t t-esc="o.department_id.name or ''"/></td></tr>
+                                            <tr><td>Name</td><td><t t-esc="o.employee_id.name or ''"/></td></tr>
+                                            <tr><td>Father's Name</td><td><t t-esc="o.father_name or ''"/></td></tr>
+                                            <tr><td>Date of Entry into Service</td><td><t t-esc="o.date_of_entry_into_service or ''"/></td></tr>
+                                        </table>
+                                    </td>
+                                    <td class="nob" style="width:50%;">
+                                        <table>
+                                            <tr><td style="width:40%;">Name of Factory</td><td><t t-esc="o.name_of_factory or ''"/></td></tr>
+                                            <tr><td>Wages Period</td><td><t t-esc="o.wages_period_from or ''"/> - <t t-esc="o.wages_period_to or ''"/></td></tr>
+                                            <tr><td>Date of Discharge</td><td><t t-esc="o.date_of_discharge or ''"/></td></tr>
+                                            <tr><td>Payment in lieu of leave due</td><td><t t-esc="o.payment_in_lieu_date or ''"/> / <t t-esc="o.payment_in_lieu_amount or 0.0"/></td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table style="margin-top:8px;">
+                                <thead class="thead">
+                                    <tr>
+                                        <th class="colhead" style="width:3%;"><div class="rotwrap"><div class="rot">Calendar year of Service</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Wages Period (From)</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Wages Period (To)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">No. of days worked during the calendar year</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">No. of days of lay-off (if any)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">No. of days of maternity leave (if any)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">No. of days leave earned for work performed</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">Total of columns (4) to (7)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">Leave at credit (Balance from preceding year)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">Leave earned during the year</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">Total of columns (9) and (10)</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Whether leave in accordance with scheme under Sec. 79(8) was accepted</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Leave enjoyed (From)</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Leave enjoyed (To)</div></div></th>
+                                        <th class="colhead" style="width:5%;"><div class="rotwrap"><div class="rot">Balance of leave to credit</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Normal rate of wages</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Cash equivalent of leave wages due (at discharge)</div></div></th>
+                                        <th class="colhead" style="width:4%;"><div class="rotwrap"><div class="rot">Sick</div></div></th>
+                                        <th class="colhead" style="width:4%;"><div class="rotwrap"><div class="rot">Without pay</div></div></th>
+                                        <th class="colhead" style="width:4%;"><div class="rotwrap"><div class="rot">Absent</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Remarks</div></div></th>
+                                        <th class="colhead" style="width:6%;"><div class="rotwrap"><div class="rot">Signature / Initial</div></div></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="num">1</th>
+                                        <th class="num">2</th>
+                                        <th class="num">3</th>
+                                        <th class="num">4</th>
+                                        <th class="num">5</th>
+                                        <th class="num">6</th>
+                                        <th class="num">7</th>
+                                        <th class="num">8</th>
+                                        <th class="num">9</th>
+                                        <th class="num">10</th>
+                                        <th class="num">11</th>
+                                        <th class="num">12</th>
+                                        <th class="num">13</th>
+                                        <th class="num">14</th>
+                                        <th class="num">15</th>
+                                        <th class="num">16</th>
+                                        <th class="num">17</th>
+                                        <th class="num">18</th>
+                                        <th class="num">19</th>
+                                        <th class="num">20</th>
+                                        <th class="num">21</th>
+                                        <th class="num">22</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><t t-esc="o.col_01_calendar_year_of_service or ''"/></td>
+                                        <td><t t-esc="o.wages_period_from or ''"/></td>
+                                        <td><t t-esc="o.wages_period_to or ''"/></td>
+                                        <td><t t-esc="o.col_04_days_worked or 0"/></td>
+                                        <td><t t-esc="o.col_05_days_layoff or 0"/></td>
+                                        <td><t t-esc="o.col_06_days_maternity_leave or 0"/></td>
+                                        <td><t t-esc="o.col_07_days_leave_earned_for_work or 0"/></td>
+                                        <td><t t-esc="o.col_08_total_4_to_7 or 0"/></td>
+                                        <td><t t-esc="o.col_09_leave_balance_prev_year or 0"/></td>
+                                        <td><t t-esc="o.col_10_leave_earned_during_year or 0"/></td>
+                                        <td><t t-esc="o.col_11_total_9_10 or 0"/></td>
+                                        <td><t t-esc="o.col_12_scheme_79_8_accepted or ''"/></td>
+                                        <td><t t-esc="o.col_13_leave_enjoyed_from or ''"/></td>
+                                        <td><t t-esc="o.col_14_leave_enjoyed_to or ''"/></td>
+                                        <td><t t-esc="o.col_15_leave_balance_after or 0"/></td>
+                                        <td><t t-esc="o.col_16_normal_rate_of_wages or 0.0"/></td>
+                                        <td><t t-esc="o.col_17_cash_equivalent_at_discharge or 0.0"/></td>
+                                        <td><t t-esc="o.col_18_sick or 0"/></td>
+                                        <td><t t-esc="o.col_19_without_pay or 0"/></td>
+                                        <td><t t-esc="o.col_20_absent or 0"/></td>
+                                        <td><t t-esc="o.col_21_remarks or ''"/></td>
+                                        <td><t t-esc="o.col_22_extra or ''"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

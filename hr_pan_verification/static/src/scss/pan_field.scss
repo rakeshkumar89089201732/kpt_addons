@@ -1,0 +1,53 @@
+.o_field_pan_validator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .o_input {
+        flex: 0 0 auto;
+        min-width: 200px;
+        font-family: monospace;
+        font-weight: 600;
+        letter-spacing: 1px;
+
+        &.text-success {
+            border-color: #28a745;
+            background-color: #f0fff4;
+        }
+
+        &.text-danger {
+            border-color: #dc3545;
+            background-color: #fff5f5;
+        }
+
+        &.text-muted {
+            border-color: #6c757d;
+        }
+    }
+
+    .text-success {
+        color: #28a745 !important;
+        font-weight: 500;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+        font-weight: 500;
+    }
+
+    .text-muted {
+        color: #6c757d !important;
+    }
+
+    .fa-check-circle {
+        color: #28a745;
+    }
+
+    .fa-times-circle {
+        color: #dc3545;
+    }
+
+    .fa-question-circle {
+        color: #6c757d;
+    }
+}

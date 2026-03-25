@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="product_voice_search.ClientAction">
+        <div class="o_product_voice_search">
+            <div class="o_pvs_header">
+                <h2>Voice Product Search</h2>
+                <p>Click the mic and speak product keywords. Results use Tally-style infinite search.</p>
+            </div>
+            <div class="o_pvs_controls">
+                <button type="button" class="btn btn-primary o_pvs_mic_btn">
+                    <i class="fa fa-microphone"></i>
+                    <span class="o_pvs_mic_label">Start Listening</span>
+                </button>
+                <div class="o_pvs_status text-muted">Idle</div>
+            </div>
+            <div class="o_pvs_search_box form-control" contenteditable="true" spellcheck="false" placeholder="Speak or type product keywords..."></div>
+            <div class="o_pvs_results panel panel-default">
+                <div class="panel-heading">Results</div>
+                <ul class="list-group o_pvs_results_list"></ul>
+            </div>
+            <div class="o_pvs_hint text-muted">Supports speech where browser allows (Chrome/Edge). Uses existing product_infinite_search backend.</div>
+        </div>
+    </t>
+</templates>

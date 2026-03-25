@@ -1,0 +1,520 @@
+// Custom UI Enhancements
+
+// Input Fields
+.o_input {
+    border: 1px solid $o-gray-300;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.2s ease-in-out;
+    background-color: $o-white;
+    box-shadow: 0 1px 2px rgba($o-black, 0.05);
+    
+    &:focus {
+        border-color: $o-enterprise-color;
+        box-shadow: 0 0 0 3px rgba($o-enterprise-color, 0.1);
+        outline: none;
+    }
+    
+    &:hover {
+        border-color: $o-gray-400;
+    }
+    
+    &::placeholder {
+        color: $o-gray-400;
+    }
+}
+
+// Form Groups
+.o_form_group {
+    margin-bottom: 2rem;
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: $o-gray-700;
+        font-weight: 500;
+    }
+}
+
+// Select Dropdowns
+.o_input_dropdown {
+    .o_input {
+        padding-right: 2rem;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.05 3.125 6 7.075 9.95 3.125 10.825 4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 12px;
+        appearance: none;
+    }
+}
+
+// Checkboxes and Radio Buttons
+.o_checkbox, .o_radio {
+    position: relative;
+    display: inline-block;
+    padding-left: 1.5rem;
+    cursor: pointer;
+    
+    input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+    
+    .o_checkbox_input, .o_radio_input {
+        position: absolute;
+        left: 0;
+        top: 0.2rem;
+        width: 1rem;
+        height: 1rem;
+        border: 1px solid $o-gray-300;
+        border-radius: 2px;
+        background-color: $o-white;
+        transition: all 0.2s ease-in-out;
+    }
+    
+    &:hover .o_checkbox_input, &:hover .o_radio_input {
+        border-color: $o-gray-400;
+    }
+    
+    input:checked ~ .o_checkbox_input {
+        background-color: $o-enterprise-color;
+        border-color: $o-enterprise-color;
+    }
+    
+    input:checked ~ .o_radio_input {
+        border-color: $o-enterprise-color;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: $o-enterprise-color;
+        }
+    }
+}
+
+// Form Validation States
+.o_input.is-invalid {
+    border-color: $o-danger;
+    &:focus {
+        box-shadow: 0 0 0 3px rgba($o-danger, 0.1);
+    }
+}
+
+.o_input.is-valid {
+    border-color: $o-success;
+    &:focus {
+        box-shadow: 0 0 0 3px rgba($o-success, 0.1);
+    }
+}
+
+// Form Help Text
+.o_form_text {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: $o-gray-500;
+}
+
+// Required Field Indicator
+.o_required {
+    &::after {
+        content: '*';
+        color: $o-danger;
+        margin-left: 0.25rem;
+    }
+}
+
+// Form Section Headers
+.o_form_sheet {
+    .o_form_sheet_bg {
+        background-color: $o-white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba($o-black, 0.1);
+        padding: 1.5rem;
+    }
+    
+    .o_form_sheet_title {
+        color: $o-gray-800;
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid $o-gray-200;
+    }
+}
+
+// Search Input
+.o_searchview {
+    .o_searchview_input {
+        border: 1px solid $o-gray-300;
+        border-radius: 4px;
+        padding: 0.5rem 0.75rem;
+        
+        &:focus {
+            border-color: $o-enterprise-color;
+            box-shadow: 0 0 0 3px rgba($o-enterprise-color, 0.1);
+        }
+    }
+    
+    .o_searchview_facet {
+        background-color: rgba($o-enterprise-color, 0.1);
+        border: 1px solid rgba($o-enterprise-color, 0.2);
+        border-radius: 4px;
+        color: $o-enterprise-color;
+        
+        .o_facet_remove {
+            color: $o-enterprise-color;
+            &:hover {
+                background-color: rgba($o-enterprise-color, 0.2);
+            }
+        }
+    }
+}
+
+// === Card Effects & Section Separation ===
+.o_form_sheet_bg, .o_card, .o_section_card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba($o-black, 0.07), 0 1.5px 4px rgba($o-black, 0.04);
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid $o-gray-200;
+    transition: box-shadow 0.2s;
+}
+.o_form_sheet_bg:hover, .o_card:hover, .o_section_card:hover {
+    box-shadow: 0 4px 16px rgba($o-enterprise-color, 0.10), 0 2px 8px rgba($o-black, 0.08);
+}
+
+// === Enhanced Buttons ===
+.o_form_button, .btn-primary, .o_form_button_create, .o_form_button_edit {
+    background: #0A5EB0;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.97rem;
+    box-shadow: 0 2px 8px rgba($o-enterprise-color, 0.10);
+    padding: 0.38rem 1.1rem;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    letter-spacing: 0.01em;
+}
+.o_form_button:hover, .btn-primary:hover, .o_form_button_create:hover, .o_form_button_edit:hover {
+    background: #2563eb;
+    box-shadow: 0 4px 12px rgba($o-enterprise-color, 0.13);
+    transform: translateY(-1px) scale(1.02);
+}
+
+// === Enhanced Tabs ===
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: $o-gray-500;
+    font-weight: 500;
+    transition: color 0.2s, border-bottom 0.2s;
+    background: none;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-link:hover {
+    color: $o-enterprise-color;
+    border-bottom: 2.5px solid $o-enterprise-color;
+    background: none;
+}
+
+// === Table Enhancements ===
+.o_list_view table, .table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba($o-black, 0.05);
+}
+.o_list_view th, .table th {
+    background: #D9EAFD !important;
+    color: $o-gray-800;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid $o-gray-400;
+}
+.o_list_view th:hover, .table th:hover {
+    background: #A5BFCC !important;
+    color: $o-gray-800;
+}
+.o_list_view td, .table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1.5px solid $o-gray-200;
+    font-size: 1rem;
+}
+.o_list_view tr:nth-child(even), .table tr:nth-child(even) {
+    background: #f3f7fa;
+}
+.o_list_view tr:hover, .table tr:hover {
+    background: #e3f0fa;
+    transition: background 0.15s;
+}
+
+// === Typography Improvements ===
+h1, .o_form_sheet_title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $o-enterprise-color;
+    margin-bottom: 1.2rem;
+}
+h2, .o_section_title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $o-gray-800;
+    margin-bottom: 1rem;
+}
+label, .o_form_label {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: $o-gray-700;
+}
+.o_form_text, .help-block {
+    font-size: 0.95rem;
+    color: $o-gray-500;
+}
+
+// === Table Inline Input Cleanup ===
+.o_list_view td input[type="text"],
+.o_list_view td input[type="number"],
+.o_list_view td input[type="email"],
+.o_list_view td input[type="password"],
+.o_list_view td input[type="search"],
+.o_list_view td textarea,
+.table td input[type="text"],
+.table td input[type="number"],
+.table td input[type="email"],
+.table td input[type="password"],
+.table td input[type="search"],
+.table td textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid $o-gray-300;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.2rem 0.3rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    min-width: 0;
+    outline: none;
+}
+.o_list_view td input[type="text"]:focus,
+.o_list_view td input[type="number"]:focus,
+.o_list_view td input[type="email"]:focus,
+.o_list_view td input[type="password"]:focus,
+.o_list_view td input[type="search"]:focus,
+.o_list_view td textarea:focus,
+.table td input[type="text"]:focus,
+.table td input[type="number"]:focus,
+.table td input[type="email"]:focus,
+.table td input[type="password"]:focus,
+.table td input[type="search"]:focus,
+.table td textarea:focus {
+    border-bottom: 2px solid $o-enterprise-color;
+    background: transparent;
+    box-shadow: none;
+}
+
+// === Modern Rounded Input Boxes ===
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea {
+    border: 1.5px solid $o-gray-300;
+    border-radius: 16px;
+    background: #fff;
+    padding: 0.45rem 1rem;
+    font-size: 1rem;
+    box-shadow: 0 1px 4px rgba($o-black, 0.06);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    color: $o-gray-800;
+    min-width: 0;
+}
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+    border-color: $o-enterprise-color;
+    box-shadow: 0 0 0 3px rgba($o-enterprise-color, 0.10);
+}
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="search"]:hover,
+textarea:hover {
+    border-color: darken($o-enterprise-color, 10%);
+}
+
+// === Modern Alert/Error Box ===
+.o_notification_manager .o_notification,
+.o_notification_manager .o_notification.o_error,
+.o_notification_manager .o_notification.o_warning {
+    background: #fff0f0;
+    border: 1.5px solid #f87171;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba($o-danger, 0.10), 0 2px 8px rgba($o-black, 0.08);
+    color: #b91c1c;
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 1.1rem 1.5rem 1.1rem 1.5rem;
+    margin-top: 1.5rem;
+    margin-right: 1.5rem;
+    min-width: 260px;
+    max-width: 400px;
+    z-index: 9999;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s;
+}
+.o_notification_manager .o_notification .o_close {
+    color: #b91c1c;
+    font-size: 1.2rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.o_notification_manager .o_notification .o_close:hover {
+    opacity: 1;
+}
+.o_notification_manager .o_notification ul {
+    margin: 0.5rem 0 0 1.2rem;
+    padding: 0;
+    font-size: 1rem;
+}
+.o_notification_manager .o_notification strong {
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+// === Unified Input & Dropdown Box Sizing ===
+select,
+.o_input_dropdown .o_input,
+.o_form_view select,
+.o_list_view td select,
+.table td select {
+    width: 200px;
+    min-width: 120px;
+    max-width: 100%;
+    height: 2.1rem;
+    padding: 0.18rem 2.2rem 0.18rem 0.8rem !important;
+    font-size: 0.89rem !important;
+    border: 1.5px solid $o-gray-300;
+    background: #fff;
+    color: $o-gray-800;
+    box-shadow: 0 1px 4px rgba($o-black, 0.06);
+    border-radius: 16px;
+    appearance: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    min-width: 0;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='none' stroke='%232563eb' stroke-width='2.5' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    background-size: 1.5rem;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+select:focus,
+.o_input_dropdown .o_input:focus,
+.o_form_view select:focus,
+.o_list_view td select:focus,
+.table td select:focus {
+    border-color: $o-enterprise-color;
+    box-shadow: 0 0 0 3px rgba($o-enterprise-color, 0.10);
+}
+select:hover,
+.o_input_dropdown .o_input:hover,
+.o_form_view select:hover,
+.o_list_view td select:hover,
+.table td select:hover {
+    border-color: darken($o-enterprise-color, 10%);
+}
+
+// === Modern Dropdown Menu (Popup List) Styling ===
+.ui-autocomplete,
+.ui-menu,
+.o_dialog_autocomplete,
+.o-autocomplete--dropdown,
+.o-autocomplete--dropdown-menu {
+    background: #fff;
+    border: 1.8px solid $o-enterprise-color;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba($o-enterprise-color, 0.10), 0 2px 8px rgba($o-black, 0.08);
+    font-size: 0.98rem;
+    color: $o-gray-800;
+    padding: 0.1rem 0;
+    min-width: 180px;
+    z-index: 9999;
+    margin-top: 0.2rem;
+}
+.ui-autocomplete .ui-menu-item,
+.ui-menu .ui-menu-item,
+.o_dialog_autocomplete .o-autocomplete--dropdown-item,
+.o-autocomplete--dropdown .o-autocomplete--dropdown-item,
+.o-autocomplete--dropdown-menu .o-autocomplete--dropdown-item {
+    padding: 0.38rem 1.1rem;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+    font-size: 0.98rem;
+    background: none !important;
+    box-shadow: none !important;
+}
+.ui-autocomplete .ui-menu-item:hover,
+.ui-menu .ui-menu-item:hover,
+.o_dialog_autocomplete .o-autocomplete--dropdown-item:hover,
+.o-autocomplete--dropdown .o-autocomplete--dropdown-item:hover,
+.o-autocomplete--dropdown-menu .o-autocomplete--dropdown-item:hover,
+.ui-autocomplete .ui-state-active,
+.ui-menu .ui-state-active,
+.o_dialog_autocomplete .o-autocomplete--dropdown-item.active,
+.o-autocomplete--dropdown .o-autocomplete--dropdown-item.active,
+.o-autocomplete--dropdown-menu .o-autocomplete--dropdown-item.active {
+    background: #e8f0fe !important;
+    color: $o-enterprise-color !important;
+    box-shadow: none !important;
+}
+// === Fix Dropdown Arrow Overlap ===
+select,
+.o_input_dropdown .o_input,
+.o_form_view select,
+.o_list_view td select,
+.table td select {
+    padding-right: 2.8rem !important;
+    background-position: right 1.2rem center;
+    background-size: 1.5rem;
+}
+
+// === Improved Status Bar Highlight ===
+.o_statusbar_status .o_arrow_button,
+.o_statusbar_status .o_arrow_button.o_arrow_button_current {
+    border: 2px solid $o-enterprise-color !important;
+    background: #e8f0fe !important;
+    color: $o-enterprise-color !important;
+    font-weight: 700;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba($o-enterprise-color, 0.10);
+    padding: 0.3rem 1.2rem !important;
+    font-size: 1.01rem !important;
+    transition: background 0.2s, border-color 0.2s;
+}
+.o_statusbar_status .o_arrow_button.o_arrow_button_current {
+    background: #2563eb !important;
+    color: #fff !important;
+    border-color: #2563eb !important;
+} 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_employee_form_inherit_hr" model="ir.ui.view">
+        <field name="name">hr.employee.form.pan.aadhar</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_salary_sheet_menu" type="object" class="oe_stat_button" icon="fa-file-excel-o">
+                    <field name="salary_sheet_attachment_count" widget="statinfo" string="Salary Sheet"/>
+                </button>
+
+                <button name="action_open_salary_sheet_wizard" type="object" class="oe_stat_button" icon="fa-file-excel-o" invisible="1">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Generate Salary Sheet</span>
+                    </div>
+                </button>
+                <button name="action_open_salary_sheet_attachments" type="object" class="oe_stat_button" icon="fa-folder-open" invisible="1">
+                    <field name="salary_sheet_attachment_count" widget="statinfo" string="Salary Sheets"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="after">
+                <field name="pan_number"/>
+                <field name="aadhar_number"/>
+
+            </xpath>
+            <xpath expr="//field[@name='birthday']" position="after">
+                <field name="tds_category_code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

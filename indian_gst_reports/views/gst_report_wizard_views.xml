@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_gst_report_wizard_form" model="ir.ui.view">
+        <field name="name">gst.report.wizard.form</field>
+        <field name="model">gst.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="GST Report Wizard">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="report_type"/>
+                    </group>
+                </group>
+                <div invisible="not gst_report_file">
+                    <h2>Download Report</h2>
+                    <field name="file_name" invisible="1"/>
+                    <field name="gst_report_file" filename="file_name" readonly="1"/>
+                </div>
+                <footer>
+                    <button name="action_generate_report" string="Generate Report" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gst_report_wizard" model="ir.actions.act_window">
+        <field name="name">Indian GST Reports</field>
+        <field name="res_model">gst.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_indian_gst_report"
+              name="Indian GST Reports"
+              parent="account.menu_finance_reports"
+              action="action_gst_report_wizard"
+              sequence="20"/>
+</odoo>

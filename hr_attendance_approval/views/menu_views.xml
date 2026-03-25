@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_hr_attendance_approval_root"
+              name="Attendance Approval"
+              parent="hr_attendance.menu_hr_attendance_root"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="60"/>
+
+    <!-- Attendance Menu -->
+    <menuitem id="menu_hr_attendance_approval_attendance"
+              name="Attendance"
+              parent="menu_hr_attendance_approval_root"
+              sequence="10"/>
+
+    <!-- My Attendance Submenu -->
+    <menuitem id="menu_hr_attendance_approval_my"
+              name="My Attendance"
+              parent="menu_hr_attendance_approval_attendance"
+              action="hr_attendance_approval_my_action"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="10"/>
+
+    <!-- All Attendance Submenu -->
+    <menuitem id="menu_hr_attendance_approval_all"
+              name="All Attendance"
+              parent="menu_hr_attendance_approval_attendance"
+              action="hr_attendance_approval_action"
+              groups="hr_attendance_approval.group_attendance_approval_super_manager"
+              sequence="20"/>
+
+    <!-- Approvals Menu -->
+    <menuitem id="menu_hr_attendance_approval_approvals"
+              name="Approvals"
+              parent="menu_hr_attendance_approval_root"
+              groups="hr_attendance_approval.group_attendance_approval_manager"
+              sequence="20"/>
+
+    <!-- To Approve Submenu -->
+    <menuitem id="menu_hr_attendance_approval_to_approve"
+              name="To Approve"
+              parent="menu_hr_attendance_approval_approvals"
+              action="hr_attendance_approval_to_approve_action"
+              groups="hr_attendance_approval.group_attendance_approval_manager"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_attendance_approval_daily_approvals"
+              name="Daily Approvals"
+              parent="menu_hr_attendance_approval_approvals"
+              action="hr_attendance_approval_daily_approvals_action"
+              groups="hr_attendance_approval.group_attendance_approval_manager"
+              sequence="5"/>
+
+    <!-- Team Attendance Submenu -->
+    <menuitem id="menu_hr_attendance_approval_team"
+              name="Team Attendance"
+              parent="menu_hr_attendance_approval_approvals"
+              action="hr_attendance_approval_team_action"
+              groups="hr_attendance_approval.group_attendance_approval_manager"
+              sequence="20"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_hr_attendance_approval_config"
+              name="Configuration"
+              parent="hr_attendance.menu_hr_attendance_settings"
+              groups="hr_attendance_approval.group_attendance_approval_admin"
+              sequence="100"/>
+
+    <!-- Approval Configuration Submenu -->
+    <menuitem id="menu_hr_attendance_approval_config_settings"
+              name="Approval Configuration"
+              parent="menu_hr_attendance_approval_config"
+              action="hr_attendance_approval_config_action"
+              groups="hr_attendance_approval.group_attendance_approval_admin"
+              sequence="10"/>
+
+    <!-- Monthly Attendance Register (XLSX) -->
+    <menuitem id="menu_hr_attendance_approval_monthly_register"
+              name="Monthly Attendance Register"
+              parent="menu_hr_attendance_approval_attendance"
+              action="hr_attendance_approval.hr_monthly_attendance_register_wizard_action"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="30"/>
+
+    <!-- Also expose under core Attendances -> Reporting -->
+    <menuitem id="menu_hr_attendance_monthly_register_reporting"
+              name="Monthly Attendance Register"
+              parent="hr_attendance.menu_hr_attendance_reporting"
+              action="hr_attendance_approval.hr_monthly_attendance_register_wizard_action"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="50"/>
+
+    <!-- Payroll -> Reporting -->
+    <menuitem id="menu_hr_payroll_monthly_register_reporting"
+              name="Monthly Attendance Register"
+              parent="hr_payroll.menu_hr_payroll_report"
+              action="hr_attendance_approval.hr_monthly_attendance_register_wizard_action"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="90"/>
+
+    <!-- Payroll -> Work Entries (create a small Reporting sub-menu) -->
+    <menuitem id="menu_hr_payroll_work_entries_reporting"
+              name="Reporting"
+              parent="hr_payroll.menu_hr_payroll_work_entries_root"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="90"/>
+
+    <menuitem id="menu_hr_payroll_monthly_register_work_entries"
+              name="Monthly Attendance Register"
+              parent="menu_hr_payroll_work_entries_reporting"
+              action="hr_attendance_approval.hr_monthly_attendance_register_wizard_action"
+              groups="hr_attendance_approval.group_attendance_approval_user"
+              sequence="10"/>
+
+</odoo>
